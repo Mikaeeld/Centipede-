@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 using namespace std;
 
@@ -34,4 +35,5 @@ private:
     string title_;
     bool isDone_;
     bool isFullscreen_;
+    int framerateLimit_;
 };
