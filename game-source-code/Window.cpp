@@ -30,7 +30,7 @@ void Window::create()
 {
     auto style = (isFullscreen_ ? sf::Style::Fullscreen : sf::Style::Default);
     window_.create(sf::VideoMode{size_.x, size_.y, 32}, title_, style);
-    window_.setFramerateLimit(framerateLimit_);
+    //window_.setFramerateLimit(framerateLimit_);
 }
 
 void Window::destroy()
