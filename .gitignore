@@ -43,6 +43,10 @@
 bin/
 obj/
 
+# include directories
+include/
+lib/
+
 ### VisualStudioCode ###
 .vscode/
 # !.vscode/settings.json
