@@ -10,10 +10,9 @@ public:
     Object();
     ~Object();
 
-    void update();
     //This needs to return a generic drawable object
     sf::CircleShape *getDrawable();
-
+    void tick(sf::Time time_);
 private:
     sf::Vector2f offset_;
     sf::CircleShape shape_;

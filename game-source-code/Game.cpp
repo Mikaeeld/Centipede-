@@ -1,7 +1,8 @@
 #include "Game.h"
 
-Game::Game() : window_("Game", sf::Vector2u{1600, 900})
+Game::Game() : window_("Game", sf::Vector2u{1600, 900}), tickRate_(60.0f)
 {
+    frametime_ = 1.0f / tickRate_;
 }
 
 Game::~Game()
@@ -10,8 +11,12 @@ Game::~Game()
 
 void Game::update()
 {
-    window_.update();
-    object_.update();
+    if (elapsed_.asSeconds() >= frametime_)
+    {
+        window_.update();
+        object_.tick(elapsed_);
+        elapsed_ -= sf::seconds(frametime_);
+    }
 }
 
 void Game::render()
@@ -28,4 +33,14 @@ Window *Game::getWindow()
 
 void Game::handleInput()
 {
+}
+
+sf::Time Game::getElapsed()
+{
+    return elapsed_;
+}
+
+void Game::restartClock()
+{
+    elapsed_ += clock_.restart();
 }

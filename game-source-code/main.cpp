@@ -8,6 +8,7 @@ int main()
     {
         game.update();
         game.render();
+        game.restartClock();
     }
     return 0;
 }
