@@ -1,27 +1,24 @@
 #include <SFML/Graphics.hpp>
+#include "Window.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1600, 900), "Gravity!");
+
+    auto window = Window("New Window", sf::Vector2u{1400, 900});
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Blue);
     auto offset = sf::Vector2f{10, -50};
     shape.setOrigin(shape.getRadius()/2, shape.getRadius()/2);
     shape.move(sf::Vector2f{0, 900});
-    while (window.isOpen())
+    while (!window.isDone())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
         shape.move(offset);
         offset.y += 1;
 
-        window.clear();
+        window.update();
+        window.beginDraw();
         window.draw(shape);
-        window.display();
+        window.endDraw();
     }
 
     return 0;
