@@ -1,5 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include "Window.h"
 #include "Game.h"
 
 int main()
