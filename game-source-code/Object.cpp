@@ -20,6 +20,27 @@ void Object::tick(sf::Time time)
     shape_.move(offset_ * elapsed);
 }
 
+void Object::move(Direction direction, sf::Time time)
+{
+    auto elapsed = time.asSeconds();
+    float distance = elapsed * 500;
+    switch (direction)
+    {
+    case Direction::Down:
+        shape_.move(sf::Vector2f{0, distance});
+        break;
+    case Direction::Up:
+        shape_.move(sf::Vector2f{0, -distance});
+        break;
+    case Direction::Left:
+        shape_.move(sf::Vector2f{-distance, 0});
+        break;
+    case Direction::Right:
+        shape_.move(sf::Vector2f{distance, 0});
+        break;
+    }
+}
+
 sf::CircleShape *Object::getDrawable()
 {
     return &shape_;

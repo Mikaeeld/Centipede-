@@ -13,8 +13,9 @@ void Game::update()
 {
     if (elapsed_.asSeconds() >= frametime_)
     {
+        handleInput();
         window_.update();
-        object_.tick(elapsed_);
+        //object_.tick(elapsed_);
         elapsed_ -= sf::seconds(frametime_);
     }
 }
@@ -33,6 +34,18 @@ Window *Game::getWindow()
 
 void Game::handleInput()
 {
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+        object_.move(Object::Direction::Up, elapsed_);
+    }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+        object_.move(Object::Direction::Down, elapsed_);
+    }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+        object_.move(Object::Direction::Left, elapsed_);
+    }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+        object_.move(Object::Direction::Right, elapsed_);
+    }
 }
 
 sf::Time Game::getElapsed()
