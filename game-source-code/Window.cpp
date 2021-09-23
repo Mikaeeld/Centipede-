@@ -1,14 +1,15 @@
 #include "Window.h"
 
-Window::Window()
+Window::Window() : Window("New Window", sf::Vector2u(1024, 768))
 {
-    framerateLimit_ = 60;
-    setup("New Window", sf::Vector2u{1280, 720});
 }
 
-Window::Window(const string &title, const sf::Vector2u &size)
+Window::Window(const string &title, const sf::Vector2u &size) : Window(title, size, 0)
 {
-    framerateLimit_ = 60;
+}
+
+Window::Window(const string &title, const sf::Vector2u &size, int framerate) : framerateLimit_{framerate}
+{
     setup(title, size);
 }
 
@@ -30,7 +31,10 @@ void Window::create()
 {
     auto style = (isFullscreen_ ? sf::Style::Fullscreen : sf::Style::Default);
     window_.create(sf::VideoMode{size_.x, size_.y, 32}, title_, style);
-    //window_.setFramerateLimit(framerateLimit_);
+    if (framerateLimit_ != 0)
+    {
+        window_.setFramerateLimit(framerateLimit_);
+    }
 }
 
 void Window::destroy()

@@ -10,6 +10,7 @@ class Window
 public:
     Window();
     Window(const string &title, const sf::Vector2u &size);
+    Window(const string &title, const sf::Vector2u &size, int framerate);
     ~Window();
 
     void beginDraw();

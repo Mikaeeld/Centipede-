@@ -34,16 +34,20 @@ Window *Game::getWindow()
 
 void Game::handleInput()
 {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
         object_.move(Object::Direction::Up, elapsed_);
     }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
         object_.move(Object::Direction::Down, elapsed_);
     }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
         object_.move(Object::Direction::Left, elapsed_);
     }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
         object_.move(Object::Direction::Right, elapsed_);
     }
 }
