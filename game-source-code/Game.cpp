@@ -16,7 +16,7 @@ void Game::update()
         handleInput();
         window_.update();
         //object_.tick(elapsed_);
-        elapsed_ -= sf::seconds(frametime_);
+        elapsed_ = sf::seconds(0.0);
     }
 }
 
