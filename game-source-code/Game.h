@@ -5,6 +5,13 @@
 
 using namespace std;
 
+enum class GameState
+{
+    splash,
+    play,
+    pause
+};
+
 class Game
 {
 public:
@@ -25,4 +32,7 @@ private:
     sf::Time elapsed_;
     float tickRate_;
     float frametime_;
+    GameState state_;
+    sf::Sprite splash_;
+    sf::Texture splashImage_;
 };

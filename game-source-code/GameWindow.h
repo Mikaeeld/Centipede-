@@ -1,4 +1,4 @@
-#ifndef GAME_WINDOW_H
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -38,5 +38,3 @@ private:
     bool isFullscreen_;
     int framerateLimit_;
 };
-
-#endif

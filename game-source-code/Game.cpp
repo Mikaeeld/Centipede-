@@ -3,6 +3,18 @@
 Game::Game() : window_("Game", sf::Vector2u{800, 600}, 120), tickRate_(240.0f)
 {
     frametime_ = 1.0f / tickRate_;
+    state_ = GameState::splash;
+
+    if (!splashImage_.loadFromFile("content/splash.png"))
+    {
+        throw std::runtime_error("Cannot Load Splash Image");
+    };
+
+    splash_.setTexture(splashImage_);
+    float scalex = (float)window_.getSize().x / (float)splashImage_.getSize().x;
+    float scaley = (float)window_.getSize().y / (float)splashImage_.getSize().y;
+
+    splash_.scale(scalex, scaley);
 }
 
 Game::~Game()
@@ -23,7 +35,25 @@ void Game::update()
 void Game::render()
 {
     window_.beginDraw();
-    window_.draw(*object_.getDrawable());
+    switch (state_)
+    {
+    case GameState::play:
+    {
+        window_.draw(*object_.getDrawable());
+        break;
+    }
+
+    case GameState::splash:
+    {
+        window_.draw(splash_);
+        break;
+    }
+
+    default:
+        //none
+        break;
+    }
+
     window_.endDraw();
 }
 
@@ -34,21 +64,41 @@ GameWindow *Game::getWindow()
 
 void Game::handleInput()
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+
+    switch (state_)
     {
-        object_.move(Object::Direction::Up, elapsed_);
+    case GameState::play:
+    {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        {
+            object_.move(Object::Direction::Up, elapsed_);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        {
+            object_.move(Object::Direction::Down, elapsed_);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        {
+            object_.move(Object::Direction::Left, elapsed_);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        {
+            object_.move(Object::Direction::Right, elapsed_);
+        }
+        break;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+
+    case GameState::splash:
     {
-        object_.move(Object::Direction::Down, elapsed_);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            state_ = GameState::play;
+        }
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-        object_.move(Object::Direction::Left, elapsed_);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-        object_.move(Object::Direction::Right, elapsed_);
+
+    default:
+        //none
+        break;
     }
 }
 

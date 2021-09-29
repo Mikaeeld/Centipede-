@@ -7,5 +7,4 @@ TEST_CASE("Testing Window Default Dimensions")
 	auto window = GameWindow();
 
 	CHECK(window.getSize() == sf::Vector2u{1024, 768});
-	// CHECK(true);
 }
