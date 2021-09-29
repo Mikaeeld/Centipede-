@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game() : window_("Game", sf::Vector2u{1600, 900}), tickRate_(60.0f)
+Game::Game() : window_("Game", sf::Vector2u{800, 600}, 120), tickRate_(240.0f)
 {
     frametime_ = 1.0f / tickRate_;
 }
@@ -27,7 +27,7 @@ void Game::render()
     window_.endDraw();
 }
 
-Window *Game::getWindow()
+GameWindow *Game::getWindow()
 {
     return &window_;
 }
