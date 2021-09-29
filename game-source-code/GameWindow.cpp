@@ -1,24 +1,24 @@
-#include "Window.h"
+#include "GameWindow.h"
 
-Window::Window() : Window("New Window", sf::Vector2u(1024, 768))
+GameWindow::GameWindow() : GameWindow("New Window", sf::Vector2u(1024, 768))
 {
 }
 
-Window::Window(const string &title, const sf::Vector2u &size) : Window(title, size, 0)
+GameWindow::GameWindow(const string &title, const sf::Vector2u &size) : GameWindow(title, size, 0)
 {
 }
 
-Window::Window(const string &title, const sf::Vector2u &size, int framerate) : framerateLimit_{framerate}
+GameWindow::GameWindow(const string &title, const sf::Vector2u &size, int framerate) : framerateLimit_{framerate}
 {
     setup(title, size);
 }
 
-Window::~Window()
+GameWindow::~GameWindow()
 {
     destroy();
 }
 
-void Window::setup(const string title, const sf::Vector2u size)
+void GameWindow::setup(const string title, const sf::Vector2u size)
 {
     title_ = title;
     size_ = size;
@@ -27,7 +27,7 @@ void Window::setup(const string title, const sf::Vector2u size)
     create();
 }
 
-void Window::create()
+void GameWindow::create()
 {
     auto style = (isFullscreen_ ? sf::Style::Fullscreen : sf::Style::Default);
     window_.create(sf::VideoMode{size_.x, size_.y, 32}, title_, style);
@@ -37,12 +37,12 @@ void Window::create()
     }
 }
 
-void Window::destroy()
+void GameWindow::destroy()
 {
     window_.close();
 }
 
-void Window::update()
+void GameWindow::update()
 {
     sf::Event event;
     while (window_.pollEvent(event))
@@ -58,39 +58,39 @@ void Window::update()
     }
 }
 
-void Window::toggleFullscreen()
+void GameWindow::toggleFullscreen()
 {
     isFullscreen_ = !isFullscreen_;
     destroy();
     create();
 }
 
-void Window::beginDraw()
+void GameWindow::beginDraw()
 {
     window_.clear(sf::Color::Black);
 }
 
-void Window::endDraw()
+void GameWindow::endDraw()
 {
     window_.display();
 }
 
-bool Window::isDone()
+bool GameWindow::isDone()
 {
     return isDone_;
 }
 
-bool Window::isFullscreen()
+bool GameWindow::isFullscreen()
 {
     return isFullscreen_;
 }
 
-sf::Vector2u Window::getSize()
+sf::Vector2u GameWindow::getSize()
 {
     return size_;
 }
 
-void Window::draw(sf::Drawable &drawable)
+void GameWindow::draw(sf::Drawable &drawable)
 {
     window_.draw(drawable);
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Window.h"
+#include "GameWindow.h"
 #include "Object.h"
 
 using namespace std;
@@ -14,12 +14,12 @@ public:
     void handleInput();
     void update();
     void render();
-    Window *getWindow();
+    GameWindow *getWindow();
     sf::Time getElapsed();
     void restartClock();
 
 private:
-    Window window_;
+    GameWindow window_;
     Object object_;
     sf::Clock clock_;
     sf::Time elapsed_;

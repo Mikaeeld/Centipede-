@@ -38,6 +38,9 @@ void Object::move(Direction direction, sf::Time time)
     case Direction::Right:
         shape_.move(sf::Vector2f{distance, 0});
         break;
+    default:
+        //none
+        break;
     }
 }
 

@@ -1,17 +1,17 @@
-#pragma once
+#ifndef GAME_WINDOW_H
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
 using namespace std;
 
-class Window
+class GameWindow
 {
 public:
-    Window();
-    Window(const string &title, const sf::Vector2u &size);
-    Window(const string &title, const sf::Vector2u &size, int framerate);
-    ~Window();
+    GameWindow();
+    GameWindow(const string &title, const sf::Vector2u &size);
+    GameWindow(const string &title, const sf::Vector2u &size, int framerate);
+    ~GameWindow();
 
     void beginDraw();
     void endDraw();
@@ -38,3 +38,5 @@ private:
     bool isFullscreen_;
     int framerateLimit_;
 };
+
+#endif
