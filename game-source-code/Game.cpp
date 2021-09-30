@@ -4,6 +4,7 @@ Game::Game() : window_("Game", sf::Vector2u{800, 600}, 120), tickRate_(240.0f)
 {
     frametime_ = 1.0f / tickRate_;
     state_ = GameState::splash;
+    window_.toggleBorderless();
 
     if (!splashImage_.loadFromFile("content/splash.png"))
     {
@@ -104,6 +105,7 @@ void Game::handleInput()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
             state_ = GameState::play;
+            window_.toggleBorderless();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {

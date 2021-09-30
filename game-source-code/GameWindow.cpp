@@ -23,6 +23,7 @@ void GameWindow::setup(const string title, const sf::Vector2u size)
     title_ = title;
     size_ = size;
     isFullscreen_ = false;
+    isBorderless_ = false;
     isDone_ = false;
     create();
 }
@@ -30,6 +31,9 @@ void GameWindow::setup(const string title, const sf::Vector2u size)
 void GameWindow::create()
 {
     auto style = (isFullscreen_ ? sf::Style::Fullscreen : sf::Style::Default);
+    if (isBorderless_ && !isFullscreen_){
+        style = sf::Style::None;
+    }
     window_.create(sf::VideoMode{size_.x, size_.y, 32}, title_, style);
     if (framerateLimit_ != 0)
     {
@@ -65,7 +69,15 @@ void GameWindow::toggleFullscreen()
     create();
 }
 
-void GameWindow::close() {
+void GameWindow::toggleBorderless()
+{
+    isBorderless_ = !isBorderless_;
+    destroy();
+    create();
+}
+
+void GameWindow::close()
+{
     isDone_ = true;
 }
 

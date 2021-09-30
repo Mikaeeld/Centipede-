@@ -23,6 +23,7 @@ public:
     sf::Vector2u getSize();
 
     void toggleFullscreen();
+    void toggleBorderless();
     void close();
 
     void draw(sf::Drawable &drawable);
@@ -37,5 +38,6 @@ private:
     string title_;
     bool isDone_;
     bool isFullscreen_;
+    bool isBorderless_;
     int framerateLimit_;
 };
