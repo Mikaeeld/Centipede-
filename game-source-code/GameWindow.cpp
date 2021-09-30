@@ -65,6 +65,10 @@ void GameWindow::toggleFullscreen()
     create();
 }
 
+void GameWindow::close() {
+    isDone_ = true;
+}
+
 void GameWindow::beginDraw()
 {
     window_.clear(sf::Color::Black);

@@ -23,6 +23,7 @@ public:
     sf::Vector2u getSize();
 
     void toggleFullscreen();
+    void close();
 
     void draw(sf::Drawable &drawable);
 

@@ -92,6 +92,10 @@ void Game::handleInput()
         {
             object_.shoot();
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            window_.close();
+        }
         break;
     }
 
@@ -100,6 +104,10 @@ void Game::handleInput()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
             state_ = GameState::play;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            window_.close();
         }
     }
 
