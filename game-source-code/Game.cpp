@@ -9,7 +9,6 @@ Game::Game() : window_("Game", sf::Vector2u{800, 600}, 120), tickRate_(240.0f)
     {
         throw std::runtime_error("Cannot Load Splash Image");
     };
-
     splash_.setTexture(splashImage_);
     float scalex = (float)window_.getSize().x / (float)splashImage_.getSize().x;
     float scaley = (float)window_.getSize().y / (float)splashImage_.getSize().y;
@@ -27,7 +26,7 @@ void Game::update()
     {
         handleInput();
         window_.update();
-        //object_.tick(elapsed_);
+        object_.tick(elapsed_);
         elapsed_ = sf::seconds(0.0);
     }
 }
@@ -39,7 +38,11 @@ void Game::render()
     {
     case GameState::play:
     {
-        window_.draw(*object_.getDrawable());
+
+        for (auto a : object_.getDrawable())
+        {
+            window_.draw(*a);
+        }
         break;
     }
 
@@ -84,6 +87,10 @@ void Game::handleInput()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
             object_.move(Object::Direction::Right, elapsed_);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) || sf::Keyboard::isKeyPressed(sf::Keyboard::K) || sf::Keyboard::isKeyPressed(sf::Keyboard::X) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+        {
+            object_.shoot();
         }
         break;
     }

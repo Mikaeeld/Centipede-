@@ -35,4 +35,6 @@ private:
     GameState state_;
     sf::Sprite splash_;
     sf::Texture splashImage_;
+    sf::Sprite ship_;
+    sf::Texture shipImage_;
 };
