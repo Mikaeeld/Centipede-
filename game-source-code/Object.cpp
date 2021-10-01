@@ -1,4 +1,5 @@
 #include "Object.h"
+#include "ResourcePath.h"
 
 Object::Object()
 {
@@ -8,7 +9,7 @@ Object::Object()
     shape_.setPosition(sf::Vector2f{50, 250});
     offset_ = sf::Vector2f{50, -50};
 
-    if (!shipImage_.loadFromFile("content/ship/ship1.png"))
+    if (!shipImage_.loadFromFile(resourcePath() + "content/ship/ship1.png"))
     {
         throw std::runtime_error("Cannot Load Ship Image");
     }
@@ -20,7 +21,7 @@ Object::Object()
     shoot_.setFillColor(sf::Color::Yellow);
     shoot_.setString("* Shots Fired! *");
 
-    if (!shootFont_.loadFromFile("content/fonts/cs.ttf"))
+    if (!shootFont_.loadFromFile(resourcePath() + "content/fonts/cs.ttf"))
     {
         throw std::runtime_error("Cannot Load Shoot Font");
     }
