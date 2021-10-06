@@ -4,23 +4,94 @@
 #include <unordered_set>
 #include <set>
 #include <memory>
+#include <math.h>
 
 using namespace std;
 
+struct Percentage
+{
+public:
+	Percentage(float value)
+	{
+		this->value = value > 100.0f ? fmod(value, 100.0f) : value;
+	}
+
+	Percentage()
+	{
+		value = 0.0f;
+	}
+
+	Percentage &operator=(float rhs)
+	{
+		value = rhs > 100.0f ? fmod(rhs, 100.0f) : rhs;
+		return *this;
+	};
+	Percentage &operator=(Percentage &rhs)
+	{
+		value = rhs.value > 100.0f ? fmod(rhs.value, 100.0f) : rhs.value;
+		return *this;
+	};
+
+	Percentage operator+(Percentage &rhs) const
+	{
+		return value + rhs.value;
+	};
+
+	Percentage operator-(Percentage &rhs) const
+	{
+		return value - rhs.value;
+	};
+
+	operator float() const { return value; };
+	bool operator==(const Percentage &rhs) const { return value == rhs.value; };
+	bool operator>(const Percentage &rhs) const { return value > rhs.value; };
+	bool operator<(const Percentage &rhs) const { return value < rhs.value; };
+	bool operator<=(const Percentage &rhs) const { return value <= rhs.value; };
+	bool operator>=(const Percentage &rhs) const { return value >= rhs.value; };
+	bool operator!=(const Percentage &rhs) const { return value != rhs.value; };
+
+	bool operator==(const float &rhs) const { return value == rhs; };
+	bool operator>(const float &rhs) const { return value > rhs; };
+	bool operator<(const float &rhs) const { return value < rhs; };
+	bool operator<=(const float &rhs) const { return value <= rhs; };
+	bool operator>=(const float &rhs) const { return value >= rhs; };
+	bool operator!=(const float &rhs) const { return value != rhs; };
+
+	string toString()
+	{
+		return to_string(value);
+	}
+
+private:
+	float value;
+};
+
 struct KeyFrame
 {
-	float percent = 0.0f;
-	shared_ptr<sf::Texture> texture = nullptr;
+	Percentage percent;
+	shared_ptr<sf::Texture> texture;
 
+	KeyFrame()
+	{
+		percent = 0.0f;
+	}
 	KeyFrame(float p, shared_ptr<sf::Texture> t)
 	{
 		percent = p;
 		texture = t;
 	};
 
+	string toString()
+	{
+		return "{" + to_string(percent) + "}";
+	}
+
 	bool operator==(const KeyFrame &rhs) const { return this->percent == rhs.percent; };
 	bool operator>(const KeyFrame &rhs) const { return this->percent > rhs.percent; };
 	bool operator<(const KeyFrame &rhs) const { return this->percent < rhs.percent; };
+	bool operator>=(const KeyFrame &rhs) const { return this->percent >= rhs.percent; };
+	bool operator<=(const KeyFrame &rhs) const { return this->percent <= rhs.percent; };
+	bool operator!=(const KeyFrame &rhs) const { return this->percent != rhs.percent; };
 };
 
 enum class AnimateMode
@@ -29,6 +100,22 @@ enum class AnimateMode
 	pause,
 	once,
 	once_restart
+};
+
+class InvalidAnimationTimings : std::exception
+{
+	const char *what() const noexcept
+	{
+		return "Invalid Animation Timings";
+	}
+};
+
+class NoKeyFrames : std::exception
+{
+	const char *what() const noexcept
+	{
+		return "No Key Frames";
+	}
 };
 
 class GameEntity : public sf::Sprite
@@ -92,22 +179,19 @@ public:
 	 *
 	 * @param p
 	 */
-	void setPeriod(float &p)
-	{
-		period_ = p;
-	}
+	void setPeriod(const float &p);
 
 	const float &getPeriod() const
 	{
 		return period_;
 	}
 
-	const float &getAnimateStart() const
+	const Percentage &getAnimateStart() const
 	{
 		return animateStart_;
 	}
 
-	const float &getAnimateEnd() const
+	const Percentage &getAnimateEnd() const
 	{
 		return animateEnd_;
 	}
@@ -119,10 +203,7 @@ public:
 	 *
 	 * @param start
 	 */
-	void setAnimateStart(float &start)
-	{
-		animateStart_ = start;
-	}
+	void setAnimateStart(const float &start);
 
 	/**
 	 * @brief Set the Animate End in percentage
@@ -131,10 +212,7 @@ public:
 	 *
 	 * @param end
 	 */
-	void setAnimateEnd(float &end)
-	{
-		animateEnd_ = end;
-	}
+	void setAnimateEnd(const float &end);
 
 	/**
 	 * @brief Returns true if the animation has completed its key frame sequence.
@@ -144,7 +222,7 @@ public:
 	 */
 	bool animateDone() const
 	{
-		return animate_;
+		return !animate_;
 	}
 
 	/**
@@ -161,7 +239,7 @@ public:
 	 *
 	 * @return const KeyFrame
 	 */
-	const KeyFrame getCurrentKeyFrame() const;
+	const KeyFrame *getCurrentKeyFrame();
 
 	/**
 	 * @brief Get the Types of the Game Entity
@@ -175,16 +253,20 @@ public:
 
 	const AnimateMode &getAnimateMode() const { return animateMode_; }
 
+	void setAnimateMode(AnimateMode mode);
+
 private:
 	unordered_set<string> types_;
 	bool animate_;
 	set<KeyFrame> keyFrames_;
 	float period_;
-	float animateStart_;
-	float animateEnd_;
-	size_t currentKeyFrame_;
+	Percentage animateStart_;
+	Percentage animateEnd_;
 	float currentTime_;
 	AnimateMode animateMode_;
 	set<KeyFrame>::iterator itr_;
 	float totalTime_;
+	set<KeyFrame>::iterator getKeyFrameAtPercent(const float &percent);
+	void updateKeyFrame();
+	void validateStartStopContraints();
 };
