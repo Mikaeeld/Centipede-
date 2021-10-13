@@ -165,14 +165,14 @@ public:
 	 *
 	 * @param kf
 	 */
-	void addKeyFrame(KeyFrame &kf) { keyFrames_.insert(kf); }
+	void addKeyFrame(const KeyFrame &kf) { keyFrames_.insert(kf); }
 
 	/**
 	 * @brief Removes any Key Frames matching the input.
 	 *
 	 * @param kf
 	 */
-	void removeKeyFrame(float percent);
+	void removeKeyFrame(const float &percent);
 
 	/**
 	 * @brief Sets the animation Period in seconds

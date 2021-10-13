@@ -8,7 +8,7 @@ Object::Object()
     shape_.setPosition(sf::Vector2f{50, 250});
     offset_ = sf::Vector2f{50, -50};
 
-    if (!shipImage_.loadFromFile("content/ship/ship1.png"))
+    if (!shipImage_.loadFromFile("content/Sprites/ship1.png"))
     {
         throw std::runtime_error("Cannot Load Ship Image");
     }

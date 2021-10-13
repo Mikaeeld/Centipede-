@@ -2,6 +2,7 @@
 
 #include "GameWindow.h"
 #include "Object.h"
+#include "Ship.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ public:
 private:
     GameWindow window_;
     Object object_;
+    Ship animateShip_;
     sf::Clock clock_;
     sf::Time elapsed_;
     float tickRate_;
