@@ -29,6 +29,8 @@ void Game::update()
         handleInput();
         window_.update();
         object_.tick(elapsed_);
+        animateShip_.tick(elapsed_);
+        animateShip_.animateTick(elapsed_);
         elapsed_ = sf::seconds(0.0);
     }
 }
@@ -45,6 +47,7 @@ void Game::render()
         {
             window_.draw(*a);
         }
+        window_.draw(animateShip_);
         break;
     }
 
@@ -77,18 +80,22 @@ void Game::handleInput()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
             object_.move(Object::Direction::Up, elapsed_);
+            animateShip_.inputMove(Ship::Direction::Up, elapsed_);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
             object_.move(Object::Direction::Down, elapsed_);
+            animateShip_.inputMove(Ship::Direction::Down, elapsed_);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
             object_.move(Object::Direction::Left, elapsed_);
+            animateShip_.inputMove(Ship::Direction::Left, elapsed_);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
             object_.move(Object::Direction::Right, elapsed_);
+            animateShip_.inputMove(Ship::Direction::Right, elapsed_);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) || sf::Keyboard::isKeyPressed(sf::Keyboard::K) || sf::Keyboard::isKeyPressed(sf::Keyboard::X) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
         {

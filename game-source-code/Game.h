@@ -4,6 +4,7 @@
 #include "Object.h"
 #include "ResourcePath.h"
 #include "TextureManager.h"
+#include "Ship.h"
 
 using namespace std;
 
@@ -30,6 +31,7 @@ public:
 private:
     GameWindow window_;
     Object object_;
+    Ship animateShip_;
     sf::Clock clock_;
     sf::Time elapsed_;
     float tickRate_;

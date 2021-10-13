@@ -54,7 +54,7 @@ void GameEntity::setAnimateMode(AnimateMode mode)
 	animate_ = animateMode_ == AnimateMode::pause ? false : true;
 }
 
-void GameEntity::removeKeyFrame(float percent)
+void GameEntity::removeKeyFrame(const float &percent)
 {
 
 	shared_ptr<sf::Texture> temp(new sf::Texture);
@@ -120,4 +120,9 @@ void GameEntity::setPeriod(const float &period)
 {
 	period_ = period;
 	// validateStartStopContraints();
+}
+
+bool GameEntity::collidesWith(GameEntity &other) const
+{
+	return getGlobalBounds().intersects(other.getGlobalBounds());
 }

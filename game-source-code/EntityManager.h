@@ -3,19 +3,15 @@
 #include "SFML/Graphics.hpp"
 #include "GameEntity.h"
 #include <functional>
+#include <map>
 using namespace std;
 
-struct Collision
-{
-	unordered_set<string> a;
-	unordered_set<string> b;
-};
+using GameEntity_ptr = shared_ptr<GameEntity>;
 
 class EntityManager
 {
 public:
 	EntityManager();
-	// ~EntityManger();
 
 	/**
 	 * @brief Calls the corresponding tick function for all animatable entities.
@@ -23,24 +19,14 @@ public:
 	 */
 	void tick(sf::Time time);
 
-	/**
-	 * @brief Checks for collisions between two entities, if one has occured then it is added to the return vector
-	 *
-	 * @return vector<Collision>
-	 */
-	vector<Collision> checkCollisions();
+	void addEntity(const GameEntity_ptr &entity);
+	void removeEntity(const GameEntity_ptr &entity);
 
-	/**
-	 * @brief Checks if any combination from the collision matches the combination of the given conditions
-	 *
-	 * @param collision
-	 * @param condition_a
-	 * @param condition_b
-	 * @return true
-	 * @return false
-	 */
-	static bool collisionMatch(Collision &collision, const string condition_a, const string condition_b);
+	const set<GameEntity_ptr> &getEntities() const
+	{
+		return entities_;
+	}
 
 private:
-	vector<GameEntity> entities_;
+	set<GameEntity_ptr> entities_;
 };
