@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "ResourcePath.h"
 
 Game::Game() : window_("Game", sf::Vector2u{800, 600}, 120), tickRate_(240.0f)
 {
@@ -7,13 +6,12 @@ Game::Game() : window_("Game", sf::Vector2u{800, 600}, 120), tickRate_(240.0f)
     state_ = GameState::splash;
     window_.toggleBorderless();
 
-    if (!splashImage_.loadFromFile(resourcePath() + "Images/splash.png"))
-    {
-        throw std::runtime_error("Cannot Load Splash Image");
-    };
-    splash_.setTexture(splashImage_);
-    float scalex = (float)window_.getSize().x / (float)splashImage_.getSize().x;
-    float scaley = (float)window_.getSize().y / (float)splashImage_.getSize().y;
+    auto exist = textureManager_.requireResource("Splash");
+    splashImage_ = textureManager_.getResource("Splash");
+
+    splash_.setTexture(*splashImage_);
+    float scalex = (float)window_.getSize().x / (float)splashImage_->getSize().x;
+    float scaley = (float)window_.getSize().y / (float)splashImage_->getSize().y;
 
     splash_.scale(scalex, scaley);
 }
