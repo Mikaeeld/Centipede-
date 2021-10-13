@@ -2,6 +2,8 @@
 
 #include "GameWindow.h"
 #include "Object.h"
+#include "ResourcePath.h"
+#include "TextureManager.h"
 
 using namespace std;
 
@@ -34,7 +36,8 @@ private:
     float frametime_;
     GameState state_;
     sf::Sprite splash_;
-    sf::Texture splashImage_;
+    sf::Texture* splashImage_;
     sf::Sprite ship_;
     sf::Texture shipImage_;
+    TextureManager textureManager_;
 };

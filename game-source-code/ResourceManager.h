@@ -3,7 +3,9 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <sstream>
+#include "ResourcePath.h"
 
 using namespace std;
 
@@ -43,7 +45,7 @@ public:
             return false;
         }
         T *resource = load(path->second);
-        if (!resources)
+        if (!resource)
         {
             return false;
         }
@@ -67,7 +69,7 @@ public:
 
     void purgeResources()
     {
-        while (resources_.begin() != resources_.end)
+        while (resources_.begin() != resources_.end())
         {
             delete resources_.begin()->second.first;
             resources_.erase(resources_.begin());
@@ -80,10 +82,10 @@ public:
     }
 
 private:
-    pair<T *unsigned int> *find(const string *id)
+    pair<T *, unsigned int> *find(const string &id)
     {
         auto iterator = resources_.find(id);
-        return (itr != resources_.end() ? &it->second : nullptr);
+        return (iterator != resources_.end() ? &iterator->second : nullptr);
     }
 
     bool unload(const string &id)
@@ -101,8 +103,8 @@ private:
     void loadPaths(const string &pathFile)
     {
         ifstream paths;
-        paths.open(pathFile);
-        if (paths.is_open)
+        paths.open(resourcePath() + pathFile);
+        if (paths.is_open())
         {
             string line;
             while (getline(paths, line))
