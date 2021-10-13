@@ -105,18 +105,8 @@ private:
         ifstream paths;
         paths.open(resourcePath() + pathFile);
         if (paths.is_open())
-        {
-            string line;
             while (getline(paths, line))
-            {
-                stringstream keyStream(line);
-                string pathName;
-                string path;
                 keyStream >> pathName;
-                keyStream >> path;
-                paths_.emplace(pathName, path);
-            }
-            paths.close();
             return;
         }
         else
