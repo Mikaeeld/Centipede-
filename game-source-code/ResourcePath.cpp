@@ -13,6 +13,6 @@ std::string resourcePath()
     CFRelease(resourcesURL);
     return strncat(path, "/", 1024);
 #else
-    return "";
+    return "Resources/";
 #endif
 }
