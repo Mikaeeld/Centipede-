@@ -25,7 +25,7 @@ Object::Object()
         throw std::runtime_error("Cannot Load Shoot Font");
     }
     shoot_.setFont(shootFont_);
-    shoot_.setCharacterSize(15);
+    shoot_.setCharacterSize(5);
 
     showShoot_ = false;
     shoot_.setPosition(10, 10);

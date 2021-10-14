@@ -11,7 +11,7 @@ public:
     sf::Texture *load(const string& path)
     {
         sf::Texture *texture = new sf::Texture();
-        if (!texture->loadFromFile(path))
+        if (!texture->loadFromFile(resourcePath() + path))
         {
             delete texture;
             texture = nullptr;
