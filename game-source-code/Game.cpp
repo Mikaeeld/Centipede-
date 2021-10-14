@@ -1,17 +1,19 @@
 #include "Game.h"
 
-Game::Game() : window_("Game", sf::Vector2u{800, 600}, 120), tickRate_(240.0f)
+Game::Game() : window_("Game", sf::Vector2u{1600, 900}, 120), tickRate_(240.0f)
 {
     frametime_ = 1.0f / tickRate_;
     state_ = GameState::splash;
     window_.toggleBorderless();
 
-    auto exist = textureManager_.requireResource("Splash");
+    if(!textureManager_.requireResource("Splash")){
+        std::__throw_runtime_error("Couldn't load Splash Screen image");
+    }
     splashImage_ = textureManager_.getResource("Splash");
 
     splash_.setTexture(*splashImage_);
-    float scalex = (float)window_.getSize().x / (float)splashImage_->getSize().x;
-    float scaley = (float)window_.getSize().y / (float)splashImage_->getSize().y;
+    float scalex = (float)window_.getView().getSize().x / (float)splashImage_->getSize().x;
+    float scaley = (float)window_.getView().getSize().y / (float)splashImage_->getSize().y;
 
     splash_.scale(scalex, scaley);
 }

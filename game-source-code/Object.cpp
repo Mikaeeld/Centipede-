@@ -9,14 +9,13 @@ Object::Object()
     shape_.setPosition(sf::Vector2f{50, 250});
     offset_ = sf::Vector2f{50, -50};
 
-    if (!shipImage_.loadFromFile(resourcePath() + "Sprites/ship1.png"))
+    if (!shipImage_.loadFromFile(resourcePath() + "Sprites/Ship/Ship.png"))
     {
         throw std::runtime_error("Cannot Load Ship Image");
     }
 
     ship_.setTexture(shipImage_);
-    ship_.setScale(5, 5);
-    ship_.setPosition(400, 300);
+    ship_.setPosition(10, 30);
 
     shoot_.setFillColor(sf::Color::Yellow);
     shoot_.setString("* Shots Fired! *");

@@ -21,6 +21,7 @@ public:
     bool isDone();
     bool isFullscreen();
     sf::Vector2u getSize();
+    sf::View getView();
 
     void toggleFullscreen();
     void toggleBorderless();
@@ -32,9 +33,12 @@ private:
     void setup(const string title, const sf::Vector2u size);
     void destroy();
     void create();
+    void fixAspectRatio();
 
     sf::RenderWindow window_;
     sf::Vector2u size_;
+    sf::View view_;
+    sf::RectangleShape viewBackground_;
     string title_;
     bool isDone_;
     bool isFullscreen_;
