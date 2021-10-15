@@ -1,5 +1,6 @@
 #include "Ship.h"
 #include "SFML/Graphics.hpp"
+#include "ResourcePath.h"
 
 Ship::Ship()
 {
@@ -25,7 +26,7 @@ Ship::Ship()
 	Texture_ptr explode17(new sf::Texture());
 	Texture_ptr explode18(new sf::Texture());
 
-	const string base = "Sprites/Ship/";
+	const string base = resourcePath() + "Sprites/Ship/";
 
 	if (!normal->loadFromFile(base + "Ship.png"))
 		throw std::runtime_error("Cannot Load Ship Image");
@@ -170,7 +171,7 @@ void Ship::inputMove(Direction direction, sf::Time time)
 		move(sf::Vector2f{distance, 0});
 		break;
 	default:
-		//none
+		// none
 		break;
 	}
 }
