@@ -132,22 +132,24 @@ void Ship::handleCollision(entityType type, sf::FloatRect collisionRect)
 	{
 	case entityType::Mushroom:
 	{
-		if (collisionRect.left >= this->getPosition().x)
-		{
-			this->move(sf::Vector2f{-collisionRect.width, 0.0f});
-		}
-		if (collisionRect.left < this->getPosition().x)
-		{
-			this->move(sf::Vector2f{collisionRect.width, 0.0f});
-		}
-		if (collisionRect.top >= this->getPosition().y)
-		{
-			this->move(sf::Vector2f{0.0f, -collisionRect.height});
-		}
-		if (collisionRect.top < this->getPosition().y)
-		{
-			this->move(sf::Vector2f{0.0f, collisionRect.height});
-		}
+	switch (direction_)
+	{
+	case Direction::Down:
+		this->move(sf::Vector2f(0.0f, -collisionRect.height));
+		break;
+	case Direction::Up:
+		this->move(sf::Vector2f(0.0f, collisionRect.height));
+		break;
+	case Direction::Left:
+		this->move(sf::Vector2f(collisionRect.width, 0.0f));
+		break;
+	case Direction::Right:
+		this->move(sf::Vector2f(-collisionRect.width, 0.0f));
+		break;
+	default:
+		// none
+		break;
+	}
 	}
 	default:
 	{
@@ -163,15 +165,19 @@ void Ship::inputMove(Direction direction, sf::Time time)
 	{
 	case Direction::Down:
 		move(sf::Vector2f{0, distance});
+		direction_ = Direction::Down;
 		break;
 	case Direction::Up:
 		move(sf::Vector2f{0, -distance});
+		direction_ = Direction::Up;
 		break;
 	case Direction::Left:
 		move(sf::Vector2f{-distance, 0});
+		direction_ = Direction::Left;
 		break;
 	case Direction::Right:
 		move(sf::Vector2f{distance, 0});
+		direction_ = Direction::Right;
 		break;
 	default:
 		// none

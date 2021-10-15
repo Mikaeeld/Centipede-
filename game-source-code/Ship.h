@@ -36,4 +36,5 @@ public:
 private:
 	void handleInput(sf::Time time);
 	void checkBounds();
+	Direction direction_;
 };
