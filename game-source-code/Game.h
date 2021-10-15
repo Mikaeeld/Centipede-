@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GameWindow.h"
-#include "Object.h"
 #include "ResourcePath.h"
 #include "TextureManager.h"
 #include "Ship.h"
@@ -31,8 +30,6 @@ public:
 
 private:
     GameWindow window_;
-    Object object_;
-    Ship animateShip_;
     sf::Clock clock_;
     sf::Time elapsed_;
     float tickRate_;
@@ -40,8 +37,6 @@ private:
     GameState state_;
     sf::Sprite splash_;
     sf::Texture* splashImage_;
-    sf::Sprite ship_;
-    sf::Texture shipImage_;
     TextureManager textureManager_;
     EntityManager entityManager_;
     

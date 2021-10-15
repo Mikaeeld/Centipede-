@@ -21,6 +21,7 @@ public:
 	};
 	void inputMove(Direction direction, sf::Time time);
 	void tick(sf::Time time);
+	entityType getType();
 
 private:
 	void handleInput(sf::Time time);

@@ -125,6 +125,17 @@ public:
 	GameEntity(float period, float phase);
 	~GameEntity() {}
 
+	enum class entityType
+	{
+		Base,
+		Ship
+	};
+
+	virtual entityType getType()
+	{
+		return entityType::Base;
+	}
+
 	/**
 	 * @brief This method is defined when inherited
 	 *
@@ -254,6 +265,9 @@ public:
 	const AnimateMode &getAnimateMode() const { return animateMode_; }
 
 	void setAnimateMode(AnimateMode mode);
+
+protected:
+	bool originAtCenter_ = true;
 
 private:
 	unordered_set<string> types_;

@@ -58,8 +58,6 @@ Ship::Ship()
 
 	if (!explode8->loadFromFile(base + "ShipDying8.png"))
 		throw std::runtime_error("Cannot Load Ship Image");
-	if (!fire->loadFromFile(base + "ShipShooting.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
 
 	if (!explode9->loadFromFile(base + "ShipDying9.png"))
 		throw std::runtime_error("Cannot Load Ship Image");
@@ -142,6 +140,10 @@ void Ship::handleInput(sf::Time time)
 	{
 		inputMove(Ship::Direction::Right, time);
 	}
+}
+
+GameEntity::entityType Ship::getType() {
+	return GameEntity::entityType::Ship;
 }
 
 void Ship::inputMove(Direction direction, sf::Time time)

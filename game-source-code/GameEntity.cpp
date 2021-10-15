@@ -92,7 +92,10 @@ void GameEntity::updateKeyFrame()
 	{
 		auto current = GameEntity::getCurrentKeyFrame();
 		GameEntity::setTexture(*current->texture, true);
-		GameEntity::setOrigin(sf::Vector2f(current->texture->getSize().x/2, current->texture->getSize().y/2));
+		if (originAtCenter_)
+		{
+			GameEntity::setOrigin(sf::Vector2f(current->texture->getSize().x / 2, current->texture->getSize().y / 2));
+		}
 	}
 }
 

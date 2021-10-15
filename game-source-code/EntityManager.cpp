@@ -47,21 +47,27 @@ void EntityManager::tick(sf::Time time)
 // 	return types.find(condition) != types.end();
 // }
 
-GameEntity_ptr EntityManager::addEntity(int entity)
+GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 {
-	switch (entity)
+	switch (type)
 	{
-	case 1:
+	case GameEntity::entityType::Ship:
 	{
-		auto ship = Ship();
-		auto out = std::make_shared<Ship>(ship);
-		entities_.emplace(out);
-		return out;
+		return std::make_shared<Ship>(Ship());
 	}
-	default:{
+	default:
+	{
 		return nullptr;
 	}
 	}
+}
+
+int EntityManager::addEntity(GameEntity::entityType type, sf::Vector2f location)
+{
+	auto entity = entityFactory(type);
+	entities_.emplace(entity);
+	entity->setPosition(location);
+	return 1;
 }
 
 void EntityManager::removeEntity(const GameEntity_ptr &entity)
