@@ -20,6 +20,8 @@ public:
 		Right
 	};
 	void inputMove(Direction direction, sf::Time time);
+	void tick(sf::Time time);
 
 private:
+	void handleInput(sf::Time time);
 };
