@@ -36,8 +36,8 @@ private:
     float frametime_;
     GameState state_;
     sf::Sprite splash_;
-    sf::Texture* splashImage_;
+    sf::Texture *splashImage_;
     TextureManager textureManager_;
     EntityManager entityManager_;
-    
+    sf::RectangleShape playerArea_;
 };

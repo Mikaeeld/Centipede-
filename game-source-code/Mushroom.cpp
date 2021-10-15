@@ -26,11 +26,12 @@ Mushroom::Mushroom()
         throw std::runtime_error("Cannot Load Ship Image");
 
     this->setPeriod(3.0);
-    this->setAnimateMode(AnimateMode::loop);
+
     this->addKeyFrame(KeyFrame(0.0, normal));
     this->addKeyFrame(KeyFrame(25.0, break1));
     this->addKeyFrame(KeyFrame(50.0, break2));
     this->addKeyFrame(KeyFrame(75.0, break3));
+    this->setAnimateMode(AnimateMode::loop);
 }
 
 GameEntity::entityType Mushroom::getType()

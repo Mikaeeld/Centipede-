@@ -14,7 +14,6 @@ using GameEntity_ptr = shared_ptr<GameEntity>;
 class EntityManager
 {
 public:
-
 	/**
 	 * @brief Calls the corresponding tick function for all animatable entities.
 	 *
@@ -23,6 +22,7 @@ public:
 
 	GameEntity_ptr entityFactory(GameEntity::entityType type);
 	int addEntity(GameEntity::entityType type, sf::Vector2f location = sf::Vector2f{0.0f, 0.0f});
+	int addEntity(const GameEntity_ptr &entity);
 	void removeEntity(const GameEntity_ptr &entity);
 
 	const set<GameEntity_ptr> &getEntities() const

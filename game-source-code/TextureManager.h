@@ -8,7 +8,7 @@ class TextureManager : public ResourceManager<TextureManager, sf::Texture>
 public:
     TextureManager() : ResourceManager("textures.cfg") {}
 
-    sf::Texture *load(const string& path)
+    sf::Texture *load(const string &path)
     {
         sf::Texture *texture = new sf::Texture();
         if (!texture->loadFromFile(resourcePath() + path))

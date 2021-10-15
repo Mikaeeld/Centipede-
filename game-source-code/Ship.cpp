@@ -4,27 +4,10 @@
 
 Ship::Ship()
 {
+	originAtCenter_ = true;
 	// Initialize Key Frames
 	Texture_ptr normal(new sf::Texture());
 	Texture_ptr fire(new sf::Texture());
-	Texture_ptr explode1(new sf::Texture());
-	Texture_ptr explode2(new sf::Texture());
-	Texture_ptr explode3(new sf::Texture());
-	Texture_ptr explode4(new sf::Texture());
-	Texture_ptr explode5(new sf::Texture());
-	Texture_ptr explode6(new sf::Texture());
-	Texture_ptr explode7(new sf::Texture());
-	Texture_ptr explode8(new sf::Texture());
-	Texture_ptr explode9(new sf::Texture());
-	Texture_ptr explode10(new sf::Texture());
-	Texture_ptr explode11(new sf::Texture());
-	Texture_ptr explode12(new sf::Texture());
-	Texture_ptr explode13(new sf::Texture());
-	Texture_ptr explode14(new sf::Texture());
-	Texture_ptr explode15(new sf::Texture());
-	Texture_ptr explode16(new sf::Texture());
-	Texture_ptr explode17(new sf::Texture());
-	Texture_ptr explode18(new sf::Texture());
 
 	const string base = resourcePath() + "Sprites/Ship/";
 
@@ -34,93 +17,49 @@ Ship::Ship()
 	if (!fire->loadFromFile(base + "ShipShooting.png"))
 		throw std::runtime_error("Cannot Load Ship Image");
 
-	if (!explode1->loadFromFile(base + "ShipDying1.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode2->loadFromFile(base + "ShipDying2.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode3->loadFromFile(base + "ShipDying3.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode4->loadFromFile(base + "ShipDying4.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-	if (!fire->loadFromFile(base + "ShipShooting.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode5->loadFromFile(base + "ShipDying5.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode6->loadFromFile(base + "ShipDying6.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode7->loadFromFile(base + "ShipDying7.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode8->loadFromFile(base + "ShipDying8.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode9->loadFromFile(base + "ShipDying9.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode10->loadFromFile(base + "ShipDying10.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode11->loadFromFile(base + "ShipDying11.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode12->loadFromFile(base + "ShipDying12.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-	if (!fire->loadFromFile(base + "ShipShooting.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode13->loadFromFile(base + "ShipDying13.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode14->loadFromFile(base + "ShipDying14.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode15->loadFromFile(base + "ShipDying15.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode16->loadFromFile(base + "ShipDying16.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-	if (!fire->loadFromFile(base + "ShipShooting.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode17->loadFromFile(base + "ShipDying17.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	if (!explode18->loadFromFile(base + "ShipDying18.png"))
-		throw std::runtime_error("Cannot Load Ship Image");
-
-	this->setPeriod(2.0);
-	this->setAnimateMode(AnimateMode::loop);
 	this->addKeyFrame(KeyFrame{0.0, normal});
-	this->addKeyFrame(KeyFrame{10.0, fire});
-	this->addKeyFrame(KeyFrame{15, explode1});
-	this->addKeyFrame(KeyFrame{20, explode2});
-	this->addKeyFrame(KeyFrame{25, explode3});
-	this->addKeyFrame(KeyFrame{30, explode4});
-	this->addKeyFrame(KeyFrame{35, explode5});
-	this->addKeyFrame(KeyFrame{40, explode6});
-	this->addKeyFrame(KeyFrame{45, explode7});
-	this->addKeyFrame(KeyFrame{50, explode8});
-	this->addKeyFrame(KeyFrame{55, explode9});
-	this->addKeyFrame(KeyFrame{60, explode10});
-	this->addKeyFrame(KeyFrame{65, explode11});
-	this->addKeyFrame(KeyFrame{70, explode12});
-	this->addKeyFrame(KeyFrame{75, explode13});
-	this->addKeyFrame(KeyFrame{80, explode14});
-	this->addKeyFrame(KeyFrame{85, explode15});
-	this->addKeyFrame(KeyFrame{90, explode16});
-	this->addKeyFrame(KeyFrame{95, explode17});
-	this->addKeyFrame(KeyFrame{100, explode18});
+	this->addKeyFrame(KeyFrame{1.0, fire});
+
+	for (int i = 1; i <= 18; i++)
+	{
+		Texture_ptr explodeFrame(new sf::Texture);
+
+		if (!explodeFrame->loadFromFile(base + "ShipDying" + to_string(i) + ".png"))
+			throw std::runtime_error("Cannot Load Ship Image");
+
+		this->addKeyFrame(KeyFrame{15.0f + ((i - 1) * 5.0f), explodeFrame});
+	}
+
+	this->setPeriod(1.5f);
+	this->setAnimateMode(AnimateMode::loop);
+
+	this->setAnimateMode(AnimateMode::pause);
 }
 
 void Ship::tick(sf::Time time)
 {
 	handleInput(time);
+	checkBounds();
+}
+
+void Ship::fire()
+{
+	this->setAnimateStart(0.0f);
+	this->setAnimateEnd(14.0f);
+	this->setAnimateMode(AnimateMode::once_restart);
+}
+
+void Ship::normal()
+{
+	this->setAnimateStart(0.0f);
+	this->setAnimateMode(AnimateMode::pause);
+}
+
+void Ship::explode()
+{
+	this->setAnimateEnd(100.0f);
+	this->setAnimateStart(15.0f);
+	this->setAnimateMode(AnimateMode::once);
 }
 
 void Ship::handleInput(sf::Time time)
@@ -141,9 +80,44 @@ void Ship::handleInput(sf::Time time)
 	{
 		inputMove(Ship::Direction::Right, time);
 	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::J))
 	{
 		createQueue_.emplace(pair<GameEntity::entityType, sf::Vector2f>{GameEntity::entityType::Mushroom, sf::Vector2f{getPosition().x, getPosition().y}});
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) || sf::Keyboard::isKeyPressed(sf::Keyboard::K) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+	{
+		fire();
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		explode();
+	}
+}
+
+void Ship::checkBounds()
+{
+	auto current = this->getPosition();
+
+	if (current.x > MAX_X)
+	{
+		this->setPosition(MAX_X, current.y);
+	}
+	else if (current.x < MIN_X)
+	{
+		this->setPosition(MIN_X, current.y);
+	}
+	current = this->getPosition();
+
+	if (current.y > MAX_Y)
+	{
+		this->setPosition(current.x, MAX_Y);
+	}
+	else if (current.y < MIN_Y)
+	{
+		this->setPosition(current.x, MIN_Y);
 	}
 }
 
@@ -155,7 +129,7 @@ GameEntity::entityType Ship::getType()
 void Ship::inputMove(Direction direction, sf::Time time)
 {
 	auto elapsed = time.asSeconds();
-	float distance = elapsed * 200;
+	float distance = elapsed * 150;
 	switch (direction)
 	{
 	case Direction::Down:
