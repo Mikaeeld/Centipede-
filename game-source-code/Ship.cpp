@@ -11,24 +11,24 @@ Ship::Ship()
 	Texture_ptr explode3(new sf::Texture());
 	Texture_ptr explode4(new sf::Texture());
 
-	const string base = "content/Sprites/";
+	const string base = "Sprites/Ship/";
 
-	if (!normal->loadFromFile(base + "ship_normal.png"))
+	if (!normal->loadFromFile(base + "Ship.png"))
 		throw std::runtime_error("Cannot Load Ship Image");
 
-	if (!fire->loadFromFile(base + "ship_fire.png"))
+	if (!fire->loadFromFile(base + "ShipShooting.png"))
 		throw std::runtime_error("Cannot Load Ship Image");
 
-	if (!explode1->loadFromFile(base + "ship_explode1.png"))
+	if (!explode1->loadFromFile(base + "ShipDying1.png"))
 		throw std::runtime_error("Cannot Load Ship Image");
 
-	if (!explode2->loadFromFile(base + "ship_explode2.png"))
+	if (!explode2->loadFromFile(base + "ShipDying2.png"))
 		throw std::runtime_error("Cannot Load Ship Image");
 
-	if (!explode3->loadFromFile(base + "ship_explode3.png"))
+	if (!explode3->loadFromFile(base + "ShipDying3.png"))
 		throw std::runtime_error("Cannot Load Ship Image");
 
-	if (!explode4->loadFromFile(base + "ship_explode4.png"))
+	if (!explode4->loadFromFile(base + "ShipDying4.png"))
 		throw std::runtime_error("Cannot Load Ship Image");
 
 	this->setPeriod(1.0);
