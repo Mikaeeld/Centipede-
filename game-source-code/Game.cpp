@@ -6,7 +6,7 @@ Game::Game() : window_("Game", sf::Vector2u{960, 900}, 60), tickRate_(240.0f)
     state_ = GameState::splash;
     window_.toggleBorderless();
 
-    splashImage_ = textureManager_.getResource("Splashdd");
+    splashImage_ = textureManager_.getResource("Splash");
     if (splashImage_ == nullptr)
     {
         std::__throw_runtime_error("Couldn't load Splash image");
