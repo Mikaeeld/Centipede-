@@ -17,6 +17,8 @@ Game::Game() : window_("Game", sf::Vector2u{960, 900}, 60), tickRate_(240.0f)
     float scaley = (float)window_.getView().getSize().y / (float)splashImage_->getSize().y;
 
     splash_.scale(scalex, scaley);
+
+    entityManager_.addEntity(1);
 }
 
 Game::~Game()
@@ -30,6 +32,7 @@ void Game::update()
         handleInput();
         window_.update();
         object_.tick(elapsed_);
+        entityManager_.tick(elapsed_);
         animateShip_.tick(elapsed_);
         animateShip_.animateTick(elapsed_);
         elapsed_ = sf::seconds(0.0);
@@ -48,7 +51,10 @@ void Game::render()
         {
             window_.draw(*a);
         }
-        window_.draw(animateShip_);
+ //       window_.draw(animateShip_);
+        for (auto a : entityManager_.getEntities()){
+            window_.draw(*a);
+        }
         break;
     }
 

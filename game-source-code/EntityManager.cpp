@@ -47,9 +47,21 @@ void EntityManager::tick(sf::Time time)
 // 	return types.find(condition) != types.end();
 // }
 
-void EntityManager::addEntity(const GameEntity_ptr &entity)
+GameEntity_ptr EntityManager::addEntity(int entity)
 {
-	entities_.insert(entity);
+	switch (entity)
+	{
+	case 1:
+	{
+		auto ship = Ship();
+		auto out = std::make_shared<Ship>(ship);
+		entities_.emplace(out);
+		return out;
+	}
+	default:{
+		return nullptr;
+	}
+	}
 }
 
 void EntityManager::removeEntity(const GameEntity_ptr &entity)

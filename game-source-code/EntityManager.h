@@ -1,9 +1,11 @@
 #pragma once
 
-#include "SFML/Graphics.hpp"
-#include "GameEntity.h"
 #include <functional>
 #include <map>
+#include "SFML/Graphics.hpp"
+#include "GameEntity.h"
+#include "Ship.h"
+
 using namespace std;
 
 using GameEntity_ptr = shared_ptr<GameEntity>;
@@ -11,7 +13,6 @@ using GameEntity_ptr = shared_ptr<GameEntity>;
 class EntityManager
 {
 public:
-	EntityManager();
 
 	/**
 	 * @brief Calls the corresponding tick function for all animatable entities.
@@ -19,7 +20,7 @@ public:
 	 */
 	void tick(sf::Time time);
 
-	void addEntity(const GameEntity_ptr &entity);
+	GameEntity_ptr addEntity(int entity);
 	void removeEntity(const GameEntity_ptr &entity);
 
 	const set<GameEntity_ptr> &getEntities() const

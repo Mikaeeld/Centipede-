@@ -5,6 +5,7 @@
 #include "ResourcePath.h"
 #include "TextureManager.h"
 #include "Ship.h"
+#include "EntityManager.h"
 
 using namespace std;
 
@@ -42,4 +43,6 @@ private:
     sf::Sprite ship_;
     sf::Texture shipImage_;
     TextureManager textureManager_;
+    EntityManager entityManager_;
+    
 };
