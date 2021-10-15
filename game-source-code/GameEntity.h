@@ -248,6 +248,10 @@ public:
 	 */
 	bool collidesWith(GameEntity &other) const;
 
+	virtual void handleCollision(entityType type, sf::FloatRect collisionRect){
+		
+	}
+
 	/**
 	 * @brief Get the Current Key Frame
 	 *

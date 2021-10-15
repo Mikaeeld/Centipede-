@@ -151,6 +151,35 @@ GameEntity::entityType Ship::getType()
 	return GameEntity::entityType::Ship;
 }
 
+void Ship::handleCollision(entityType type, sf::FloatRect collisionRect)
+{
+	switch (type)
+	{
+	case entityType::Mushroom:
+	{
+		if (collisionRect.left >= this->getPosition().x)
+		{
+			this->move(sf::Vector2f{-collisionRect.width, 0.0f});
+		}
+		if (collisionRect.left < this->getPosition().x)
+		{
+			this->move(sf::Vector2f{collisionRect.width, 0.0f});
+		}
+		if (collisionRect.top >= this->getPosition().y)
+		{
+			this->move(sf::Vector2f{0.0f, -collisionRect.height});
+		}
+		if (collisionRect.top < this->getPosition().y)
+		{
+			this->move(sf::Vector2f{0.0f, collisionRect.height});
+		}
+	}
+	default:
+	{
+	}
+	}
+}
+
 void Ship::inputMove(Direction direction, sf::Time time)
 {
 	auto elapsed = time.asSeconds();

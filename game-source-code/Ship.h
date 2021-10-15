@@ -21,6 +21,7 @@ public:
 	};
 	void inputMove(Direction direction, sf::Time time);
 	void tick(sf::Time time);
+	void handleCollision(entityType type, sf::FloatRect collisionRect);
 	entityType getType();
 
 private:
