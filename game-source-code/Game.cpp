@@ -18,8 +18,15 @@ Game::Game() : window_("Game", sf::Vector2u{960, 900}, 60), tickRate_(240.0f)
 
     splash_.scale(scalex, scaley);
 
-    entityManager_.addEntity(GameEntity::entityType::Ship, sf::Vector2f{120.0f, 150.0f});
-    entityManager_.addEntity(GameEntity::entityType::Mushroom, sf::Vector2f{140.0f, 150.0f});
+    entityManager_.addEntity(GameEntity::entityType::Mushroom, sf::Vector2f{120.0f, 150.0f});
+
+    playerArea_ = sf::RectangleShape(sf::Vector2f{256.0f, 40.0f});
+    const sf::Color gray(100, 100, 100);
+    playerArea_.setFillColor(gray);
+    playerArea_.setPosition(0.0f, 200.0f);
+
+    // entityManager_.addEntity(GameEntity::entityType::Ship, sf::Vector2f{120.0f, 150.0f});
+    entityManager_.addEntity(GameEntity::entityType::Ship);
 }
 
 Game::~Game()
@@ -44,7 +51,7 @@ void Game::render()
     {
     case GameState::play:
     {
-
+        window_.draw(playerArea_);
         for (auto i : entityManager_.getEntities())
         {
             window_.draw(*i);
@@ -59,7 +66,7 @@ void Game::render()
     }
 
     default:
-        //none
+        // none
         break;
     }
 
@@ -99,7 +106,7 @@ void Game::handleInput()
     }
 
     default:
-        //none
+        // none
         break;
     }
 }

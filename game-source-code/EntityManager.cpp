@@ -85,6 +85,12 @@ int EntityManager::addEntity(GameEntity::entityType type, sf::Vector2f location)
 	return 1;
 }
 
+int EntityManager::addEntity(const GameEntity_ptr &entity)
+{
+	entities_.insert(entity);
+	return 1;
+}
+
 void EntityManager::removeEntity(const GameEntity_ptr &entity)
 {
 	auto it = entities_.find(entity);
