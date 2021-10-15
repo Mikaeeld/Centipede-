@@ -9,6 +9,16 @@ void EntityManager::tick(sf::Time time)
 			entity->animateTick(time);
 		}
 		entity->tick(time);
+		while (!entity->createQueue_.empty())
+		{
+			auto toCreate = entity->createQueue_.front();
+			entity->createQueue_.pop();
+			addEntity(toCreate.first, toCreate.second);
+		}
+		if (entity->toDelete_)
+		{
+			entities_.erase(entity);
+		}
 	}
 }
 
@@ -54,6 +64,10 @@ GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 	case GameEntity::entityType::Ship:
 	{
 		return std::make_shared<Ship>(Ship());
+	}
+	case GameEntity::entityType::Mushroom:
+	{
+		return std::make_shared<Mushroom>(Mushroom());
 	}
 	default:
 	{

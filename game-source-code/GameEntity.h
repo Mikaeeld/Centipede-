@@ -2,6 +2,7 @@
 #include "SFML/Graphics.hpp"
 #include <functional>
 #include <unordered_set>
+#include <queue>
 #include <set>
 #include <memory>
 #include <math.h>
@@ -128,7 +129,9 @@ public:
 	enum class entityType
 	{
 		Base,
-		Ship
+		Ship,
+		Mushroom
+
 	};
 
 	virtual entityType getType()
@@ -265,6 +268,8 @@ public:
 	const AnimateMode &getAnimateMode() const { return animateMode_; }
 
 	void setAnimateMode(AnimateMode mode);
+	bool toDelete_ = false;
+	queue<pair<entityType, sf::Vector2f>> createQueue_;
 
 protected:
 	bool originAtCenter_ = true;

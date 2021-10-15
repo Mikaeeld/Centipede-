@@ -5,6 +5,7 @@
 #include "SFML/Graphics.hpp"
 #include "GameEntity.h"
 #include "Ship.h"
+#include "Mushroom.h"
 
 using namespace std;
 

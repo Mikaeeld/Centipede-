@@ -140,9 +140,14 @@ void Ship::handleInput(sf::Time time)
 	{
 		inputMove(Ship::Direction::Right, time);
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+	{
+		createQueue_.emplace(pair<GameEntity::entityType, sf::Vector2f>{GameEntity::entityType::Mushroom, sf::Vector2f{getPosition().x, getPosition().y}});
+	}
 }
 
-GameEntity::entityType Ship::getType() {
+GameEntity::entityType Ship::getType()
+{
 	return GameEntity::entityType::Ship;
 }
 
