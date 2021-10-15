@@ -40,7 +40,6 @@ Ship::Ship()
 	this->addKeyFrame(KeyFrame{70, explode3});
 	this->addKeyFrame(KeyFrame{80, explode4});
 
-	this->setScale(5, 5);
 }
 
 void Ship::inputMove(Direction direction, sf::Time time)
@@ -51,18 +50,14 @@ void Ship::inputMove(Direction direction, sf::Time time)
 	{
 	case Direction::Down:
 		move(sf::Vector2f{0, distance});
-		move(sf::Vector2f{0, distance});
 		break;
 	case Direction::Up:
-		move(sf::Vector2f{0, -distance});
 		move(sf::Vector2f{0, -distance});
 		break;
 	case Direction::Left:
 		move(sf::Vector2f{-distance, 0});
-		move(sf::Vector2f{-distance, 0});
 		break;
 	case Direction::Right:
-		move(sf::Vector2f{distance, 0});
 		move(sf::Vector2f{distance, 0});
 		break;
 	default:

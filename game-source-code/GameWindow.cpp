@@ -84,6 +84,7 @@ void GameWindow::fixAspectRatio()
         auto xFactor = (aspectRatioWindow - aspectRatioView) / aspectRatioWindow;
         view_.setViewport(sf::FloatRect(xFactor / 2, 0.0f, 1 - xFactor, 1.0f));
     }
+    //Otherwise scale to fit horizontal dimension
     else
     {
         auto yFactor = (aspectRatioView - aspectRatioWindow) / aspectRatioView;
