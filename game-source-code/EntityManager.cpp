@@ -100,21 +100,20 @@ void EntityManager::removeEntity(const GameEntity_ptr &entity)
 	}
 }
 
-//This can be smartened up by getting all collisions, sorting them byrectanlge area in a queue and handling them
+// This can be smartened up by getting all collisions, sorting them byrectanlge area in a queue and handling them
 void EntityManager::checkCollisions()
 {
-	for (auto i : entities_)
+	for (auto i = entities_.begin(); i != entities_.end(); ++i)
 	{
-		for (auto j : entities_)
+		auto j = i;
+		j++;
+		for (; j != entities_.end(); ++j)
 		{
-			if (i != j)
+			sf::FloatRect rectangle;
+			if ((*i)->collidesWith(**j, rectangle))
 			{
-				sf::FloatRect rectangle;
-				if (i->getGlobalBounds().intersects(j->getGlobalBounds(), rectangle))
-				{
-					i->handleCollision(j->getType(), rectangle);
-					j->handleCollision(i->getType(), rectangle);
-				}
+				(*i)->handleCollision((*j)->getType(), rectangle);
+				(*j)->handleCollision((*i)->getType(), rectangle);
 			}
 		}
 	}

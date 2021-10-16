@@ -133,7 +133,7 @@ void GameEntity::setPeriod(const float &period)
 	// validateStartStopContraints();
 }
 
-bool GameEntity::collidesWith(GameEntity &other) const
+bool GameEntity::collidesWith(const GameEntity &other, sf::FloatRect &rect) const
 {
-	return getGlobalBounds().intersects(other.getGlobalBounds());
+	return getGlobalBounds().intersects(other.getGlobalBounds(), rect);
 }

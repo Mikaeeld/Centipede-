@@ -239,17 +239,10 @@ public:
 		return !animate_;
 	}
 
-	/**
-	 * @brief Returns true if this object colides with 'other'.
-	 *
-	 * @param other
-	 * @return true
-	 * @return false
-	 */
-	bool collidesWith(GameEntity &other) const;
+	bool collidesWith(const GameEntity &other, sf::FloatRect &rect) const;
 
-	virtual void handleCollision(entityType type, sf::FloatRect collisionRect){
-		
+	virtual void handleCollision(entityType type, sf::FloatRect collisionRect)
+	{
 	}
 
 	/**

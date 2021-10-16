@@ -132,24 +132,24 @@ void Ship::handleCollision(entityType type, sf::FloatRect collisionRect)
 	{
 	case entityType::Mushroom:
 	{
-	switch (direction_)
-	{
-	case Direction::Down:
-		this->move(sf::Vector2f(0.0f, -collisionRect.height));
-		break;
-	case Direction::Up:
-		this->move(sf::Vector2f(0.0f, collisionRect.height));
-		break;
-	case Direction::Left:
-		this->move(sf::Vector2f(collisionRect.width, 0.0f));
-		break;
-	case Direction::Right:
-		this->move(sf::Vector2f(-collisionRect.width, 0.0f));
-		break;
-	default:
-		// none
-		break;
-	}
+		switch (direction_)
+		{
+		case Direction::Down:
+			this->move(sf::Vector2f(0.0f, -collisionRect.height));
+			break;
+		case Direction::Up:
+			this->move(sf::Vector2f(0.0f, collisionRect.height));
+			break;
+		case Direction::Left:
+			this->move(sf::Vector2f(collisionRect.width, 0.0f));
+			break;
+		case Direction::Right:
+			this->move(sf::Vector2f(-collisionRect.width, 0.0f));
+			break;
+		default:
+			// none
+			break;
+		}
 	}
 	default:
 	{
