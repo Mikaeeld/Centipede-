@@ -3,7 +3,7 @@
 Game::Game() : window_("Game", sf::Vector2u{960, 900}, 60), tickRate_(240.0f)
 {
     frametime_ = 1.0f / tickRate_;
-    state_ = GameState::splash;
+    state_ = GameScene::splash;
     window_.toggleBorderless();
 
     splashImage_ = textureManager_.getResource("Splash");
@@ -18,15 +18,17 @@ Game::Game() : window_("Game", sf::Vector2u{960, 900}, 60), tickRate_(240.0f)
 
     splash_.scale(scalex, scaley);
 
-    entityManager_.addEntity(GameEntity::entityType::Mushroom, sf::Vector2f{120.0f, 150.0f});
+    playState_ = PlayState();
 
-    playerArea_ = sf::RectangleShape(sf::Vector2f{256.0f, 40.0f});
-    const sf::Color gray(100, 100, 100);
-    playerArea_.setFillColor(gray);
-    playerArea_.setPosition(0.0f, 200.0f);
+    // entityManager_.addEntity(GameEntity::entityType::Mushroom, sf::Vector2f{120.0f, 150.0f});
 
-    // entityManager_.addEntity(GameEntity::entityType::Ship, sf::Vector2f{120.0f, 150.0f});
-    entityManager_.addEntity(GameEntity::entityType::Ship);
+    // playerArea_ = sf::RectangleShape(sf::Vector2f{256.0f, 40.0f});
+    // const sf::Color gray(100, 100, 100);
+    // playerArea_.setFillColor(gray);
+    // playerArea_.setPosition(0.0f, 200.0f);
+
+    // // entityManager_.addEntity(GameEntity::entityType::Ship, sf::Vector2f{120.0f, 150.0f});
+    // entityManager_.addEntity(GameEntity::entityType::Ship);
 }
 
 Game::~Game()
@@ -39,7 +41,8 @@ void Game::update()
     {
         handleInput();
         window_.update();
-        entityManager_.tick(elapsed_);
+        // entityManager_.tick(elapsed_);
+        playState_.update(elapsed_);
         elapsed_ = sf::seconds(0.0);
     }
 }
@@ -49,17 +52,21 @@ void Game::render()
     window_.beginDraw();
     switch (state_)
     {
-    case GameState::play:
+    case GameScene::play:
     {
-        window_.draw(playerArea_);
-        for (auto i : entityManager_.getEntities())
+        // window_.draw(playerArea_);
+        // for (auto i : entityManager_.getEntities())
+        // {
+        //     window_.draw(*i);
+        // }
+        for (auto &i : playState_.getDrawable())
         {
             window_.draw(*i);
         }
         break;
     }
 
-    case GameState::splash:
+    case GameScene::splash:
     {
         window_.draw(splash_);
         break;
@@ -83,7 +90,7 @@ void Game::handleInput()
 
     switch (state_)
     {
-    case GameState::play:
+    case GameScene::play:
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
@@ -92,11 +99,11 @@ void Game::handleInput()
         break;
     }
 
-    case GameState::splash:
+    case GameScene::splash:
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
-            state_ = GameState::play;
+            state_ = GameScene::play;
             window_.toggleBorderless();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))

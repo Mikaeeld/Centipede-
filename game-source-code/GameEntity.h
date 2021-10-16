@@ -130,8 +130,8 @@ public:
 	{
 		Base,
 		Ship,
-		Mushroom
-
+		Mushroom,
+		Bullet
 	};
 
 	virtual entityType getType()
@@ -145,7 +145,7 @@ public:
 	 * Purpose is to allow GameEntity to update variables, physics ect.
 	 * @param time
 	 */
-	virtual void tick(sf::Time time)
+	virtual void tick(const sf::Time &time)
 	{ /* default */
 		totalTime_ += time.asSeconds();
 	}

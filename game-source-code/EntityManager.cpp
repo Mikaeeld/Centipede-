@@ -1,7 +1,9 @@
 #include "EntityManager.h"
 
-void EntityManager::tick(sf::Time time)
+#include <iostream>
+void EntityManager::tick(const sf::Time &time)
 {
+
 	for (auto &entity : entities_)
 	{
 		if (entity->animate())
@@ -9,7 +11,7 @@ void EntityManager::tick(sf::Time time)
 			entity->animateTick(time);
 		}
 		entity->tick(time);
-		checkCollisions();
+		// checkCollisions();
 		while (!entity->createQueue_.empty())
 		{
 			auto toCreate = entity->createQueue_.front();
@@ -18,7 +20,7 @@ void EntityManager::tick(sf::Time time)
 		}
 		if (entity->toDelete_)
 		{
-			entities_.erase(entity);
+			entities_.erase(find(entities_.begin(), entities_.end(), entity));
 		}
 	}
 }
@@ -64,15 +66,21 @@ GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 	{
 	case GameEntity::entityType::Ship:
 	{
-		return std::make_shared<Ship>(Ship());
+		return shared_ptr<Ship>(new Ship());
 	}
+
 	case GameEntity::entityType::Mushroom:
 	{
-		return std::make_shared<Mushroom>(Mushroom());
+		return shared_ptr<Mushroom>(new Mushroom());
+	}
+
+	case GameEntity::entityType::Bullet:
+	{
+		return shared_ptr<Bullet>(new Bullet());
 	}
 	default:
 	{
-		return nullptr;
+		throw runtime_error("Invalid Entity Type in Factory");
 	}
 	}
 }
@@ -80,20 +88,21 @@ GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 int EntityManager::addEntity(GameEntity::entityType type, sf::Vector2f location)
 {
 	auto entity = entityFactory(type);
-	entities_.emplace(entity);
+	addEntity(entity);
 	entity->setPosition(location);
 	return 1;
 }
 
 int EntityManager::addEntity(const GameEntity_ptr &entity)
 {
+
 	entities_.insert(entity);
 	return 1;
 }
 
 void EntityManager::removeEntity(const GameEntity_ptr &entity)
 {
-	auto it = entities_.find(entity);
+	auto it = find(entities_.begin(), entities_.end(), entity);
 	if (it != entities_.end())
 	{
 		entities_.erase(it);

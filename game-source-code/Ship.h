@@ -25,7 +25,7 @@ public:
 		Right
 	};
 	void inputMove(Direction direction, sf::Time time);
-	void tick(sf::Time time);
+	void tick(const sf::Time &time);
 	void handleCollision(entityType type, sf::FloatRect collisionRect);
 	void fire();
 	void explode();
@@ -37,4 +37,5 @@ private:
 	void handleInput(sf::Time time);
 	void checkBounds();
 	Direction direction_;
+	float reload_;
 };

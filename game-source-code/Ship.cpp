@@ -5,6 +5,7 @@
 Ship::Ship()
 {
 	originAtCenter_ = true;
+	reload_ = 0.0f;
 	// Initialize Key Frames
 	Texture_ptr normal(new sf::Texture());
 	Texture_ptr fire(new sf::Texture());
@@ -17,8 +18,8 @@ Ship::Ship()
 	if (!fire->loadFromFile(base + "ShipShooting.png"))
 		throw std::runtime_error("Cannot Load Ship Image");
 
-	this->addKeyFrame(KeyFrame{0.0, normal});
-	this->addKeyFrame(KeyFrame{1.0, fire});
+	this->addKeyFrame(KeyFrame{0.1f, normal});
+	this->addKeyFrame(KeyFrame{1.0f, fire});
 
 	for (int i = 1; i <= 18; i++)
 	{
@@ -31,22 +32,34 @@ Ship::Ship()
 	}
 
 	this->setPeriod(1.5f);
-	this->setAnimateMode(AnimateMode::loop);
-
 	this->setAnimateMode(AnimateMode::pause);
 }
 
-void Ship::tick(sf::Time time)
+void Ship::tick(const sf::Time &time)
 {
 	handleInput(time);
 	checkBounds();
+
+	if (reload_ > 0)
+	{
+		reload_ -= time.asSeconds();
+	}
+	else if (reload_ < 0)
+	{
+		reload_ = 0;
+		normal();
+	}
 }
 
 void Ship::fire()
 {
-	this->setAnimateStart(0.0f);
-	this->setAnimateEnd(14.0f);
-	this->setAnimateMode(AnimateMode::once_restart);
+	if (reload_ <= 0.0f)
+	{
+		createQueue_.push(pair<GameEntity::entityType, sf::Vector2f>{GameEntity::entityType::Bullet, sf::Vector2f{getPosition().x, getPosition().y}});
+		this->setAnimateStart(10.0f);
+		this->setAnimateMode(AnimateMode::pause);
+		reload_ = 0.1f;
+	}
 }
 
 void Ship::normal()
@@ -81,10 +94,10 @@ void Ship::handleInput(sf::Time time)
 		inputMove(Ship::Direction::Right, time);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-	{
-		createQueue_.emplace(pair<GameEntity::entityType, sf::Vector2f>{GameEntity::entityType::Mushroom, sf::Vector2f{getPosition().x, getPosition().y}});
-	}
+	// if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+	// {
+	// 	createQueue_.emplace(pair<GameEntity::entityType, sf::Vector2f>{GameEntity::entityType::Mushroom, sf::Vector2f{getPosition().x, getPosition().y}});
+	// }
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) || sf::Keyboard::isKeyPressed(sf::Keyboard::K) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::X))
 	{
