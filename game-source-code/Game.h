@@ -5,10 +5,11 @@
 #include "TextureManager.h"
 #include "Ship.h"
 #include "EntityManager.h"
+#include "PlayState.h"
 
 using namespace std;
 
-enum class GameState
+enum class GameScene
 {
     splash,
     play,
@@ -34,10 +35,9 @@ private:
     sf::Time elapsed_;
     float tickRate_;
     float frametime_;
-    GameState state_;
+    GameScene state_;
     sf::Sprite splash_;
     sf::Texture *splashImage_;
     TextureManager textureManager_;
-    EntityManager entityManager_;
-    sf::RectangleShape playerArea_;
+    PlayState playState_;
 };

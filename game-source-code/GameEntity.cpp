@@ -130,7 +130,6 @@ void GameEntity::setAnimateEnd(const float &end)
 void GameEntity::setPeriod(const float &period)
 {
 	period_ = period;
-	// validateStartStopContraints();
 }
 
 bool GameEntity::collidesWith(const GameEntity &other, sf::FloatRect &rect) const

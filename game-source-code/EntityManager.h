@@ -6,6 +6,7 @@
 #include "GameEntity.h"
 #include "Ship.h"
 #include "Mushroom.h"
+#include "Bullet.h"
 
 using namespace std;
 
@@ -18,9 +19,9 @@ public:
 	 * @brief Calls the corresponding tick function for all animatable entities.
 	 *
 	 */
-	void tick(sf::Time time);
+	void tick(const sf::Time &time);
 
-	GameEntity_ptr entityFactory(GameEntity::entityType type);
+	static GameEntity_ptr entityFactory(GameEntity::entityType type);
 	int addEntity(GameEntity::entityType type, sf::Vector2f location = sf::Vector2f{0.0f, 0.0f});
 	int addEntity(const GameEntity_ptr &entity);
 	void removeEntity(const GameEntity_ptr &entity);
