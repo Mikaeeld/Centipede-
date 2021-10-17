@@ -12,8 +12,8 @@ public:
 
 	~Ship() {}
 
-	constexpr static const float MAX_X = 256.0f - 4.0f; // 256 - 8
-	constexpr static const float MAX_Y = 240.0f - 4.0f;
+	constexpr static const float MAX_X = 240.0f - 4.0f; // 256 - 8
+	constexpr static const float MAX_Y = 248.0f - 4.0f;
 	constexpr static const float MIN_X = 3.0f;
 	constexpr static const float MIN_Y = 200.0f + 4.0f;
 

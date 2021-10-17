@@ -25,6 +25,14 @@ void Bullet::tick(const sf::Time &time)
 	{
 		toDelete_ = true;
 	}
+	if (getPosition().x < Ship::MIN_X)
+	{
+		setPosition(sf::Vector2f{Ship::MIN_X, getPosition().y});
+	}
+	if (getPosition().x > Ship::MAX_X)
+	{
+		setPosition(sf::Vector2f{Ship::MAX_X, getPosition().y});
+	}
 }
 
-const sf::Vector2f Bullet::VELOCITY = sf::Vector2f{0.0f, -300.0f};
+const sf::Vector2f Bullet::VELOCITY = sf::Vector2f{0.0f, -400.0f};

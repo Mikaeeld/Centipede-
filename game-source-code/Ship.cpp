@@ -55,10 +55,10 @@ void Ship::fire()
 {
 	if (reload_ <= 0.0f)
 	{
-		createQueue_.push(pair<GameEntity::entityType, sf::Vector2f>{GameEntity::entityType::Bullet, sf::Vector2f{getPosition().x, getPosition().y}});
+		createQueue_.push(pair<GameEntity::entityType, sf::Vector2f>{GameEntity::entityType::Bullet, sf::Vector2f{getPosition().x, getPosition().y - 3.0f}});
 		this->setAnimateStart(10.0f);
 		this->setAnimateMode(AnimateMode::pause);
-		reload_ = 0.1f;
+		reload_ = 0.2f;
 	}
 }
 
@@ -93,11 +93,6 @@ void Ship::handleInput(sf::Time time)
 	{
 		inputMove(Ship::Direction::Right, time);
 	}
-
-	// if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-	// {
-	// 	createQueue_.emplace(pair<GameEntity::entityType, sf::Vector2f>{GameEntity::entityType::Mushroom, sf::Vector2f{getPosition().x, getPosition().y}});
-	// }
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) || sf::Keyboard::isKeyPressed(sf::Keyboard::K) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::X))
 	{
