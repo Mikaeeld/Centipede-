@@ -220,7 +220,7 @@ TEST_CASE("Testing KeyFrame Progression Loop Animate Mode")
 	KeyFrame k3{70.0f, texture};
 
 	auto ge = GameEntity();
-	ge.setAnimateMode(AnimateMode::loop);
+
 	ge.setPeriod(2.0f);
 
 	SUBCASE("Exception if Key Frame is requested when none are loaded")
@@ -229,6 +229,8 @@ TEST_CASE("Testing KeyFrame Progression Loop Animate Mode")
 	}
 
 	ge.addKeyFrame(k1);
+
+	ge.setAnimateMode(AnimateMode::loop);
 
 	SUBCASE("Only Key Frame is returned")
 	{
@@ -292,75 +294,6 @@ TEST_CASE("Testing KeyFrame Progression Loop Animate Mode")
 	}
 }
 
-TEST_CASE("Testing KeyFrame Progression Loop Animate Mode")
-{
-	shared_ptr<sf::Texture> texture(new sf::Texture);
-
-	KeyFrame k1{0.0f, texture};
-	KeyFrame k2{50.0f, texture};
-	KeyFrame k3{70.0f, texture};
-
-	auto ge = GameEntity();
-
-	SUBCASE("Exception if Key Frame is requested when none are loaded")
-	{
-		CHECK_THROWS_AS((*ge.getCurrentKeyFrame()).percent, NoKeyFrames);
-	}
-
-	ge.addKeyFrame(k1);
-
-	SUBCASE("Only Key Frame is returned")
-	{
-		CHECK((*ge.getCurrentKeyFrame()) == k1);
-	}
-
-	ge.addKeyFrame(k2);
-	ge.addKeyFrame(k3);
-
-	SUBCASE("Inital Key Frame")
-	{
-		CHECK((*ge.getCurrentKeyFrame()) == k1);
-		CHECK_FALSE(ge.animate());
-		CHECK(ge.getAnimateMode() == AnimateMode::pause);
-	}
-
-	// Progress the animation a little bit
-	const int us_in_sec = 1000000;
-
-	const int step_55 = 0.55 * us_in_sec;
-
-	sf::Time dt(sf::microseconds(step_55));
-
-	ge.animateTick(dt);
-
-	SUBCASE("Check That Key Frame has not progressed in paused mode")
-	{
-
-		CHECK(*ge.getCurrentKeyFrame() == k1);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k2);
-	}
-
-	ge.setAnimateStart(55.0f);
-	ge.setAnimateMode(AnimateMode::pause);
-
-	SUBCASE("CHECK That Key Frame Has Changed Since Start Changed")
-	{
-		CHECK(*ge.getCurrentKeyFrame() == k2);
-		CHECK_FALSE(ge.animate());
-		CHECK(ge.getAnimateMode() == AnimateMode::pause);
-	}
-
-	ge.setAnimateStart(75.0f);
-	ge.setAnimateMode(AnimateMode::pause);
-
-	SUBCASE("CHECK Last Key Frame is returned")
-	{
-		CHECK(*ge.getCurrentKeyFrame() == k3);
-		CHECK_FALSE(ge.animate());
-		CHECK(ge.getAnimateMode() == AnimateMode::pause);
-	}
-}
-
 TEST_CASE("Testing KeyFrame Progression Once Animate Mode")
 {
 	shared_ptr<sf::Texture> texture(new sf::Texture);
@@ -370,7 +303,7 @@ TEST_CASE("Testing KeyFrame Progression Once Animate Mode")
 	KeyFrame k3{70.0f, texture};
 
 	auto ge = GameEntity();
-	ge.setAnimateMode(AnimateMode::once);
+
 	ge.setPeriod(2.0f);
 
 	SUBCASE("Exception if Key Frame is requested when none are loaded")
@@ -379,6 +312,7 @@ TEST_CASE("Testing KeyFrame Progression Once Animate Mode")
 	}
 
 	ge.addKeyFrame(k1);
+	ge.setAnimateMode(AnimateMode::once);
 
 	SUBCASE("Only Key Frame is returned")
 	{
@@ -460,7 +394,6 @@ TEST_CASE("Testing KeyFrame Progression Once-restart Animate Mode")
 	KeyFrame k3{70.0f, texture};
 
 	auto ge = GameEntity();
-	ge.setAnimateMode(AnimateMode::once_restart);
 	ge.setPeriod(2.0f);
 
 	SUBCASE("Exception if Key Frame is requested when none are loaded")
@@ -469,6 +402,7 @@ TEST_CASE("Testing KeyFrame Progression Once-restart Animate Mode")
 	}
 
 	ge.addKeyFrame(k1);
+	ge.setAnimateMode(AnimateMode::once_restart);
 
 	SUBCASE("Only Key Frame is returned")
 	{
@@ -553,7 +487,6 @@ TEST_CASE("Testing KeyFrame Progression With Non-standard Start and Stop Points"
 	KeyFrame k6{90.0f, texture};
 
 	auto ge = GameEntity();
-	ge.setAnimateMode(AnimateMode::loop);
 	ge.setPeriod(10.0f);
 	ge.setAnimateStart(50.0f);
 	ge.setAnimateEnd(85.0f);
@@ -564,6 +497,7 @@ TEST_CASE("Testing KeyFrame Progression With Non-standard Start and Stop Points"
 	}
 
 	ge.addKeyFrame(k1);
+	ge.setAnimateMode(AnimateMode::loop);
 
 	SUBCASE("Only Key Frame is returned")
 	{
