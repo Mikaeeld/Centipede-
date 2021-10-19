@@ -42,20 +42,23 @@ void Ship::tick(const sf::Time &time)
 	if (condition_ == Condition::Alive)
 	{
 		handleInput(time);
-	}
-	checkBounds();
+		checkBounds();
 
-	if (reload_ > 0)
-	{
-		reload_ -= time.asSeconds();
+		if (reload_ > 0)
+		{
+			reload_ -= time.asSeconds();
+		}
+		else if (reload_ < 0)
+		{
+			reload_ = 0;
+			normal();
+		}
 	}
-	else if (reload_ < 0)
+
+	if (condition_ == Condition::Dying)
 	{
-		reload_ = 0;
-		normal();
-	}
-	if (condition_ == Condition::Dying){
-		if (animateDone()){
+		if (animateDone())
+		{
 			toDelete_ = true;
 		}
 	}
@@ -172,6 +175,7 @@ void Ship::handleCollision(entityType type, sf::FloatRect collisionRect)
 	}
 	default:
 	{
+		break;
 	}
 	}
 }
