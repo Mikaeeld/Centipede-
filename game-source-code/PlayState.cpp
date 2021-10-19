@@ -8,6 +8,7 @@ PlayState::PlayState()
 	playerArea_->setPosition(0.0f, 200.0f);
 
 	entityManager_.addEntity(GameEntity::entityType::Ship, sf::Vector2f{120.0f, 200.0f});
+	entityManager_.addEntity(GameEntity::entityType::DDT, sf::Vector2f{120.0f, 80.0f});
 
 	for (float i = 8.0f; i <= 224.0f; i += 8.0f)
 	{

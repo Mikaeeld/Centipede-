@@ -84,6 +84,14 @@ GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 	{
 		return shared_ptr<Bullet>(new Bullet());
 	}
+	case GameEntity::entityType::DDT:
+	{
+		return shared_ptr<DDT>(new DDT());
+	}
+		case GameEntity::entityType::Explosion:
+	{
+		return shared_ptr<Explosion>(new Explosion());
+	}
 	default:
 	{
 		throw runtime_error("Invalid Entity Type in Factory");

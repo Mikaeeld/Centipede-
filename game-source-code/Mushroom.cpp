@@ -49,6 +49,12 @@ void Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect)
         }
         this->setAnimateStart(life_);
         this->setAnimateMode(AnimateMode::pause);
+        break;
+    }
+    case entityType::Explosion:
+    {
+        this->toDelete_ = true;
+        break;
     }
     default:
     {

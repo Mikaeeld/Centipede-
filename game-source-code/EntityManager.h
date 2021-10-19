@@ -7,6 +7,8 @@
 #include "Ship.h"
 #include "Mushroom.h"
 #include "Bullet.h"
+#include "DDT.h"
+#include "Explosion.h"
 
 using namespace std;
 

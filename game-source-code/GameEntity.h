@@ -131,7 +131,9 @@ public:
 		Base,
 		Ship,
 		Mushroom,
-		Bullet
+		Bullet,
+		DDT,
+		Explosion
 	};
 
 	virtual entityType getType()
