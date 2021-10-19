@@ -34,6 +34,17 @@ Mushroom::Mushroom()
     this->setAnimateMode(AnimateMode::loop);
 }
 
+void Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect) {
+    switch (type){
+        case entityType::Bullet:{
+            this->toDelete_ = true;
+        }
+        default:{
+            
+        }
+    }
+}
+
 GameEntity::entityType Mushroom::getType()
 {
     return GameEntity::entityType::Mushroom;

@@ -266,6 +266,7 @@ public:
 
 	void setAnimateMode(AnimateMode mode);
 	bool toDelete_ = false;
+	bool dynamic_ = false;
 	queue<pair<entityType, sf::Vector2f>> createQueue_;
 
 protected:

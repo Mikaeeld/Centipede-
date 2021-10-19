@@ -11,7 +11,6 @@ class State
 public:
 	virtual void update(const sf::Time &time)
 	{
-		time;
 	};
 
 	virtual const vector<Drawable_ptr> getDrawable()

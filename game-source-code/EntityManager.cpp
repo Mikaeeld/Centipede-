@@ -12,7 +12,7 @@ void EntityManager::tick(const sf::Time &time)
 			entity->animateTick(time);
 		}
 		entity->tick(time);
-		// checkCollisions();
+		checkCollisions();
 		while (!entity->createQueue_.empty())
 		{
 			auto toCreate = entity->createQueue_.front();
@@ -117,17 +117,18 @@ void EntityManager::removeEntity(const GameEntity_ptr &entity)
 // This can be smartened up by getting all collisions, sorting them byrectanlge area in a queue and handling them
 void EntityManager::checkCollisions()
 {
-	for (auto i = entities_.begin(); i != entities_.end(); ++i)
+	for (auto entity : entities_)
 	{
-		auto j = i;
-		j++;
-		for (; j != entities_.end(); ++j)
+		if (entity->dynamic_)
 		{
-			sf::FloatRect rectangle;
-			if ((*i)->collidesWith(**j, rectangle))
+			for (auto entity2 : entities_)
 			{
-				(*i)->handleCollision((*j)->getType(), rectangle);
-				(*j)->handleCollision((*i)->getType(), rectangle);
+				sf::FloatRect rectangle;
+				if (entity != entity2 && entity->getGlobalBounds().intersects(entity2->getGlobalBounds(), rectangle))
+				{
+					entity->handleCollision(entity2->getType(), rectangle);
+					entity2->handleCollision(entity->getType(), rectangle);
+				}
 			}
 		}
 	}

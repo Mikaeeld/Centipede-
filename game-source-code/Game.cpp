@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game() : window_("Game", sf::Vector2u{960, 900}, 60), tickRate_(240.0f)
+Game::Game() : window_("Game", sf::Vector2u{900, 960}, 60), tickRate_(60.0f)
 {
     frametime_ = 1.0f / tickRate_;
     state_ = GameScene::splash;
@@ -18,7 +18,6 @@ Game::Game() : window_("Game", sf::Vector2u{960, 900}, 60), tickRate_(240.0f)
 
     splash_.scale(scalex, scaley);
 
-    // playState_ = PlayState();
 }
 
 Game::~Game()

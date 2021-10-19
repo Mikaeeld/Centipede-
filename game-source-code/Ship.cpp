@@ -33,6 +33,7 @@ Ship::Ship()
 
 	this->setPeriod(1.5f);
 	this->setAnimateMode(AnimateMode::pause);
+	this->dynamic_ = true;
 }
 
 void Ship::tick(const sf::Time &time)

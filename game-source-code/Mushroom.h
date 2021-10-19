@@ -11,5 +11,6 @@ public:
     Mushroom();
     ~Mushroom() {}
 
+    void handleCollision(entityType type, sf::FloatRect collisionRect);
     entityType getType();
 };
