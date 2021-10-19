@@ -7,6 +7,7 @@
 #include "Ship.h"
 #include "Mushroom.h"
 #include "Bullet.h"
+#include "CentipedeSegment.h"
 
 using namespace std;
 

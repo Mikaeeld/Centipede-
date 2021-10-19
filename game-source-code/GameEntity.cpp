@@ -41,7 +41,8 @@ const KeyFrame *GameEntity::getCurrentKeyFrame()
 	}
 	else if (animateMode_ == AnimateMode::pause)
 	{
-		return &(*getKeyFrameAtPercent(animateStart_));
+		// return &(*getKeyFrameAtPercent(animateStart_));
+		itr_ = getKeyFrameAtPercent(animateStart_);
 	}
 
 	return &(*itr_);

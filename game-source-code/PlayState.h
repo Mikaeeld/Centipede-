@@ -12,4 +12,7 @@ public:
 private:
 	shared_ptr<Ship> ship_;
 	shared_ptr<sf::RectangleShape> playerArea_;
+	Speed_ptr centipedeSpeed_;
+	shared_ptr<CentipedeSegment> centipedeBody_;
+	shared_ptr<CentipedeSegment> centipedeHead_;
 };

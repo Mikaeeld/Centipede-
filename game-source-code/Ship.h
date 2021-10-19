@@ -3,8 +3,6 @@
 #include "SFML/Graphics.hpp"
 #include "GameEntity.h"
 
-using Texture_ptr = shared_ptr<sf::Texture>;
-
 class Ship : public GameEntity
 {
 public:
