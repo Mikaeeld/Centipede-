@@ -13,4 +13,7 @@ public:
 
     void handleCollision(entityType type, sf::FloatRect collisionRect);
     entityType getType();
+
+private:
+float life_;
 };

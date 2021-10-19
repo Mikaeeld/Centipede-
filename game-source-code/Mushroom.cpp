@@ -31,17 +31,28 @@ Mushroom::Mushroom()
     this->addKeyFrame(KeyFrame(25.0, break1));
     this->addKeyFrame(KeyFrame(50.0, break2));
     this->addKeyFrame(KeyFrame(75.0, break3));
-    this->setAnimateMode(AnimateMode::loop);
+    this->setAnimateMode(AnimateMode::pause);
+    life_ = 0;
 }
 
-void Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect) {
-    switch (type){
-        case entityType::Bullet:{
+void Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect)
+{
+    switch (type)
+    {
+    case entityType::Bullet:
+    {
+        this->life_ += 25.0;
+        if (life_ == 100.f)
+        {
             this->toDelete_ = true;
+            life_ = 75.f;
         }
-        default:{
-            
-        }
+        this->setAnimateStart(life_);
+        this->setAnimateMode(AnimateMode::pause);
+    }
+    default:
+    {
+    }
     }
 }
 
