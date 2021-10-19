@@ -18,7 +18,7 @@ Game::Game() : window_("Game", sf::Vector2u{960, 900}, 60), tickRate_(240.0f)
 
     splash_.scale(scalex, scaley);
 
-    playState_ = PlayState();
+    // playState_ = PlayState();
 }
 
 Game::~Game()
@@ -31,7 +31,10 @@ void Game::update()
     {
         handleInput();
         window_.update();
-        playState_.update(elapsed_);
+        if (state_ == GameScene::play)
+        {
+            playState_.update(elapsed_);
+        }
         elapsed_ = sf::seconds(0.0);
     }
 }

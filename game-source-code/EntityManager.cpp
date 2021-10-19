@@ -3,9 +3,10 @@
 #include <iostream>
 void EntityManager::tick(const sf::Time &time)
 {
-
-	for (auto &entity : entities_)
+	auto it = entities_.begin();
+	while (it != entities_.end())
 	{
+		auto entity = *it;
 		if (entity->animate())
 		{
 			entity->animateTick(time);
@@ -20,7 +21,11 @@ void EntityManager::tick(const sf::Time &time)
 		}
 		if (entity->toDelete_)
 		{
-			entities_.erase(find(entities_.begin(), entities_.end(), entity));
+			it = entities_.erase(it);
+		}
+		else
+		{
+			it++;
 		}
 	}
 }
@@ -88,7 +93,7 @@ GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 int EntityManager::addEntity(GameEntity::entityType type, sf::Vector2f location)
 {
 	auto entity = entityFactory(type);
-	addEntity(entity);
+	entities_.insert(entity);
 	entity->setPosition(location);
 	return 1;
 }
