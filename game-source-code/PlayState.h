@@ -17,6 +17,7 @@ public:
 		static auto dist = std::uniform_real_distribution<Prob>(0, 1);
 		return (dist(gen) < p);
 	}
+	bool toDelete_ = false;
 
 private:
 	shared_ptr<Ship> ship_;

@@ -32,6 +32,9 @@ public:
 		return entities_;
 	}
 
+	int getCount(GameEntity::entityType type);
+
 private:
 	set<GameEntity_ptr> entities_;
+	map<GameEntity::entityType, int> entityCounts_;
 };

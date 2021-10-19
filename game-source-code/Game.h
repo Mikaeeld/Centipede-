@@ -13,7 +13,8 @@ enum class GameScene
 {
     splash,
     play,
-    pause
+    pause,
+    gameOver
 };
 
 class Game
@@ -38,6 +39,8 @@ private:
     GameScene state_;
     sf::Sprite splash_;
     sf::Texture *splashImage_;
+    sf::Sprite gameover_;
+    sf::Texture *gameoverImage_;
     TextureManager textureManager_;
     PlayState playState_;
 };

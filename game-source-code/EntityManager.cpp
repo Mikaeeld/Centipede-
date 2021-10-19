@@ -21,6 +21,7 @@ void EntityManager::tick(const sf::Time &time)
 		}
 		if (entity->toDelete_)
 		{
+			entityCounts_.find(entity->getType())->second--;
 			it = entities_.erase(it);
 		}
 		else
@@ -95,6 +96,11 @@ int EntityManager::addEntity(GameEntity::entityType type, sf::Vector2f location)
 	auto entity = entityFactory(type);
 	entities_.insert(entity);
 	entity->setPosition(location);
+	if (entityCounts_.find(type) == entityCounts_.end())
+	{
+		entityCounts_.insert(std::pair<GameEntity::entityType, int>(type, 0));
+	}
+	entityCounts_.find(type)->second++;
 	return 1;
 }
 
@@ -107,11 +113,13 @@ int EntityManager::addEntity(const GameEntity_ptr &entity)
 
 void EntityManager::removeEntity(const GameEntity_ptr &entity)
 {
+	auto type = entity->getType();
 	auto it = find(entities_.begin(), entities_.end(), entity);
 	if (it != entities_.end())
 	{
 		entities_.erase(it);
 	}
+	entityCounts_.find(type)->second--;
 }
 
 // This can be smartened up by getting all collisions, sorting them byrectanlge area in a queue and handling them
@@ -132,4 +140,9 @@ void EntityManager::checkCollisions()
 			}
 		}
 	}
+}
+
+int EntityManager::getCount(GameEntity::entityType type)
+{
+	return entityCounts_.find(type)->second;
 }

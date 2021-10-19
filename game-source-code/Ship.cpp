@@ -34,11 +34,15 @@ Ship::Ship()
 	this->setPeriod(1.5f);
 	this->setAnimateMode(AnimateMode::pause);
 	this->dynamic_ = true;
+	condition_ = Condition::Alive;
 }
 
 void Ship::tick(const sf::Time &time)
 {
-	handleInput(time);
+	if (condition_ == Condition::Alive)
+	{
+		handleInput(time);
+	}
 	checkBounds();
 
 	if (reload_ > 0)
@@ -49,6 +53,11 @@ void Ship::tick(const sf::Time &time)
 	{
 		reload_ = 0;
 		normal();
+	}
+	if (condition_ == Condition::Dying){
+		if (animateDone()){
+			toDelete_ = true;
+		}
 	}
 }
 
@@ -71,6 +80,7 @@ void Ship::normal()
 
 void Ship::explode()
 {
+	condition_ = Condition::Dying;
 	this->setAnimateEnd(100.0f);
 	this->setAnimateStart(15.0f);
 	this->setAnimateMode(AnimateMode::once);

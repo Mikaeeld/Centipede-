@@ -24,6 +24,12 @@ public:
 		Left,
 		Right
 	};
+
+	enum class Condition{
+		Alive,
+		Dying
+	};
+
 	void inputMove(Direction direction, sf::Time time);
 	void tick(const sf::Time &time);
 	void handleCollision(entityType type, sf::FloatRect collisionRect);
@@ -38,4 +44,5 @@ private:
 	void checkBounds();
 	Direction direction_;
 	float reload_;
+	Condition condition_;
 };
