@@ -69,6 +69,16 @@ void GameWindow::update()
         if (event.type == sf::Event::Resized)
         {
             size_ = sf::Vector2u(event.size.width, event.size.height);
+            if (size_.x > 1400){
+                size_.x = 1400;
+                destroy();
+                create();
+            }
+            if (size_.y > 900){
+                size_.y = 900;
+                destroy();
+                create();
+            }
             fixAspectRatio();
         }
     }
