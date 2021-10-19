@@ -12,7 +12,7 @@ PlayState::PlayState()
 
 	for (float i = 8.0f; i <= 224.0f; i += 8.0f)
 	{
-		for (float j = 8.0f; j <= 160.f; j += 8.f)
+		for (float j = 8.0f; j <= 232.f; j += 8.f)
 		{
 			if (binomial_trial(0.05))
 			{
@@ -36,7 +36,7 @@ const vector<Drawable_ptr> PlayState::getDrawable()
 void PlayState::update(const sf::Time &time)
 {
 	entityManager_.tick(time);
-	if(entityManager_.getCount(GameEntity::entityType::Ship) == 0){
+	if(entityManager_.getCount(GameEntity::entityType::Ship) == 0 || entityManager_.getCount(GameEntity::entityType::Mushroom) == 0){
 		toDelete_ = true;
 	}
 }
