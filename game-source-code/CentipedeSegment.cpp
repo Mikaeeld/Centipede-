@@ -69,16 +69,6 @@ void CentipedeSegment::updateChain(const shared_ptr<CentipedeSegment> front, con
 		setAnimateStart(50.0f);
 		setAnimateEnd(NORMAL_RANGE + 50.0f);
 	}
-
-	if (front_)
-	{
-		front_->back_ = make_shared<CentipedeSegment>(*this);
-	}
-
-	if (back_)
-	{
-		back_->front_ = make_shared<CentipedeSegment>(*this);
-	}
 }
 
 void CentipedeSegment::tick(const sf::Time &time)
@@ -232,41 +222,41 @@ void CentipedeSegment::followFront()
 		// std::cout << "Following..." << std::endl;
 		auto diff = sf::Vector2f{front_->getPosition().x - getPosition().x, front_->getPosition().y - getPosition().y};
 
-		std::cout << "Following... " << diff.x << "      " << diff.y << std::endl;
+		// std::cout << "Following... " << diff.x << "      " << diff.y << std::endl;
 
 		// setPosition(front_->getPosition().x + 8, front_->getPosition().y);
 
-		// if (diff.y != 0.0f)
-		// { // Front segment has turned
+		if (diff.y != 0.0f)
+		{ // Front segment has turned
 
-		// 	if (diff.y >= GameGrid::CELL_SIZE)
-		// 	{ // will have to turn
+			if (diff.y >= GameGrid::CELL_SIZE)
+			{ // will have to turn
 
-		// 		targetTurnCell_ = front_->targetTurnCell_;
-		// 		targetXDir_ = front_->targetXDir_;
-		// 		targetYDir_ = front_->targetYDir_;
-		// 		auto middleX = gridLocate().x + GameGrid::CELL_SIZE / 2;
-		// 		turn(middleX);
-		// 	}
-		// 	else if (isTurning_)
-		// 	{ // convert dx to dy
-		// 		auto magX = abs(diff.x);
-		// 		diff.y += diff.y > 0 ? -(GameGrid::CELL_SIZE + magX) : GameGrid::CELL_SIZE + magX;
-		// 		move(0.0f, diff.y);
-		// 		handleTurn();
-		// 	}
-		// 	else
-		// 	{ // convert dy to dx
-		// 		auto magY = abs(diff.y);
-		// 		diff.x += diff.x > 0 ? -(GameGrid::CELL_SIZE + magY) : GameGrid::CELL_SIZE + magY;
-		// 		move(diff.x, 0.0f);
-		// 	}
-		// }
-		// else
-		// { // Just follow
-		// 	diff.x += diff.x > 0 ? -GameGrid::CELL_SIZE : GameGrid::CELL_SIZE;
-		// 	move(diff);
-		// }
+				targetTurnCell_ = front_->targetTurnCell_;
+				targetXDir_ = front_->targetXDir_;
+				targetYDir_ = front_->targetYDir_;
+				auto middleX = gridLocate().x + GameGrid::CELL_SIZE / 2;
+				turn(middleX);
+			}
+			else if (isTurning_)
+			{ // convert dx to dy
+				auto magX = abs(diff.x);
+				diff.y += diff.y > 0 ? -(GameGrid::CELL_SIZE + magX) : GameGrid::CELL_SIZE + magX;
+				move(0.0f, diff.y);
+				handleTurn();
+			}
+			else
+			{ // convert dy to dx
+				auto magY = abs(diff.y);
+				diff.x += diff.x > 0 ? -(GameGrid::CELL_SIZE + magY) : GameGrid::CELL_SIZE + magY;
+				move(diff.x, 0.0f);
+			}
+		}
+		else
+		{ // Just follow
+			diff.x += diff.x > 0 ? -GameGrid::CELL_SIZE : GameGrid::CELL_SIZE;
+			move(diff);
+		}
 	}
 	else
 	{

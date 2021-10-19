@@ -53,6 +53,16 @@ public:
 	constexpr static const float NORMAL_RANGE = 40.0f;
 	constexpr static const float KEYFRAME_INTERVAL = NORMAL_RANGE / 8.0f;
 
+	/**
+	 * @brief Used to initalize segment in the chain of segments making the Centipede.
+	 *
+	 *  Ensures that there is always one head per centipde.
+	 *
+	 * @param front
+	 * @param back
+	 */
+	void updateChain(const shared_ptr<CentipedeSegment> front, const shared_ptr<CentipedeSegment> back);
+
 private:
 	shared_ptr<CentipedeSegment> front_;
 	shared_ptr<CentipedeSegment> back_;
@@ -72,16 +82,6 @@ private:
 	 * @param time
 	 */
 	void updatePosition(const sf::Time &time);
-
-	/**
-	 * @brief Used to initalize segment in the chain of segments making the Centipede.
-	 *
-	 *  Ensures that there is always one head per centipde.
-	 *
-	 * @param front
-	 * @param back
-	 */
-	void updateChain(const shared_ptr<CentipedeSegment> front, const shared_ptr<CentipedeSegment> back);
 
 	/**
 	 * @brief Updates each preceding segment recursively, and terminates at the end of the chain.

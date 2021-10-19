@@ -21,6 +21,8 @@ PlayState::PlayState()
 	centipedeHead_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, centipedeSpeed_));
 	centipedeBody_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(centipedeHead_, nullptr, centipedeSpeed_));
 
+	centipedeHead_->updateChain(nullptr, centipedeBody_);
+
 	centipedeHead_->setPosition(8 + 4, 2 + 4);
 	centipedeBody_->setPosition(8 + 4, 2 + 4);
 	entityManager_.addEntity(centipedeHead_);
