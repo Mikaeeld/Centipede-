@@ -9,6 +9,7 @@
 #include "Bullet.h"
 #include "DDT.h"
 #include "Explosion.h"
+#include "CentipedeSegment.h"
 
 using namespace std;
 

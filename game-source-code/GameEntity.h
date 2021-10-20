@@ -9,6 +9,8 @@
 
 using namespace std;
 
+using Texture_ptr = shared_ptr<sf::Texture>;
+
 struct Percentage
 {
 public:
@@ -230,6 +232,8 @@ public:
 	 */
 	void setAnimateEnd(const float &end);
 
+	void setAnimateTimings(const float &start, const float &end);
+
 	/**
 	 * @brief Returns true if the animation has completed its key frame sequence.
 	 *
@@ -270,6 +274,22 @@ public:
 	bool toDelete_ = false;
 	bool dynamic_ = false;
 	queue<pair<entityType, sf::Vector2f>> createQueue_;
+
+	const bool &originAtCenter() const
+	{
+		return originAtCenter_;
+	}
+
+	const sf::Vector2f getCurrentSize() const
+	{
+		if (itr_ != keyFrames_.end())
+		{
+			auto size = itr_->texture->getSize();
+			return sf::Vector2f{size.x, size.y};
+		}
+
+		return sf::Vector2f{8, 8};
+	}
 
 protected:
 	bool originAtCenter_ = true;
