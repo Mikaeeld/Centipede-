@@ -41,7 +41,8 @@ const KeyFrame *GameEntity::getCurrentKeyFrame()
 	}
 	else if (animateMode_ == AnimateMode::pause)
 	{
-		return &(*getKeyFrameAtPercent(animateStart_));
+		// return &(*getKeyFrameAtPercent(animateStart_));
+		itr_ = getKeyFrameAtPercent(animateStart_);
 	}
 
 	return &(*itr_);
@@ -124,6 +125,13 @@ void GameEntity::setAnimateStart(const float &start)
 void GameEntity::setAnimateEnd(const float &end)
 {
 	animateEnd_ = end;
+	validateStartStopContraints();
+}
+
+void GameEntity::setAnimateTimings(const float &start, const float &end)
+{
+	animateEnd_ = end;
+	animateStart_ = start;
 	validateStartStopContraints();
 }
 

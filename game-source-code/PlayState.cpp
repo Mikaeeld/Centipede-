@@ -20,6 +20,10 @@ PlayState::PlayState()
 			}
 		}
 	}
+	entityManager_.addEntity(ship_);
+
+	centipedeSpeed_ = Speed_ptr(new float(80.0f));
+	centipede_ = Centipede(entityManager_, centipedeSpeed_);
 }
 
 const vector<Drawable_ptr> PlayState::getDrawable()
@@ -36,7 +40,8 @@ const vector<Drawable_ptr> PlayState::getDrawable()
 void PlayState::update(const sf::Time &time)
 {
 	entityManager_.tick(time);
-	if(entityManager_.getCount(GameEntity::entityType::Ship) == 0 || entityManager_.getCount(GameEntity::entityType::Mushroom) == 0){
+	if (entityManager_.getCount(GameEntity::entityType::Ship) == 0 || entityManager_.getCount(GameEntity::entityType::Mushroom) == 0)
+	{
 		toDelete_ = true;
 	}
 }
