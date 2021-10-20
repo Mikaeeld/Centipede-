@@ -405,7 +405,7 @@ void CentipedeSegment::shot()
 
 	if (!toDelete_)
 	{
-		loc.y = isTurning_ ? (targetYDir_ == CentipedeMove::YDirection::Down ? ++loc.y : --loc.y) : loc.y;
+		loc.y = isTurning_ ? (targetYDir_ == CentipedeMove::YDirection::Down ? loc.y + 1 : loc.y - 1) : loc.y;
 		createQueue_.push(pair<GameEntity::entityType, sf::Vector2f>{GameEntity::entityType::Mushroom, sf::Vector2f{loc.x * GameGrid::CELL_SIZE, loc.y * GameGrid::CELL_SIZE}});
 	}
 	toDelete_ = true;

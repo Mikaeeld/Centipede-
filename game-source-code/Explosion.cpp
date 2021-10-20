@@ -43,6 +43,7 @@ Explosion::Explosion()
 
 void Explosion::tick(const sf::Time &time)
 {
+    (void)time;
     if (animateDone())
     {
         this->toDelete_ = true;
@@ -51,6 +52,7 @@ void Explosion::tick(const sf::Time &time)
 
 bool Explosion::handleCollision(entityType type, sf::FloatRect collisionRect)
 {
+    (void)collisionRect;
     switch (type)
     {
     default:

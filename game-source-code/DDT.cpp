@@ -15,6 +15,7 @@ DDT::DDT()
 
 bool DDT::handleCollision(entityType type, sf::FloatRect collisionRect)
 {
+    (void)collisionRect;
     switch (type)
     {
     case entityType::Bullet:
