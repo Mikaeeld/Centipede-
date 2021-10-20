@@ -5,6 +5,8 @@
 #include <memory>
 #include <iostream>
 #include <math.h>
+#include "ShipTests.cpp"
+#include "BulletTests.cpp"
 
 TEST_CASE("Testing Window Default Dimensions")
 {
@@ -475,114 +477,114 @@ TEST_CASE("Testing KeyFrame Progression Once-restart Animate Mode")
 	}
 }
 
-TEST_CASE("Testing KeyFrame Progression With Non-standard Start and Stop Points")
-{
-	shared_ptr<sf::Texture> texture(new sf::Texture);
+// TEST_CASE("Testing KeyFrame Progression With Non-standard Start and Stop Points")
+// {
+// 	shared_ptr<sf::Texture> texture(new sf::Texture);
 
-	KeyFrame k1{0.0f, texture};
-	KeyFrame k2{50.0f, texture};
-	KeyFrame k3{60.0f, texture};
-	KeyFrame k4{70.0f, texture};
-	KeyFrame k5{80.0f, texture};
-	KeyFrame k6{90.0f, texture};
+// 	KeyFrame k1{0.0f, texture};
+// 	KeyFrame k2{50.0f, texture};
+// 	KeyFrame k3{60.0f, texture};
+// 	KeyFrame k4{70.0f, texture};
+// 	KeyFrame k5{80.0f, texture};
+// 	KeyFrame k6{90.0f, texture};
 
-	auto ge = GameEntity();
-	ge.setPeriod(10.0f);
-	ge.setAnimateStart(50.0f);
-	ge.setAnimateEnd(85.0f);
+// 	auto ge = GameEntity();
+// 	ge.setPeriod(10.0f);
+// 	ge.setAnimateStart(50.0f);
+// 	ge.setAnimateEnd(85.0f);
 
-	SUBCASE("Exception if Key Frame is requested when none are loaded")
-	{
-		CHECK_THROWS_AS((*ge.getCurrentKeyFrame()).percent, NoKeyFrames);
-	}
+// 	SUBCASE("Exception if Key Frame is requested when none are loaded")
+// 	{
+// 		CHECK_THROWS_AS((*ge.getCurrentKeyFrame()).percent, NoKeyFrames);
+// 	}
 
-	ge.addKeyFrame(k1);
-	ge.setAnimateMode(AnimateMode::loop);
+// 	ge.addKeyFrame(k1);
+// 	ge.setAnimateMode(AnimateMode::loop);
 
-	SUBCASE("Only Key Frame is returned")
-	{
-		CHECK((*ge.getCurrentKeyFrame()) == k1);
-	}
+// 	SUBCASE("Only Key Frame is returned")
+// 	{
+// 		CHECK((*ge.getCurrentKeyFrame()) == k1);
+// 	}
 
-	ge.addKeyFrame(k2);
-	ge.addKeyFrame(k3);
-	ge.addKeyFrame(k4);
-	ge.addKeyFrame(k5);
-	ge.addKeyFrame(k6);
+// 	ge.addKeyFrame(k2);
+// 	ge.addKeyFrame(k3);
+// 	ge.addKeyFrame(k4);
+// 	ge.addKeyFrame(k5);
+// 	ge.addKeyFrame(k6);
 
-	SUBCASE("Inital Key Frame")
-	{
-		CHECK(ge.animate());
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k1);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k3);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k4);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k5);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k6);
-		CHECK(*ge.getCurrentKeyFrame() == k2);
-		CHECK(ge.getAnimateMode() == AnimateMode::loop);
-	}
+// 	SUBCASE("Inital Key Frame")
+// 	{
+// 		CHECK(ge.animate());
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k1);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k3);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k4);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k5);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k6);
+// 		CHECK(*ge.getCurrentKeyFrame() == k2);
+// 		CHECK(ge.getAnimateMode() == AnimateMode::loop);
+// 	}
 
-	// Progress the animation a little bit
-	const int us_in_sec = 1000000;
-	const int step = us_in_sec;
+// 	// Progress the animation a little bit
+// 	const int us_in_sec = 1000000;
+// 	const int step = us_in_sec;
 
-	sf::Time dt(sf::microseconds(step));
+// 	sf::Time dt(sf::microseconds(step));
 
-	ge.animateTick(dt);
+// 	ge.animateTick(dt);
 
-	SUBCASE("Check That Key Frame has not progressed")
-	{
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k1);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k2);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k4);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k5);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k6);
-		CHECK(*ge.getCurrentKeyFrame() == k3);
-	}
+// 	SUBCASE("Check That Key Frame has not progressed")
+// 	{
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k1);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k2);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k4);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k5);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k6);
+// 		CHECK(*ge.getCurrentKeyFrame() == k3);
+// 	}
 
-	// Progress Animation
-	ge.animateTick(dt);
+// 	// Progress Animation
+// 	ge.animateTick(dt);
 
-	SUBCASE("CHECK That Key Frame Has Changed")
-	{
-		CHECK(*ge.getCurrentKeyFrame() == k4);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k1);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k3);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k2);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k5);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k6);
-		CHECK(ge.animate());
-		CHECK(ge.getAnimateMode() == AnimateMode::loop);
-	}
+// 	SUBCASE("CHECK That Key Frame Has Changed")
+// 	{
+// 		CHECK(*ge.getCurrentKeyFrame() == k4);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k1);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k3);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k2);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k5);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k6);
+// 		CHECK(ge.animate());
+// 		CHECK(ge.getAnimateMode() == AnimateMode::loop);
+// 	}
 
-	// Progress Animation
-	ge.animateTick(dt);
+// 	// Progress Animation
+// 	ge.animateTick(dt);
 
-	SUBCASE("CHECK Last Key Frame is returned")
-	{
-		CHECK(*ge.getCurrentKeyFrame() == k5);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k1);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k3);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k4);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k2);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k6);
-		CHECK(ge.animate());
-		CHECK(ge.getAnimateMode() == AnimateMode::loop);
-	}
+// 	SUBCASE("CHECK Last Key Frame is returned")
+// 	{
+// 		CHECK(*ge.getCurrentKeyFrame() == k5);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k1);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k3);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k4);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k2);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k6);
+// 		CHECK(ge.animate());
+// 		CHECK(ge.getAnimateMode() == AnimateMode::loop);
+// 	}
 
-	// Progress Animation
-	ge.animateTick(dt);
+// 	// Progress Animation
+// 	ge.animateTick(dt);
 
-	// std::cout << "Check Here" << std::endl;
-	SUBCASE("CHECK Loop Back to start")
-	{
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k1);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k3);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k4);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k5);
-		CHECK_FALSE(*ge.getCurrentKeyFrame() == k6);
-		CHECK(*ge.getCurrentKeyFrame() == k2);
-		CHECK(ge.animate());
-		CHECK(ge.getAnimateMode() == AnimateMode::loop);
-	}
-}
+// 	// std::cout << "Check Here" << std::endl;
+// 	SUBCASE("CHECK Loop Back to start")
+// 	{
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k1);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k3);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k4);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k5);
+// 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k6);
+// 		CHECK(*ge.getCurrentKeyFrame() == k2);
+// 		CHECK(ge.animate());
+// 		CHECK(ge.getAnimateMode() == AnimateMode::loop);
+// 	}
+// }

@@ -68,7 +68,7 @@ void Ship::fire()
 {
 	if (reload_ <= 0.0f)
 	{
-		createQueue_.push(pair<GameEntity::entityType, sf::Vector2f>{GameEntity::entityType::Bullet, sf::Vector2f{getPosition().x, getPosition().y - 3.0f}});
+		createQueue_.push(pair<GameEntity::entityType, sf::Vector2f>{GameEntity::entityType::Bullet, sf::Vector2f{getPosition().x, getPosition().y}});
 		this->setAnimateStart(10.0f);
 		this->setAnimateMode(AnimateMode::pause);
 		reload_ = 0.2f;
