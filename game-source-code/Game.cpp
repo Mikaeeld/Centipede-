@@ -17,7 +17,7 @@ Game::Game() : window_("Game", sf::Vector2u{900, 960}, 0), tickRate_(120.0f)
     float scaley = (float)window_.getView().getSize().y / (float)splashImage_->getSize().y;
 
     splash_.scale(scalex, scaley);
-    
+
     gameoverImage_ = textureManager_.getResource("GameOver");
     if (gameoverImage_ == nullptr)
     {
@@ -29,6 +29,18 @@ Game::Game() : window_("Game", sf::Vector2u{900, 960}, 0), tickRate_(120.0f)
     scaley = (float)window_.getView().getSize().y / (float)gameoverImage_->getSize().y;
 
     gameover_.scale(scalex, scaley);
+
+    pausedImage_ = textureManager_.getResource("Paused");
+    if (pausedImage_ == nullptr)
+    {
+        std::__throw_runtime_error("Couldn't load Splash image");
+    }
+
+    paused_.setTexture(*pausedImage_);
+    scalex = (float)window_.getView().getSize().x / (float)pausedImage_->getSize().x;
+    scaley = (float)window_.getView().getSize().y / (float)pausedImage_->getSize().y;
+
+    paused_.scale(scalex, scaley);
 }
 
 Game::~Game()
@@ -83,6 +95,16 @@ void Game::render()
         break;
     }
 
+    case GameScene::pause:
+    {
+        for (auto &i : playState_.getDrawable())
+        {
+            window_.draw(*i);
+        }
+        window_.draw(paused_);
+        break;
+    }
+
     default:
         // none
         break;
@@ -105,7 +127,8 @@ void Game::handleInput()
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
-            window_.close();
+            state_ = GameScene::pause;
+            sf::sleep(sf::seconds(0.2f));
         }
         break;
     }
@@ -133,6 +156,17 @@ void Game::handleInput()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
             window_.close();
+        }
+    }
+
+    case GameScene::pause:
+    {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            window_.close();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+            state_ = GameScene::play;
         }
     }
 

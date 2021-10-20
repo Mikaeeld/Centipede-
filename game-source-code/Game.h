@@ -41,6 +41,8 @@ private:
     sf::Texture *splashImage_;
     sf::Sprite gameover_;
     sf::Texture *gameoverImage_;
+    sf::Sprite paused_;
+    sf::Texture *pausedImage_;
     TextureManager textureManager_;
     PlayState playState_;
 };
