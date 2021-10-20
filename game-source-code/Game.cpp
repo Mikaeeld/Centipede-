@@ -144,6 +144,7 @@ void Game::handleInput()
         {
             window_.close();
         }
+        break;
     }
 
     case GameScene::gameOver:
@@ -153,10 +154,11 @@ void Game::handleInput()
             state_ = GameScene::play;
             playState_ = PlayState();
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
             window_.close();
         }
+        break;
     }
 
     case GameScene::pause:
@@ -165,9 +167,11 @@ void Game::handleInput()
         {
             window_.close();
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
             state_ = GameScene::play;
         }
+        break;
     }
 
     default:

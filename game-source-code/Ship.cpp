@@ -91,31 +91,31 @@ void Ship::explode()
 
 void Ship::handleInput(sf::Time time)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-	{
-		inputMove(Ship::Direction::Up, time);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		inputMove(Ship::Direction::Down, time);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		inputMove(Ship::Direction::Left, time);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		inputMove(Ship::Direction::Right, time);
-	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) || sf::Keyboard::isKeyPressed(sf::Keyboard::K) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+	if (condition_ == Condition::Alive)
 	{
-		fire();
-	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-	{
-		explode();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		{
+			inputMove(Ship::Direction::Up, time);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			inputMove(Ship::Direction::Down, time);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			inputMove(Ship::Direction::Left, time);
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			inputMove(Ship::Direction::Right, time);
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) || sf::Keyboard::isKeyPressed(sf::Keyboard::K) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+		{
+			fire();
+		}
 	}
 }
 
@@ -148,7 +148,7 @@ GameEntity::entityType Ship::getType()
 	return GameEntity::entityType::Ship;
 }
 
-void Ship::handleCollision(entityType type, sf::FloatRect collisionRect)
+bool Ship::handleCollision(entityType type, sf::FloatRect collisionRect)
 {
 	switch (type)
 	{
@@ -172,12 +172,21 @@ void Ship::handleCollision(entityType type, sf::FloatRect collisionRect)
 			// none
 			break;
 		}
+		break;
+	}
+	case entityType::CentipedeSegment:
+	{
+		explode();
+		break;
 	}
 	default:
 	{
+		return false;
 		break;
 	}
 	}
+
+	return true;
 }
 
 void Ship::inputMove(Direction direction, sf::Time time)

@@ -49,12 +49,13 @@ void Explosion::tick(const sf::Time &time)
     }
 }
 
-void Explosion::handleCollision(entityType type, sf::FloatRect collisionRect)
+bool Explosion::handleCollision(entityType type, sf::FloatRect collisionRect)
 {
     switch (type)
     {
     default:
     {
+        return false;
         break;
     }
     }

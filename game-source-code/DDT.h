@@ -11,7 +11,6 @@ public:
     DDT();
     ~DDT() {}
 
-    void handleCollision(entityType type, sf::FloatRect collisionRect);
+    bool handleCollision(entityType type, sf::FloatRect collisionRect);
     entityType getType();
-
 };

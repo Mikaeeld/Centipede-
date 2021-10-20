@@ -1,19 +1,29 @@
 #include "EntityManager.h"
 
 #include <iostream>
+
 void EntityManager::tick(const sf::Time &time)
 {
-	auto it = entities_.begin();
-	while (it != entities_.end())
+	// auto it = entities_.begin();
+	// while (it != entities_.end())
+	// {
+	// 	auto entity = *it;
+	// 	if (entity->toDelete())
+	// 	{
+	// 		auto itTemp = it;
+	// 		it = removeEntity(*itTemp);
+	// 		continue;
+	// 	}
+	// 	else
+	// 	{
+	// 		++it++;
+	// 	}
+	// }
+
+	set<GameEntity_ptr> toRemove;
+
+	for (auto &entity : entities_)
 	{
-		// std::cout << entities_.size() << " " << dynamicEntities_.size() << " " << staticEntities_.size() << std::endl;
-		auto entity = *it;
-		if (entity->animate())
-		{
-			entity->animateTick(time);
-		}
-		entity->tick(time);
-		checkCollisions();
 		while (!entity->createQueue_.empty())
 		{
 			auto toCreate = entity->createQueue_.front();
@@ -21,17 +31,27 @@ void EntityManager::tick(const sf::Time &time)
 			addEntity(toCreate.first, toCreate.second);
 		}
 		if (entity->toDelete())
-		{
-			// entityCounts_.find(entity->getType())->second--;
-			// it = entities_.erase(it);
-			// it = entities_.erase(it);
-			it = removeEntity(*it);
-		}
-		else
-		{
-			it++;
-		}
+			toRemove.insert(entity);
 	}
+
+	for (auto &remove : toRemove)
+		removeEntity(remove);
+
+	for (auto &entity : entities_)
+	{
+		if (entity->toDelete())
+		{
+			toRemove.insert(entity);
+		}
+
+		if (entity->animate())
+		{
+			entity->animateTick(time);
+		}
+		entity->tick(time);
+	}
+
+	checkCollisions();
 }
 
 GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
@@ -110,6 +130,22 @@ set<GameEntity_ptr>::iterator EntityManager::removeEntity(const GameEntity_ptr &
 void EntityManager::checkCollisions()
 {
 
+	// for (auto entity : entities_)
+	// {
+	// 	if (entity->isDynamic())
+	// 	{
+	// 		for (auto entity2 : entities_)
+	// 		{
+	// 			sf::FloatRect rectangle;
+	// 			if (entity != entity2 && entity->getGlobalBounds().intersects(entity2->getGlobalBounds(), rectangle))
+	// 			{
+	// 				entity->handleCollision(entity2->getType(), rectangle);
+	// 				entity2->handleCollision(entity->getType(), rectangle);
+	// 			}
+	// 		}
+	// 	}
+	// }
+
 	set<GameEntity_ptr> dynamicEntities;
 
 	for (auto entity : entities_)
@@ -117,7 +153,6 @@ void EntityManager::checkCollisions()
 		if (entity->isDynamic())
 		{
 			dynamicEntities.insert(entity);
-
 			for (auto entity2 : entities_)
 			{
 				if (!entity2->isDynamic())
@@ -125,12 +160,19 @@ void EntityManager::checkCollisions()
 					sf::FloatRect rectangle;
 					if (entity != entity2 && entity->getGlobalBounds().intersects(entity2->getGlobalBounds(), rectangle))
 					{
-						entity->handleCollision(entity2->getType(), rectangle);
-						entity2->handleCollision(entity->getType(), rectangle);
+						auto c1 = entity->handleCollision(entity2->getType(), rectangle);
+						auto c2 = entity2->handleCollision(entity->getType(), rectangle);
+						if (c1 || c2)
+						{
+							goto nextEntity; // one collision only
+							dynamicEntities.erase(entity);
+						}
 					}
 				}
 			}
 		}
+
+	nextEntity:;
 	}
 
 	// Check dynamic entity colliding with another dynamic entity
@@ -145,10 +187,13 @@ void EntityManager::checkCollisions()
 			sf::FloatRect rectangle;
 			if (entity->getGlobalBounds().intersects(entity2->getGlobalBounds(), rectangle))
 			{
-				entity->handleCollision(entity2->getType(), rectangle);
-				entity2->handleCollision(entity->getType(), rectangle);
+				auto c1 = entity->handleCollision(entity2->getType(), rectangle);
+				auto c2 = entity2->handleCollision(entity->getType(), rectangle);
+				if (c1 || c2)
+					goto nextDynamic; // one collision only
 			}
 		}
+	nextDynamic:;
 	}
 }
 

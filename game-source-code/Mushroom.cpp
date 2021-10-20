@@ -10,6 +10,7 @@ Mushroom::Mushroom()
     Texture_ptr break3(new sf::Texture());
 
     this->originAtCenter_ = false;
+    this->dynamic_ = false;
 
     const string base = resourcePath() + "Sprites/Mushroom/";
 
@@ -35,20 +36,25 @@ Mushroom::Mushroom()
     life_ = 0;
 }
 
-void Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect)
+bool Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect)
 {
+    (void)collisionRect;
     switch (type)
     {
     case entityType::Bullet:
     {
-        this->life_ += 25.0;
-        if (life_ == 100.f)
+        if (!shot_)
         {
-            this->toDelete_ = true;
-            life_ = 75.f;
+            shot_ = true;
+            this->life_ += 25.0;
+            if (life_ >= 100.f)
+            {
+                this->toDelete_ = true;
+                life_ = 76.f;
+            }
+            this->setAnimateStart(life_);
+            this->setAnimateMode(AnimateMode::pause);
         }
-        this->setAnimateStart(life_);
-        this->setAnimateMode(AnimateMode::pause);
         break;
     }
     case entityType::Explosion:
@@ -58,8 +64,12 @@ void Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect)
     }
     default:
     {
+        return false;
+        break;
     }
     }
+
+    return true;
 }
 
 GameEntity::entityType Mushroom::getType()

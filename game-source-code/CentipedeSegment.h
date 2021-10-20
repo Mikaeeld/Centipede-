@@ -52,7 +52,7 @@ public:
 
 	GameEntity::entityType getType();
 
-	void handleCollision(entityType type, sf::FloatRect collisionRect);
+	bool handleCollision(entityType type, sf::FloatRect collisionRect);
 
 private:
 	shared_ptr<CentipedeSegment> front_;
@@ -62,7 +62,7 @@ private:
 	CentipedeMove::YDirection targetYDir_;
 	CentipedeMove::XDirection targetXDir_;
 	CentipedeMove::Direction currentDir_;
-	const float manhattanDistance(const shared_ptr<CentipedeSegment> other) const;
+	float manhattanDistance(const shared_ptr<CentipedeSegment> other) const;
 	const bool &headTurning() const;
 	Speed_ptr speed_;
 	pair<int, int> targetTurnCell_;
@@ -100,6 +100,8 @@ private:
 	void handleTurn();
 
 	void followFront(const sf::Time &time);
+
+	void shot();
 
 	const sf::Vector2i gridLocate();
 };

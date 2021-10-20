@@ -46,7 +46,7 @@ CentipedeSegment::CentipedeSegment(const shared_ptr<CentipedeSegment> front, con
 	currentDir_ = CentipedeMove::Direction::Left;
 }
 
-const float CentipedeSegment::manhattanDistance(const shared_ptr<CentipedeSegment> other) const
+float CentipedeSegment::manhattanDistance(const shared_ptr<CentipedeSegment> other) const
 {
 	return abs(other->getPosition().x - getPosition().x) + abs(other->getPosition().y - getPosition().y);
 }
@@ -269,8 +269,6 @@ void CentipedeSegment::followFront(const sf::Time &time)
 {
 	if (front_)
 	{
-		auto diff = sf::Vector2f{front_->getPosition().x - getPosition().x, front_->getPosition().y - getPosition().y};
-
 		if (isTurning_)
 		{
 			float distance = (targetYDir_ == CentipedeMove::YDirection::Down) ? 1.0f : -1.0f;
@@ -351,24 +349,26 @@ void CentipedeSegment::clearTempCollisionBack()
 	}
 }
 
-void CentipedeSegment::handleCollision(entityType type, sf::FloatRect collisionRect)
+bool CentipedeSegment::handleCollision(entityType type, sf::FloatRect collisionRect)
 {
+	(void)collisionRect;
 	switch (type)
 	{
 	case entityType::Bullet:
 	{ // split segment
-
+		shot();
 		break;
 	}
 	case entityType::Explosion:
 	{ // split segment
+		shot();
 		break;
 	}
 	case entityType::Mushroom:
 	{
+
 		if (isHead_)
 		{
-
 			if (!isTurning_)
 			{
 				// recursively push mushroom location to children
@@ -378,9 +378,35 @@ void CentipedeSegment::handleCollision(entityType type, sf::FloatRect collisionR
 				insertTempCollisionBack(cell);
 			}
 		}
+		break;
 	}
 	default:
 		// none
+		return false;
 		break;
 	}
+
+	return true;
+}
+
+void CentipedeSegment::shot()
+{
+	if (front_)
+	{
+		front_->updateChain(front_->front_, nullptr);
+	}
+
+	if (back_)
+	{
+		back_->updateChain(nullptr, back_->back_);
+	}
+
+	auto loc = gridLocate();
+
+	if (!toDelete_)
+	{
+		loc.y = isTurning_ ? (targetYDir_ == CentipedeMove::YDirection::Down ? ++loc.y : --loc.y) : loc.y;
+		createQueue_.push(pair<GameEntity::entityType, sf::Vector2f>{GameEntity::entityType::Mushroom, sf::Vector2f{loc.x * GameGrid::CELL_SIZE, loc.y * GameGrid::CELL_SIZE}});
+	}
+	toDelete_ = true;
 }

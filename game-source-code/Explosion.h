@@ -12,6 +12,6 @@ public:
     ~Explosion() {}
 
     void tick(const sf::Time &time);
-    void handleCollision(entityType type, sf::FloatRect collisionRect);
+    bool handleCollision(entityType type, sf::FloatRect collisionRect);
     entityType getType();
 };

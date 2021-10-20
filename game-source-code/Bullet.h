@@ -15,7 +15,7 @@ public:
 
 	static const sf::Vector2f VELOCITY;
 
-	void handleCollision(entityType type, sf::FloatRect collisionRect);
+	bool handleCollision(entityType type, sf::FloatRect collisionRect);
 	entityType getType();
 
 private:

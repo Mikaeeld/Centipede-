@@ -43,17 +43,26 @@ GameEntity::entityType Bullet::getType()
 	return entityType::Bullet;
 }
 
-void Bullet::handleCollision(entityType type, sf::FloatRect collisionRect)
+#include <iostream>
+
+bool Bullet::handleCollision(entityType type, sf::FloatRect collisionRect)
 {
+	(void)collisionRect;
+
 	switch (type)
 	{
 	case entityType::Ship:
+	case entityType::Explosion:
 	{
+		return false;
 		break;
 	}
 	default:
 	{
 		this->toDelete_ = true;
+		break;
 	}
 	}
+
+	return true;
 }

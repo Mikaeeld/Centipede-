@@ -11,9 +11,15 @@ public:
     Mushroom();
     ~Mushroom() {}
 
-    void handleCollision(entityType type, sf::FloatRect collisionRect);
+    bool handleCollision(entityType type, sf::FloatRect collisionRect);
     entityType getType();
+    void tick(const sf::Time &time)
+    {
+        (void)time;
+        shot_ = false;
+    }
 
 private:
-float life_;
+    float life_;
+    bool shot_;
 };

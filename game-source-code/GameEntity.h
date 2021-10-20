@@ -128,6 +128,8 @@ public:
 	GameEntity(float period, float phase);
 	~GameEntity() {}
 
+	static bool toDelete(shared_ptr<GameEntity> x) { return x->toDelete(); }
+
 	enum class entityType
 	{
 		Base,
@@ -248,8 +250,11 @@ public:
 
 	bool collidesWith(const GameEntity &other, sf::FloatRect &rect) const;
 
-	virtual void handleCollision(entityType type, sf::FloatRect collisionRect)
+	virtual bool handleCollision(entityType type, sf::FloatRect collisionRect)
 	{
+		(void)type;
+		(void)collisionRect;
+		return false;
 	}
 
 	/**
@@ -284,7 +289,7 @@ public:
 		if (itr_ != keyFrames_.end())
 		{
 			auto size = itr_->texture->getSize();
-			return sf::Vector2f{size.x, size.y};
+			return sf::Vector2f{float(size.x), float(size.y)};
 		}
 
 		return sf::Vector2f{8, 8};

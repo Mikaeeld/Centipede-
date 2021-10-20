@@ -44,7 +44,7 @@ public:
 		centipedeBody14_->updateChain(centipedeBody13_, centipedeBody15_);
 		centipedeBody15_->updateChain(centipedeBody14_, nullptr);
 
-		centipedeHead_->setPosition(160 + 4, 16 + 4);
+		centipedeHead_->setPosition(200, 4 - 8);
 
 		entityManager.addEntity(centipedeHead_);
 		entityManager.addEntity(centipedeBody1_);
@@ -62,6 +62,8 @@ public:
 		entityManager.addEntity(centipedeBody13_);
 		entityManager.addEntity(centipedeBody14_);
 		entityManager.addEntity(centipedeBody15_);
+
+		entityManager.addEntity(GameEntity::entityType::Mushroom, sf::Vector2f{104, -8});
 	}
 
 private:

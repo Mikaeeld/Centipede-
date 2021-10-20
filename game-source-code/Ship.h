@@ -25,17 +25,23 @@ public:
 		Right
 	};
 
-	enum class Condition{
+	enum class Condition
+	{
 		Alive,
 		Dying
 	};
 
 	void inputMove(Direction direction, sf::Time time);
 	void tick(const sf::Time &time);
-	void handleCollision(entityType type, sf::FloatRect collisionRect);
+	bool handleCollision(entityType type, sf::FloatRect collisionRect);
 	void fire();
 	void explode();
 	void normal();
+
+	const Condition &getCondition()
+	{
+		return condition_;
+	}
 
 	entityType getType();
 
