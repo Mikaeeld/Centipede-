@@ -20,7 +20,6 @@ PlayState::PlayState()
 			}
 		}
 	}
-	entityManager_.addEntity(ship_);
 
 	centipedeSpeed_ = Speed_ptr(new float(80.0f));
 	centipede_ = Centipede(entityManager_, centipedeSpeed_);
