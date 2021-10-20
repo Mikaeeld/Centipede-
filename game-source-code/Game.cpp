@@ -170,7 +170,10 @@ void Game::handleInput()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
             state_ = GameScene::play;
+            sf::sleep(sf::Time(sf::seconds(0.25)));
+            clock_.restart();
         }
+
         break;
     }
 

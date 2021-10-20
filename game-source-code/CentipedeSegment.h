@@ -35,7 +35,7 @@ public:
 	void tick(const sf::Time &time);
 	void setSpeed(const float &speed);
 	const float &getSpeed() const;
-	const bool &isHead() const;
+	const bool &isHead() const { return isHead_; }
 
 	constexpr static const float NORMAL_RANGE = 40.0f;
 	constexpr static const float KEYFRAME_INTERVAL = NORMAL_RANGE / 8.0f;
