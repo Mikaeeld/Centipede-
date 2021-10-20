@@ -6,6 +6,7 @@ void EntityManager::tick(const sf::Time &time)
 	auto it = entities_.begin();
 	while (it != entities_.end())
 	{
+		// std::cout << entities_.size() << " " << dynamicEntities_.size() << " " << staticEntities_.size() << std::endl;
 		auto entity = *it;
 		if (entity->animate())
 		{
@@ -19,10 +20,12 @@ void EntityManager::tick(const sf::Time &time)
 			entity->createQueue_.pop();
 			addEntity(toCreate.first, toCreate.second);
 		}
-		if (entity->toDelete_)
+		if (entity->toDelete())
 		{
-			entityCounts_.find(entity->getType())->second--;
-			it = entities_.erase(it);
+			// entityCounts_.find(entity->getType())->second--;
+			// it = entities_.erase(it);
+			// it = entities_.erase(it);
+			it = removeEntity(*it);
 		}
 		else
 		{
@@ -30,41 +33,6 @@ void EntityManager::tick(const sf::Time &time)
 		}
 	}
 }
-
-// vector<Collision> EntityManager::getCollisions()
-// {
-// 	vector<Collision> out;
-// 	for (auto a = entities_.begin(); a != entities_.end(); ++a)
-// 	{
-// 		for (auto b = a + 1; b != entities_.end(); ++b)
-// 		{
-
-// 			if ((*a)->collidesWith(**b))
-// 			{
-// 				auto collision = Collision{*a, *b};
-// 				out.push_back(collision);
-// 			}
-// 		}
-// 	}
-// 	return out;
-// }
-
-// bool EntityManager::collisionMatch(const Collision &collision, const CollisionDescriptor &description)
-// {
-// 	if (typeExists(collision.a, description.a) && typeExists(collision.b, description.b))
-// 		return true;
-
-// 	if (typeExists(collision.b, description.a) && typeExists(collision.a, description.b))
-// 		return true;
-
-// 	return false;
-// }
-
-// bool EntityManager::typeExists(const GameEntity_ptr &entity, const string &condition)
-// {
-// 	auto types = (*entity).getTypes();
-// 	return types.find(condition) != types.end();
-// }
 
 GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 {
@@ -88,7 +56,7 @@ GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 	{
 		return shared_ptr<DDT>(new DDT());
 	}
-		case GameEntity::entityType::Explosion:
+	case GameEntity::entityType::Explosion:
 	{
 		return shared_ptr<Explosion>(new Explosion());
 	}
@@ -102,6 +70,7 @@ GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 int EntityManager::addEntity(GameEntity::entityType type, sf::Vector2f location)
 {
 	auto entity = entityFactory(type);
+
 	entities_.insert(entity);
 	entity->setPosition(location);
 	if (entityCounts_.find(type) == entityCounts_.end())
@@ -116,35 +85,68 @@ int EntityManager::addEntity(const GameEntity_ptr &entity)
 {
 
 	entities_.insert(entity);
+	auto type = entity->getType();
+	if (entityCounts_.find(type) == entityCounts_.end())
+	{
+		entityCounts_.insert(std::pair<GameEntity::entityType, int>(type, 0));
+	}
+	entityCounts_.find(type)->second++;
 	return 1;
 }
 
-void EntityManager::removeEntity(const GameEntity_ptr &entity)
+set<GameEntity_ptr>::iterator EntityManager::removeEntity(const GameEntity_ptr &entity)
 {
 	auto type = entity->getType();
-	auto it = find(entities_.begin(), entities_.end(), entity);
+	auto it = entities_.find(entity);
 	if (it != entities_.end())
 	{
-		entities_.erase(it);
+		it = entities_.erase(it);
 	}
 	entityCounts_.find(type)->second--;
+	return it;
 }
 
 // This can be smartened up by getting all collisions, sorting them byrectanlge area in a queue and handling them
 void EntityManager::checkCollisions()
 {
+
+	set<GameEntity_ptr> dynamicEntities;
+
 	for (auto entity : entities_)
 	{
-		if (entity->dynamic_)
+		if (entity->isDynamic())
 		{
+			dynamicEntities.insert(entity);
+
 			for (auto entity2 : entities_)
 			{
-				sf::FloatRect rectangle;
-				if (entity != entity2 && entity->getGlobalBounds().intersects(entity2->getGlobalBounds(), rectangle))
+				if (!entity2->isDynamic())
 				{
-					entity->handleCollision(entity2->getType(), rectangle);
-					entity2->handleCollision(entity->getType(), rectangle);
+					sf::FloatRect rectangle;
+					if (entity != entity2 && entity->getGlobalBounds().intersects(entity2->getGlobalBounds(), rectangle))
+					{
+						entity->handleCollision(entity2->getType(), rectangle);
+						entity2->handleCollision(entity->getType(), rectangle);
+					}
 				}
+			}
+		}
+	}
+
+	// Check dynamic entity colliding with another dynamic entity
+	for (auto i = dynamicEntities.begin(); i != dynamicEntities.end(); ++i)
+	{
+		auto entity = *i;
+		auto j = i;
+		j++;
+		for (; j != dynamicEntities.end(); ++j)
+		{
+			auto entity2 = *j;
+			sf::FloatRect rectangle;
+			if (entity->getGlobalBounds().intersects(entity2->getGlobalBounds(), rectangle))
+			{
+				entity->handleCollision(entity2->getType(), rectangle);
+				entity2->handleCollision(entity->getType(), rectangle);
 			}
 		}
 	}

@@ -6,9 +6,6 @@ CentipedeSegment::CentipedeSegment(const shared_ptr<CentipedeSegment> front, con
 	speed_ = speed;
 	originAtCenter_ = true;
 	const string base = resourcePath() + "Sprites/Centipede/";
-
-	dynamic_ = true;
-
 	// Load Textures
 
 	for (int i = 1; i <= 10; i++)
@@ -66,6 +63,9 @@ void CentipedeSegment::updateChain(const shared_ptr<CentipedeSegment> front, con
 
 	// Check if there is no segment in front (nullptr)
 	isHead_ = !front ? true : false;
+
+	dynamic_ = isHead_;
+
 	updateAnimation();
 }
 
@@ -368,12 +368,15 @@ void CentipedeSegment::handleCollision(entityType type, sf::FloatRect collisionR
 	{
 		if (isHead_)
 		{
-			// initiate a turn
-			initiateTurn();
-			// std::cout << "Centi - Mush collision..." << std::endl;
-			// recursively push mushroom location to children
-			auto loc = gridLocate();
-			insertTempCollisionBack(pair<int, int>(loc.x, loc.y));
+
+			if (!isTurning_)
+			{
+				// recursively push mushroom location to children
+				auto loc = gridLocate();
+				auto cell = pair<int, int>(loc.x, loc.y);
+				tempCollisions_.insert(cell);
+				insertTempCollisionBack(cell);
+			}
 		}
 	}
 	default:

@@ -24,11 +24,9 @@ public:
 	 */
 	void tick(const sf::Time &time);
 
-	static GameEntity_ptr entityFactory(GameEntity::entityType type);
 	int addEntity(GameEntity::entityType type, sf::Vector2f location = sf::Vector2f{0.0f, 0.0f});
 	int addEntity(const GameEntity_ptr &entity);
-	void removeEntity(const GameEntity_ptr &entity);
-	void checkCollisions();
+	set<GameEntity_ptr>::iterator removeEntity(const GameEntity_ptr &entity);
 
 	const set<GameEntity_ptr> &getEntities() const
 	{
@@ -40,4 +38,6 @@ public:
 private:
 	set<GameEntity_ptr> entities_;
 	map<GameEntity::entityType, int> entityCounts_;
+	void checkCollisions();
+	static GameEntity_ptr entityFactory(GameEntity::entityType type);
 };

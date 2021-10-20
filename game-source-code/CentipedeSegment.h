@@ -26,20 +26,6 @@ namespace CentipedeMove
 		Left,
 		Right
 	};
-
-	static string toString(const YDirection &d)
-	{
-		switch (d)
-		{
-		case YDirection::Up:
-			return "Y:UP";
-		case YDirection::Down:
-			return "Y:DOWN";
-
-		default:
-			return "";
-		}
-	}
 }
 
 class CentipedeSegment : public GameEntity

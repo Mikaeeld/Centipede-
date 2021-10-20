@@ -272,8 +272,6 @@ public:
 	const AnimateMode &getAnimateMode() const { return animateMode_; }
 
 	void setAnimateMode(AnimateMode mode);
-	bool toDelete_ = false;
-	bool dynamic_ = false;
 	queue<pair<entityType, sf::Vector2f>> createQueue_;
 
 	const bool &originAtCenter() const
@@ -292,8 +290,13 @@ public:
 		return sf::Vector2f{8, 8};
 	}
 
+	const bool &toDelete() const { return toDelete_; }
+	const bool &isDynamic() const { return dynamic_; }
+
 protected:
 	bool originAtCenter_ = true;
+	bool toDelete_ = false;
+	bool dynamic_ = false;
 
 private:
 	unordered_set<string> types_;
