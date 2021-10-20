@@ -7,6 +7,8 @@ CentipedeSegment::CentipedeSegment(const shared_ptr<CentipedeSegment> front, con
 	originAtCenter_ = true;
 	const string base = resourcePath() + "Sprites/Centipede/";
 
+	dynamic_ = true;
+
 	// Load Textures
 
 	for (int i = 1; i <= 10; i++)
@@ -136,6 +138,50 @@ void CentipedeSegment::handleTurn()
 	}
 }
 
+void CentipedeSegment::initiateTurn()
+{
+	if (!isTurning_)
+	{
+		auto halfCell = GameGrid::CELL_SIZE / 2;
+		float middleX;
+		int turnTargetX;
+		middleX = (gridLocate().x * GameGrid::CELL_SIZE) + halfCell;
+		if (targetXDir_ == CentipedeMove::XDirection::Right)
+		{												   // moving right
+			targetXDir_ = CentipedeMove::XDirection::Left; // invert X direction
+			turnTargetX = gridLocate().x - 1;
+		}
+		else
+		{													// moving left
+			targetXDir_ = CentipedeMove::XDirection::Right; // invert X direction
+			turnTargetX = gridLocate().x + 1;
+		}
+
+		// Check if Y direction needs to be inverted
+		if (targetYDir_ == CentipedeMove::YDirection::Down && getPosition().y > GameGrid::PLAYER_AREA_Y_MAX - GameGrid::CELL_SIZE)
+		{
+			targetYDir_ = CentipedeMove::YDirection::Up;
+		}
+		else if (targetYDir_ == CentipedeMove::YDirection::Up && (getPosition().y < GameGrid::PLAYER_AREA_Y_MIN + GameGrid::CELL_SIZE || getPosition().y < GameGrid::Y_MIN + GameGrid::CELL_SIZE))
+		{
+			targetYDir_ = CentipedeMove::YDirection::Down;
+		}
+
+		targetTurnCell_.first = turnTargetX;
+		targetTurnCell_.second = gridLocate().y;
+
+		if (targetYDir_ == CentipedeMove::YDirection::Down)
+		{
+			targetTurnCell_.second = targetTurnCell_.second + 1;
+		}
+		else
+		{
+			targetTurnCell_.second = targetTurnCell_.second - 1;
+		}
+		turn(middleX);
+	}
+}
+
 void CentipedeSegment::checkGridBound()
 {
 	if (isTurning_)
@@ -145,56 +191,55 @@ void CentipedeSegment::checkGridBound()
 	else
 	{ // Checking if X is out of bounds of grid
 
-		bool initiateTurn = false;
 		auto halfCell = GameGrid::CELL_SIZE / 2;
-		float middleX;
-		int turnTargetX;
 
 		if (targetXDir_ == CentipedeMove::XDirection::Right)
 		{ // moving right
-
 			if (getPosition().x > GameGrid::X_MAX - halfCell)
-			{ // initiate turn
-				initiateTurn = true;
-				targetXDir_ = CentipedeMove::XDirection::Left; // invert X direction
-				middleX = GameGrid::X_MAX - halfCell;
-				turnTargetX = gridLocate().x - 1;
-			}
+				initiateTurn();
 		}
 		else
 		{ // moving left
 			if (getPosition().x < GameGrid::X_MIN + halfCell)
-			{ // initiate turn
-				initiateTurn = true;
-				targetXDir_ = CentipedeMove::XDirection::Right; // invert X direction
-				middleX = GameGrid::X_MIN + halfCell;
-				turnTargetX = gridLocate().x + 1;
-			}
+				initiateTurn();
 		}
 
-		if (initiateTurn)
+		auto it = tempCollisions_.begin();
+		while (it != tempCollisions_.end())
 		{
-			// Check if Y direction needs to be inverted
-			if (targetYDir_ == CentipedeMove::YDirection::Down && getPosition().y > GameGrid::PLAYER_AREA_Y_MAX - GameGrid::CELL_SIZE)
+			auto cell = *it;
+			auto loc = gridLocate();
+			bool erase = false;
+			if (cell.first == loc.x && cell.second == loc.y)
 			{
-				targetYDir_ = CentipedeMove::YDirection::Up;
-			}
-			else if (targetYDir_ == CentipedeMove::YDirection::Up && (getPosition().y < GameGrid::PLAYER_AREA_Y_MIN + GameGrid::CELL_SIZE || getPosition().y < GameGrid::Y_MIN + GameGrid::CELL_SIZE))
-			{
-				targetYDir_ = CentipedeMove::YDirection::Down;
+
+				auto xTrigger = (cell.first * GameGrid::CELL_SIZE) + GameGrid::HALF_CELL;
+				if (targetXDir_ == CentipedeMove::XDirection::Right)
+				{ // moving right
+					if (getPosition().x > xTrigger)
+					{
+						initiateTurn();
+						erase = true;
+					}
+				}
+				else
+				{ // moving left
+					if (getPosition().x < xTrigger)
+					{
+						initiateTurn();
+						erase = true;
+					}
+				}
 			}
 
-			targetTurnCell_.first = turnTargetX;
-			targetTurnCell_.second = gridLocate().y;
-			if (targetYDir_ == CentipedeMove::YDirection::Down)
+			if (erase)
 			{
-				targetTurnCell_.second = targetTurnCell_.second + 1;
+				it = tempCollisions_.erase(it);
 			}
 			else
 			{
-				targetTurnCell_.second = targetTurnCell_.second - 1;
+				it++;
 			}
-			turn(middleX);
 		}
 	}
 }
@@ -278,5 +323,61 @@ void CentipedeSegment::updateBack(const sf::Time &time)
 	if (back_ != nullptr)
 	{
 		back_->updateBack(time);
+	}
+}
+
+GameEntity::entityType CentipedeSegment::getType()
+{
+	return GameEntity::entityType::CentipedeSegment;
+}
+
+void CentipedeSegment::insertTempCollisionBack(const pair<int, int> location)
+{
+
+	if (back_ != nullptr)
+	{
+		back_->tempCollisions_.insert(location);
+		back_->insertTempCollisionBack(location);
+	}
+}
+
+void CentipedeSegment::clearTempCollisionBack()
+{
+
+	if (back_ != nullptr)
+	{
+		back_->tempCollisions_.clear();
+		back_->clearTempCollisionBack();
+	}
+}
+
+void CentipedeSegment::handleCollision(entityType type, sf::FloatRect collisionRect)
+{
+	switch (type)
+	{
+	case entityType::Bullet:
+	{ // split segment
+
+		break;
+	}
+	case entityType::Explosion:
+	{ // split segment
+		break;
+	}
+	case entityType::Mushroom:
+	{
+		if (isHead_)
+		{
+			// initiate a turn
+			initiateTurn();
+			// std::cout << "Centi - Mush collision..." << std::endl;
+			// recursively push mushroom location to children
+			auto loc = gridLocate();
+			insertTempCollisionBack(pair<int, int>(loc.x, loc.y));
+		}
+	}
+	default:
+		// none
+		break;
 	}
 }

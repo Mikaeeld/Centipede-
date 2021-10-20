@@ -135,7 +135,8 @@ public:
 		Mushroom,
 		Bullet,
 		DDT,
-		Explosion
+		Explosion,
+		CentipedeSegment
 	};
 
 	virtual entityType getType()

@@ -38,17 +38,22 @@ void Bullet::tick(const sf::Time &time)
 
 const sf::Vector2f Bullet::VELOCITY = sf::Vector2f{0.0f, -400.0f};
 
-GameEntity::entityType Bullet::getType() {
+GameEntity::entityType Bullet::getType()
+{
 	return entityType::Bullet;
 }
 
-void Bullet::handleCollision(entityType type, sf::FloatRect collisionRect) {
-	switch(type){
-		case entityType::Ship:{
-			break;
-		}
-		default:{
-			this->toDelete_ = true;
-		}
+void Bullet::handleCollision(entityType type, sf::FloatRect collisionRect)
+{
+	switch (type)
+	{
+	case entityType::Ship:
+	{
+		break;
+	}
+	default:
+	{
+		this->toDelete_ = true;
+	}
 	}
 }

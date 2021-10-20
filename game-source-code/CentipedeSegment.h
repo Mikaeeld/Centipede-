@@ -3,6 +3,7 @@
 #include "GameEntity.h"
 #include "SFML/Graphics.hpp"
 #include "GameGrid.h"
+#include <set>
 
 using Speed_ptr = shared_ptr<float>;
 
@@ -63,6 +64,10 @@ public:
 	 */
 	void updateChain(const shared_ptr<CentipedeSegment> front, const shared_ptr<CentipedeSegment> back);
 
+	GameEntity::entityType getType();
+
+	void handleCollision(entityType type, sf::FloatRect collisionRect);
+
 private:
 	shared_ptr<CentipedeSegment> front_;
 	shared_ptr<CentipedeSegment> back_;
@@ -75,6 +80,8 @@ private:
 	const bool &headTurning() const;
 	Speed_ptr speed_;
 	pair<int, int> targetTurnCell_;
+
+	set<pair<int, int>> tempCollisions_;
 
 	/**
 	 * @brief Is called if segment is a head
@@ -89,6 +96,9 @@ private:
 	 */
 	void updateBack(const sf::Time &time);
 
+	void insertTempCollisionBack(const pair<int, int> location);
+	void clearTempCollisionBack();
+
 	/**
 	 * @brief Checks if the movement of the centipede is grid bound, corrects if not
 	 *
@@ -98,6 +108,7 @@ private:
 
 	void updateAnimation();
 
+	void initiateTurn();
 	void turn(const float &middleX);
 
 	void handleTurn();
