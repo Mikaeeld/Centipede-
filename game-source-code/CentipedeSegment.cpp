@@ -42,9 +42,14 @@ CentipedeSegment::CentipedeSegment(const shared_ptr<CentipedeSegment> front, con
 
 	updateChain(front, back);
 
-	targetYDir_ = Centipede::YDirection::Down;
-	targetXDir_ = Centipede::XDirection::Left;
-	currentDir_ = Centipede::Direction::Left;
+	targetYDir_ = CentipedeMove::YDirection::Down;
+	targetXDir_ = CentipedeMove::XDirection::Left;
+	currentDir_ = CentipedeMove::Direction::Left;
+}
+
+const float CentipedeSegment::manhattanDistance(const shared_ptr<CentipedeSegment> other) const
+{
+	return abs(other->getPosition().x - getPosition().x) + abs(other->getPosition().y - getPosition().y);
 }
 
 const sf::Vector2i CentipedeSegment::gridLocate()
@@ -59,25 +64,30 @@ void CentipedeSegment::updateChain(const shared_ptr<CentipedeSegment> front, con
 
 	// Check if there is no segment in front (nullptr)
 	isHead_ = !front ? true : false;
-	if (isHead_)
-	{
-		setAnimateStart(0.0f);
-		setAnimateEnd(NORMAL_RANGE);
-	}
-	else
-	{
-		setAnimateStart(50.0f);
-		setAnimateEnd(NORMAL_RANGE + 50.0f);
-	}
+	updateAnimation();
 }
 
 void CentipedeSegment::tick(const sf::Time &time)
 {
 	if (isHead_)
 		updatePosition(time);
+
+	updateAnimation();
 }
 
-void CentipedeSegment::updateTurnAnimation(const pair<float, float> &diff) {}
+void CentipedeSegment::updateAnimation()
+{
+
+	if (targetXDir_ == CentipedeMove::XDirection::Left)
+		setRotation(0);
+	else
+		setRotation(180);
+
+	if (isHead_)
+		setAnimateTimings(0.0f, NORMAL_RANGE);
+	else
+		setAnimateTimings(50.0f, 50.0f + NORMAL_RANGE);
+}
 
 void CentipedeSegment::turn(const float &middleX)
 {
@@ -85,7 +95,7 @@ void CentipedeSegment::turn(const float &middleX)
 
 	auto yDiff = abs(middleX - getPosition().x);
 	setPosition(middleX, getPosition().y);
-	if (targetYDir_ == Centipede::YDirection::Down)
+	if (targetYDir_ == CentipedeMove::YDirection::Down)
 	{
 		move(0.0f, yDiff);
 	}
@@ -101,17 +111,13 @@ void CentipedeSegment::handleTurn()
 	auto targetX = (GameGrid::CELL_SIZE * targetTurnCell_.first) + GameGrid::HALF_CELL;
 	auto targetY = (GameGrid::CELL_SIZE * targetTurnCell_.second) + GameGrid::HALF_CELL;
 
-	// auto cLoc = gridLocate();
-
 	auto diff = make_pair<float, float>(targetX - getPosition().x, targetY - getPosition().y);
-
-	// std::cout << "diff: " << diff.first << ", " << diff.second << " Tcell: " << targetTurnCell_.first << ", " << targetTurnCell_.second << " YDir: " << Centipede::toString(targetYDir_) << " CLoc " << cLoc.x << ", " << cLoc.x << std::endl;
-
 	auto translate = sf::Vector2f{0.0f, 0.0f};
-	if ((targetYDir_ == Centipede::YDirection::Down && diff.second <= 0) || (targetYDir_ == Centipede::YDirection::Up && diff.second >= 0))
+
+	if ((targetYDir_ == CentipedeMove::YDirection::Down && diff.second <= 0) || (targetYDir_ == CentipedeMove::YDirection::Up && diff.second >= 0))
 	{
 		float unit;
-		if (targetYDir_ == Centipede::YDirection::Down)
+		if (targetYDir_ == CentipedeMove::YDirection::Down)
 		{
 			unit = diff.first < 0 ? 1.0f : -1.0f;
 		}
@@ -124,7 +130,7 @@ void CentipedeSegment::handleTurn()
 		move(translate);
 	}
 
-	if ((targetXDir_ == Centipede::XDirection::Left && diff.first >= 0) || (targetXDir_ == Centipede::XDirection::Right && diff.first <= 0))
+	if ((targetXDir_ == CentipedeMove::XDirection::Left && diff.first >= 0) || (targetXDir_ == CentipedeMove::XDirection::Right && diff.first <= 0))
 	{
 		isTurning_ = false;
 	}
@@ -144,13 +150,13 @@ void CentipedeSegment::checkGridBound()
 		float middleX;
 		int turnTargetX;
 
-		if (targetXDir_ == Centipede::XDirection::Right)
+		if (targetXDir_ == CentipedeMove::XDirection::Right)
 		{ // moving right
 
 			if (getPosition().x > GameGrid::X_MAX - halfCell)
 			{ // initiate turn
 				initiateTurn = true;
-				targetXDir_ = Centipede::XDirection::Left; // invert X direction
+				targetXDir_ = CentipedeMove::XDirection::Left; // invert X direction
 				middleX = GameGrid::X_MAX - halfCell;
 				turnTargetX = gridLocate().x - 1;
 			}
@@ -160,7 +166,7 @@ void CentipedeSegment::checkGridBound()
 			if (getPosition().x < GameGrid::X_MIN + halfCell)
 			{ // initiate turn
 				initiateTurn = true;
-				targetXDir_ = Centipede::XDirection::Right; // invert X direction
+				targetXDir_ = CentipedeMove::XDirection::Right; // invert X direction
 				middleX = GameGrid::X_MIN + halfCell;
 				turnTargetX = gridLocate().x + 1;
 			}
@@ -169,18 +175,18 @@ void CentipedeSegment::checkGridBound()
 		if (initiateTurn)
 		{
 			// Check if Y direction needs to be inverted
-			if (targetYDir_ == Centipede::YDirection::Down && getPosition().y > GameGrid::PLAYER_AREA_Y_MAX - GameGrid::CELL_SIZE)
+			if (targetYDir_ == CentipedeMove::YDirection::Down && getPosition().y > GameGrid::PLAYER_AREA_Y_MAX - GameGrid::CELL_SIZE)
 			{
-				targetYDir_ = Centipede::YDirection::Up;
+				targetYDir_ = CentipedeMove::YDirection::Up;
 			}
-			else if (targetYDir_ == Centipede::YDirection::Up && (getPosition().y < GameGrid::PLAYER_AREA_Y_MIN + GameGrid::CELL_SIZE || getPosition().y < GameGrid::Y_MIN + GameGrid::CELL_SIZE))
+			else if (targetYDir_ == CentipedeMove::YDirection::Up && (getPosition().y < GameGrid::PLAYER_AREA_Y_MIN + GameGrid::CELL_SIZE || getPosition().y < GameGrid::Y_MIN + GameGrid::CELL_SIZE))
 			{
-				targetYDir_ = Centipede::YDirection::Down;
+				targetYDir_ = CentipedeMove::YDirection::Down;
 			}
 
 			targetTurnCell_.first = turnTargetX;
 			targetTurnCell_.second = gridLocate().y;
-			if (targetYDir_ == Centipede::YDirection::Down)
+			if (targetYDir_ == CentipedeMove::YDirection::Down)
 			{
 				targetTurnCell_.second = targetTurnCell_.second + 1;
 			}
@@ -188,7 +194,6 @@ void CentipedeSegment::checkGridBound()
 			{
 				targetTurnCell_.second = targetTurnCell_.second - 1;
 			}
-			// targetTurnCell_.second += (targetYDir_ == Centipede::YDirection::Down) ? 1 : -1;
 			turn(middleX);
 		}
 	}
@@ -199,11 +204,11 @@ void CentipedeSegment::updatePosition(const sf::Time &time)
 	float distance;
 	if (isTurning_)
 	{
-		distance = (targetYDir_ == Centipede::YDirection::Down) ? 1.0f : -1.0f;
+		distance = (targetYDir_ == CentipedeMove::YDirection::Down) ? 1.0f : -1.0f;
 	}
 	else
 	{
-		distance = (targetXDir_ == Centipede::XDirection::Right) ? 1.0f : -1.0f;
+		distance = (targetXDir_ == CentipedeMove::XDirection::Right) ? 1.0f : -1.0f;
 	}
 	distance *= *speed_ * time.asSeconds();
 	auto translate = isTurning_ ? sf::Vector2f{0.0f, distance} : sf::Vector2f{distance, 0.0f};
@@ -212,50 +217,49 @@ void CentipedeSegment::updatePosition(const sf::Time &time)
 
 	checkGridBound();
 
-	updateBack();
+	updateBack(time);
 }
 
-void CentipedeSegment::followFront()
+void CentipedeSegment::followFront(const sf::Time &time)
 {
 	if (front_)
 	{
-		// std::cout << "Following..." << std::endl;
 		auto diff = sf::Vector2f{front_->getPosition().x - getPosition().x, front_->getPosition().y - getPosition().y};
 
-		// std::cout << "Following... " << diff.x << "      " << diff.y << std::endl;
+		if (isTurning_)
+		{
+			float distance = (targetYDir_ == CentipedeMove::YDirection::Down) ? 1.0f : -1.0f;
+			distance *= *speed_ * time.asSeconds();
+			auto translate = isTurning_ ? sf::Vector2f{0.0f, distance} : sf::Vector2f{distance, 0.0f};
 
-		// setPosition(front_->getPosition().x + 8, front_->getPosition().y);
-
-		if (diff.y != 0.0f)
-		{ // Front segment has turned
-
-			if (diff.y >= GameGrid::CELL_SIZE)
-			{ // will have to turn
-
-				targetTurnCell_ = front_->targetTurnCell_;
-				targetXDir_ = front_->targetXDir_;
-				targetYDir_ = front_->targetYDir_;
-				auto middleX = gridLocate().x + GameGrid::CELL_SIZE / 2;
-				turn(middleX);
-			}
-			else if (isTurning_)
-			{ // convert dx to dy
-				auto magX = abs(diff.x);
-				diff.y += diff.y > 0 ? -(GameGrid::CELL_SIZE + magX) : GameGrid::CELL_SIZE + magX;
-				move(0.0f, diff.y);
-				handleTurn();
-			}
-			else
-			{ // convert dy to dx
-				auto magY = abs(diff.y);
-				diff.x += diff.x > 0 ? -(GameGrid::CELL_SIZE + magY) : GameGrid::CELL_SIZE + magY;
-				move(diff.x, 0.0f);
-			}
+			move(translate);
+			checkGridBound();
 		}
 		else
-		{ // Just follow
-			diff.x += diff.x > 0 ? -GameGrid::CELL_SIZE : GameGrid::CELL_SIZE;
-			move(diff);
+		{
+			if (front_->isTurning_)
+			{
+				float distance = (targetXDir_ == CentipedeMove::XDirection::Right) ? 1.0f : -1.0f;
+				distance *= *speed_ * time.asSeconds();
+				auto translate = isTurning_ ? sf::Vector2f{0.0f, distance} : sf::Vector2f{distance, 0.0f};
+
+				move(translate);
+				checkGridBound();
+			}
+			else
+			{
+				targetXDir_ = front_->targetXDir_;
+				targetYDir_ = front_->targetYDir_;
+
+				if (front_->targetXDir_ == CentipedeMove::XDirection::Left)
+				{
+					setPosition(front_->getPosition().x + 8, front_->getPosition().y);
+				}
+				else
+				{
+					setPosition(front_->getPosition().x - 8, front_->getPosition().y);
+				}
+			}
 		}
 	}
 	else
@@ -264,15 +268,15 @@ void CentipedeSegment::followFront()
 	}
 }
 
-void CentipedeSegment::updateBack()
+void CentipedeSegment::updateBack(const sf::Time &time)
 {
 	if (!isHead_)
 	{
-		followFront();
+		followFront(time);
 	}
 
 	if (back_ != nullptr)
 	{
-		back_->updateBack();
+		back_->updateBack(time);
 	}
 }

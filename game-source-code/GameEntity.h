@@ -230,6 +230,8 @@ public:
 	 */
 	void setAnimateEnd(const float &end);
 
+	void setAnimateTimings(const float &start, const float &end);
+
 	/**
 	 * @brief Returns true if the animation has completed its key frame sequence.
 	 *

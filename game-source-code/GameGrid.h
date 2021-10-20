@@ -25,21 +25,4 @@ namespace GameGrid
 	const float PLAYER_AREA_Y_MIN = Y_MAX - (6 * CELL_SIZE);
 	const float PLAYER_AREA_Y_MAX = Y_MAX;
 
-	// static const pair<int, int> locate(const GameEntity &entity)
-	// {
-	// 	sf::Vector2f position;
-	// 	if (entity.originAtCenter())
-	// 	{
-	// 		position = entity.getPosition();
-	// 	}
-	// 	else
-	// 	{
-	// 		auto size = entity.getCurrentSize();
-	// 		position.x = entity.getPosition().x + (size.x / 2);
-	// 		position.y = entity.getPosition().y + (size.y / 2);
-	// 	}
-
-	// 	return make_pair<int, int>(round((position.x) / CELL_SIZE), round(position.y / CELL_SIZE));
-	// }
-
 }

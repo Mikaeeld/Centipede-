@@ -6,7 +6,7 @@
 
 using Speed_ptr = shared_ptr<float>;
 
-namespace Centipede
+namespace CentipedeMove
 {
 	enum class YDirection
 	{
@@ -54,7 +54,7 @@ public:
 	constexpr static const float KEYFRAME_INTERVAL = NORMAL_RANGE / 8.0f;
 
 	/**
-	 * @brief Used to initalize segment in the chain of segments making the Centipede.
+	 * @brief Used to initalize segment in the chain of segments making the CentipedeMove.
 	 *
 	 *  Ensures that there is always one head per centipde.
 	 *
@@ -68,10 +68,10 @@ private:
 	shared_ptr<CentipedeSegment> back_;
 	bool isHead_;
 	bool isTurning_;
-	Centipede::YDirection targetYDir_;
-	Centipede::XDirection targetXDir_;
-	Centipede::Direction currentDir_;
-	const float &manhattanDistance(const shared_ptr<CentipedeSegment> &other) const;
+	CentipedeMove::YDirection targetYDir_;
+	CentipedeMove::XDirection targetXDir_;
+	CentipedeMove::Direction currentDir_;
+	const float manhattanDistance(const shared_ptr<CentipedeSegment> other) const;
 	const bool &headTurning() const;
 	Speed_ptr speed_;
 	pair<int, int> targetTurnCell_;
@@ -87,7 +87,7 @@ private:
 	 * @brief Updates each preceding segment recursively, and terminates at the end of the chain.
 	 *
 	 */
-	void updateBack();
+	void updateBack(const sf::Time &time);
 
 	/**
 	 * @brief Checks if the movement of the centipede is grid bound, corrects if not
@@ -96,13 +96,13 @@ private:
 	 */
 	void checkGridBound();
 
-	void updateTurnAnimation(const pair<float, float> &diff);
+	void updateAnimation();
 
 	void turn(const float &middleX);
 
 	void handleTurn();
 
-	void followFront();
+	void followFront(const sf::Time &time);
 
 	const sf::Vector2i gridLocate();
 };

@@ -15,18 +15,9 @@ PlayState::PlayState()
 	entityManager_.addEntity(GameEntity::entityType::Mushroom, sf::Vector2f{120.0f, 150.0f});
 
 	entityManager_.addEntity(ship_);
-	centipedeSpeed_ = Speed_ptr(new float(50.0f));
-	// *centipedeSpeed_ = 0.0f;
 
-	centipedeHead_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, centipedeSpeed_));
-	centipedeBody_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(centipedeHead_, nullptr, centipedeSpeed_));
-
-	centipedeHead_->updateChain(nullptr, centipedeBody_);
-
-	centipedeHead_->setPosition(8 + 4, 2 + 4);
-	centipedeBody_->setPosition(8 + 4, 2 + 4);
-	entityManager_.addEntity(centipedeHead_);
-	entityManager_.addEntity(centipedeBody_);
+	centipedeSpeed_ = Speed_ptr(new float(80.0f));
+	centipede_ = Centipede(entityManager_, centipedeSpeed_);
 }
 
 const vector<Drawable_ptr> PlayState::getDrawable()

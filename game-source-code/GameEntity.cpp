@@ -128,6 +128,13 @@ void GameEntity::setAnimateEnd(const float &end)
 	validateStartStopContraints();
 }
 
+void GameEntity::setAnimateTimings(const float &start, const float &end)
+{
+	animateEnd_ = end;
+	animateStart_ = start;
+	validateStartStopContraints();
+}
+
 void GameEntity::setPeriod(const float &period)
 {
 	period_ = period;

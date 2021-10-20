@@ -1,5 +1,6 @@
 #pragma once
 #include "State.h"
+#include "Centipede.h"
 
 class PlayState : public State
 {
@@ -13,6 +14,5 @@ private:
 	shared_ptr<Ship> ship_;
 	shared_ptr<sf::RectangleShape> playerArea_;
 	Speed_ptr centipedeSpeed_;
-	shared_ptr<CentipedeSegment> centipedeBody_;
-	shared_ptr<CentipedeSegment> centipedeHead_;
+	Centipede centipede_;
 };
