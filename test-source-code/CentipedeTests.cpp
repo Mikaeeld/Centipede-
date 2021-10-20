@@ -128,7 +128,9 @@ TEST_CASE("Testing Centipede With Body movements")
 	head->tick(dt);
 	SUBCASE("Check that centipede has turned down")
 	{
-		CHECK(head->getPosition() == sf::Vector2f(4, 8));
+
+		CHECK(head->getPosition().x < 50);
+		CHECK(head->getPosition().y >= 4);
 		CHECK(testMargin(SegmentsDiff(head, body1), 8, 2));
 		CHECK(testMargin(SegmentsDiff(body1, body2), 8, 2));
 	}
