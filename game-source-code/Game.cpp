@@ -163,11 +163,11 @@ void Game::handleInput()
 
     case GameScene::pause:
     {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
         {
             window_.close();
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
             state_ = GameScene::play;
         }
