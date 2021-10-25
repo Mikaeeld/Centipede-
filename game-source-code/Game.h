@@ -2,7 +2,6 @@
 
 #include "GameWindow.h"
 #include "ResourcePath.h"
-#include "TextureManager.h"
 #include "Ship.h"
 #include "EntityManager.h"
 #include "PlayState.h"
@@ -38,11 +37,10 @@ private:
     float frametime_;
     GameScene state_;
     sf::Sprite splash_;
-    sf::Texture *splashImage_;
+    shared_ptr<sf::Texture> splashImage_;
     sf::Sprite gameover_;
-    sf::Texture *gameoverImage_;
+    shared_ptr<sf::Texture> gameoverImage_;
     sf::Sprite paused_;
-    sf::Texture *pausedImage_;
-    TextureManager textureManager_;
+    shared_ptr<sf::Texture> pausedImage_;
     PlayState playState_;
 };
