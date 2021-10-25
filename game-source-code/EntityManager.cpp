@@ -199,5 +199,11 @@ void EntityManager::checkCollisions()
 
 int EntityManager::getCount(GameEntity::entityType type)
 {
-	return entityCounts_.find(type)->second;
+	if (entityCounts_.find(type) != entityCounts_.end())
+	{
+		return entityCounts_.find(type)->second;
+	}
+	else{
+		return 0;
+	}
 }

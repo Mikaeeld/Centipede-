@@ -8,7 +8,6 @@ PlayState::PlayState()
 	playerArea_->setPosition(0.0f, 200.0f);
 
 	// entityManager_.addEntity(GameEntity::entityType::Ship, sf::Vector2f{120.0f, 200.0f});
-	entityManager_.addEntity(GameEntity::entityType::DDT, sf::Vector2f{120.0f, 80.0f});
 
 	for (float i = 8.0f; i <= 224.0f; i += 8.0f)
 	{
@@ -16,7 +15,7 @@ PlayState::PlayState()
 		{
 			auto trial = (j >= GameGrid::PLAYER_AREA_Y_MIN) ? 0.04 : 0.1;
 
-			if (binomial_trial(trial))
+			if (randomBool(trial))
 			{
 				entityManager_.addEntity(GameEntity::entityType::Mushroom, sf::Vector2f{i, j});
 			}
@@ -52,6 +51,7 @@ void PlayState::update(const sf::Time &time)
 		{
 			toDelete_ = true;
 		}
+		spawnDDT(time);
 	}
 	else
 	{
@@ -62,6 +62,21 @@ void PlayState::update(const sf::Time &time)
 		else
 		{
 			ship_->animateTick(time);
+		}
+	}
+}
+
+void PlayState::spawnDDT(const sf::Time &time)
+{
+	ddtSpawnTime_ -= time.asSeconds();
+	if (ddtSpawnTime_ < 0)
+	{
+		ddtSpawnTime_ = 3.0f;
+		if (entityManager_.getCount(GameEntity::entityType::DDT) < 4 && randomBool())
+		{
+			float x = randomInt(0, 28) * 8 + 8;
+			float y = randomInt(0, 20) * 8 + 4;
+			entityManager_.addEntity(GameEntity::entityType::DDT, sf::Vector2f{x, y});
 		}
 	}
 }

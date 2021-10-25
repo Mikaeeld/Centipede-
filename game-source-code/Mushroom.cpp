@@ -58,6 +58,7 @@ bool Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect)
         break;
     }
     case entityType::Explosion:
+    case entityType::DDT:
     {
         this->toDelete_ = true;
         break;
