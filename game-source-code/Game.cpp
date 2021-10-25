@@ -6,8 +6,9 @@ Game::Game() : window_("Game", sf::Vector2u{900, 960}, 0), tickRate_(120.0f)
     state_ = GameScene::splash;
     window_.toggleBorderless();
 
-    splashImage_ = textureManager_.getResource("Splash");
-    if (splashImage_ == nullptr)
+    splashImage_ = make_shared<sf::Texture>();
+
+    if (!splashImage_->loadFromFile(resourcePath() + "Images/splash.png"))
     {
         std::__throw_runtime_error("Couldn't load Splash image");
     }
@@ -18,8 +19,8 @@ Game::Game() : window_("Game", sf::Vector2u{900, 960}, 0), tickRate_(120.0f)
 
     splash_.scale(scalex, scaley);
 
-    gameoverImage_ = textureManager_.getResource("GameOver");
-    if (gameoverImage_ == nullptr)
+    gameoverImage_ = make_shared<sf::Texture>();
+    if (!gameoverImage_->loadFromFile(resourcePath() + "Images/gameover.png"))
     {
         std::__throw_runtime_error("Couldn't load Splash image");
     }
@@ -30,8 +31,8 @@ Game::Game() : window_("Game", sf::Vector2u{900, 960}, 0), tickRate_(120.0f)
 
     gameover_.scale(scalex, scaley);
 
-    pausedImage_ = textureManager_.getResource("Paused");
-    if (pausedImage_ == nullptr)
+    pausedImage_ = make_shared<sf::Texture>();
+    if (!pausedImage_->loadFromFile(resourcePath() + "Images/paused.png"))
     {
         std::__throw_runtime_error("Couldn't load Splash image");
     }
