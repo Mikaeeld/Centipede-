@@ -148,8 +148,9 @@ GameEntity::entityType Ship::getType()
 	return GameEntity::entityType::Ship;
 }
 
-bool Ship::handleCollision(entityType type, sf::FloatRect collisionRect)
+bool Ship::handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other)
 {
+	(void)other;
 	switch (type)
 	{
 	case entityType::Mushroom:

@@ -50,8 +50,9 @@ void Explosion::tick(const sf::Time &time)
     }
 }
 
-bool Explosion::handleCollision(entityType type, sf::FloatRect collisionRect)
+bool Explosion::handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other)
 {
+    (void)other;
     (void)collisionRect;
     switch (type)
     {

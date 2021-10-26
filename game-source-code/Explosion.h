@@ -12,6 +12,6 @@ public:
     ~Explosion() {}
 
     void tick(const sf::Time &time);
-    bool handleCollision(entityType type, sf::FloatRect collisionRect);
+    bool handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other);
     entityType getType();
 };

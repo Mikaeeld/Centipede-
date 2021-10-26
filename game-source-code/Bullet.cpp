@@ -45,8 +45,9 @@ GameEntity::entityType Bullet::getType()
 
 #include <iostream>
 
-bool Bullet::handleCollision(entityType type, sf::FloatRect collisionRect)
+bool Bullet::handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other)
 {
+	(void)other;
 	(void)collisionRect;
 
 	switch (type)

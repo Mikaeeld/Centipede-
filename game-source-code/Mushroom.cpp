@@ -34,8 +34,9 @@ Mushroom::Mushroom()
     life_ = 0;
 }
 
-bool Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect)
+bool Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other)
 {
+    (void)other;
     (void)collisionRect;
     switch (type)
     {

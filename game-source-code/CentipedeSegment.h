@@ -52,7 +52,7 @@ public:
 
 	GameEntity::entityType getType();
 
-	bool handleCollision(entityType type, sf::FloatRect collisionRect);
+	bool handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other);
 
 private:
 	shared_ptr<CentipedeSegment> front_;
@@ -104,4 +104,6 @@ private:
 	void shot();
 
 	const sf::Vector2i gridLocate();
+
+	bool triggerShot_;
 };

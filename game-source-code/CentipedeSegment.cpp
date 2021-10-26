@@ -5,6 +5,7 @@ CentipedeSegment::CentipedeSegment(const shared_ptr<CentipedeSegment> front, con
 {
 	speed_ = speed;
 	originAtCenter_ = true;
+	triggerShot_ = false;
 	const string base = resourcePath() + "Sprites/Centipede/";
 	// Load Textures
 
@@ -73,6 +74,12 @@ void CentipedeSegment::tick(const sf::Time &time)
 {
 	if (isHead_)
 		updatePosition(time);
+
+	if (triggerShot_)
+	{
+		triggerShot_ = false;
+		shot();
+	}
 
 	updateAnimation();
 }
@@ -349,14 +356,14 @@ void CentipedeSegment::clearTempCollisionBack()
 	}
 }
 
-bool CentipedeSegment::handleCollision(entityType type, sf::FloatRect collisionRect)
+bool CentipedeSegment::handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other)
 {
 	(void)collisionRect;
 	switch (type)
 	{
 	case entityType::Bullet:
 	{ // split segment
-		shot();
+		triggerShot_ = true;
 		break;
 	}
 	case entityType::Explosion:
@@ -364,10 +371,40 @@ bool CentipedeSegment::handleCollision(entityType type, sf::FloatRect collisionR
 		shot();
 		break;
 	}
+	case entityType::CentipedeSegment:
+	{
+		if (isHead_ && other && (collisionRect.width >= 4 && collisionRect.height >= 4))
+		{
+
+			auto isSelf = false;
+			auto segment = back_;
+			while (segment)
+			{
+				if (segment->getPosition() == other->getPosition())
+				{
+					isSelf = true;
+					break;
+				}
+				segment = segment->back_;
+			}
+
+			if (!isSelf && !isTurning_)
+			{
+
+				// recursively push segment location to children
+				auto loc = gridLocate();
+				auto cell = pair<int, int>(loc.x, loc.y);
+				tempCollisions_.insert(cell);
+				insertTempCollisionBack(cell);
+			}
+		}
+		return false;
+		break;
+	}
 	case entityType::Mushroom:
 	{
 
-		if (isHead_)
+		if (isHead_ && (collisionRect.width >= 4 || collisionRect.height >= 4))
 		{
 			if (!isTurning_)
 			{

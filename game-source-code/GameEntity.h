@@ -251,8 +251,9 @@ public:
 
 	bool collidesWith(const GameEntity &other, sf::FloatRect &rect) const;
 
-	virtual bool handleCollision(entityType type, sf::FloatRect collisionRect)
+	virtual bool handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other)
 	{
+		(void)other;
 		(void)type;
 		(void)collisionRect;
 		return false;

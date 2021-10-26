@@ -153,6 +153,7 @@ void Game::handleInput()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
             state_ = GameScene::play;
+            clock_.restart();
             playState_ = PlayState();
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))

@@ -80,7 +80,8 @@ GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 	{
 		return shared_ptr<Explosion>(new Explosion());
 	}
-	case GameEntity::entityType::Spider:{
+	case GameEntity::entityType::Spider:
+	{
 		return shared_ptr<Spider>(new Spider());
 	}
 	default:
@@ -163,8 +164,8 @@ void EntityManager::checkCollisions()
 					sf::FloatRect rectangle;
 					if (entity != entity2 && entity->getGlobalBounds().intersects(entity2->getGlobalBounds(), rectangle))
 					{
-						auto c1 = entity->handleCollision(entity2->getType(), rectangle);
-						auto c2 = entity2->handleCollision(entity->getType(), rectangle);
+						auto c1 = entity->handleCollision(entity2->getType(), rectangle, entity2);
+						auto c2 = entity2->handleCollision(entity->getType(), rectangle, entity);
 						if (c1 || c2)
 						{
 							goto nextEntity; // one collision only
@@ -190,8 +191,8 @@ void EntityManager::checkCollisions()
 			sf::FloatRect rectangle;
 			if (entity->getGlobalBounds().intersects(entity2->getGlobalBounds(), rectangle))
 			{
-				auto c1 = entity->handleCollision(entity2->getType(), rectangle);
-				auto c2 = entity2->handleCollision(entity->getType(), rectangle);
+				auto c1 = entity->handleCollision(entity2->getType(), rectangle, entity2);
+				auto c2 = entity2->handleCollision(entity->getType(), rectangle, entity);
 				if (c1 || c2)
 					goto nextDynamic; // one collision only
 			}

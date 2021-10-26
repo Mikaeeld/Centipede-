@@ -98,7 +98,7 @@ TEST_CASE("Ship dies correctly")
 {
     auto ship = Ship();
     CHECK(ship.getCondition() == Ship::Condition::Alive);
-    ship.handleCollision(GameEntity::entityType::CentipedeSegment, sf::FloatRect{0.f, 0.f, 10.f, 10.f});
+    ship.handleCollision(GameEntity::entityType::CentipedeSegment, sf::FloatRect{0.f, 0.f, 10.f, 10.f}, shared_ptr<GameEntity>());
     SUBCASE("State changes to dying on collision with centipede")
     {
         CHECK(ship.getCondition() == Ship::Condition::Dying);
@@ -107,7 +107,7 @@ TEST_CASE("Ship dies correctly")
     {
         CHECK(!ship.toDelete());
         auto dt = sf::Time{sf::seconds(0.016)};
-        while(!ship.animateDone())
+        while (!ship.animateDone())
         {
             ship.animateTick(dt);
             ship.tick(dt);

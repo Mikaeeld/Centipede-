@@ -25,29 +25,35 @@ TEST_CASE("Bullet requests removal when out of bounds")
     CHECK(bullet.toDelete());
 }
 
-TEST_CASE("Bullet requests removal on relevant collisions"){
+TEST_CASE("Bullet requests removal on relevant collisions")
+{
     auto bullet = Bullet();
     auto rectangle = sf::FloatRect{0.f, 0.f, 10.f, 10.f};
+    shared_ptr<GameEntity> other;
     CHECK(!bullet.toDelete());
-    SUBCASE("Mushroom"){
-        bullet.handleCollision(GameEntity::entityType::Mushroom, rectangle);
+    SUBCASE("Mushroom")
+    {
+        bullet.handleCollision(GameEntity::entityType::Mushroom, rectangle, other);
         CHECK(bullet.toDelete());
     }
-    SUBCASE("Centipede"){
-        bullet.handleCollision(GameEntity::entityType::CentipedeSegment, rectangle);
+    SUBCASE("Centipede")
+    {
+        bullet.handleCollision(GameEntity::entityType::CentipedeSegment, rectangle, other);
         CHECK(bullet.toDelete());
     }
-    SUBCASE("DDT"){
-        bullet.handleCollision(GameEntity::entityType::DDT, rectangle);
+    SUBCASE("DDT")
+    {
+        bullet.handleCollision(GameEntity::entityType::DDT, rectangle, other);
         CHECK(bullet.toDelete());
     }
-    SUBCASE("No collision with Ship"){
-        bullet.handleCollision(GameEntity::entityType::Ship, rectangle);
+    SUBCASE("No collision with Ship")
+    {
+        bullet.handleCollision(GameEntity::entityType::Ship, rectangle, other);
         CHECK(!bullet.toDelete());
     }
-    SUBCASE("No collision with explosion"){
-        bullet.handleCollision(GameEntity::entityType::Explosion, rectangle);
+    SUBCASE("No collision with explosion")
+    {
+        bullet.handleCollision(GameEntity::entityType::Explosion, rectangle, other);
         CHECK(!bullet.toDelete());
     }
 }
-
