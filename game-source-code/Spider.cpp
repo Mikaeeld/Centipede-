@@ -49,7 +49,7 @@ void Spider::randomizeDirection(const sf::Time &time)
     if (randomizeTime_ < 0)
     {
         randomizeTime_ = 1.5f;
-        //50% chance to change x direction
+        // 50% chance to change x direction
         if (true)
         {
             if (randomBool())
@@ -61,7 +61,7 @@ void Spider::randomizeDirection(const sf::Time &time)
                 xDirection_ = Spider::Direction::Right;
             }
         }
-        //ditto for y
+        // ditto for y
         if (true)
         {
             if (randomBool(0.3f))
@@ -73,7 +73,7 @@ void Spider::randomizeDirection(const sf::Time &time)
                 yDirection_ = Spider::Direction::Down;
             }
         }
-        //30% chance for stopping movement in x or y;
+        // 30% chance for stopping movement in x or y;
         if (randomBool(0.3f))
         {
             if (yDirection_ != Spider::Direction::None)
@@ -139,6 +139,8 @@ bool Spider::handleCollision(entityType type, sf::FloatRect collisionRect)
     case entityType::Explosion:
     {
         this->toDelete_ = true;
+        return true;
+        break;
     }
     default:
     {
@@ -146,6 +148,8 @@ bool Spider::handleCollision(entityType type, sf::FloatRect collisionRect)
         break;
     }
     }
+
+    return true;
 }
 
 GameEntity::entityType Spider::getType()

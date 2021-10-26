@@ -71,6 +71,7 @@ bool Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect)
                 this->toDelete_ = true;
             }
         }
+        break;
     }
     default:
     {
