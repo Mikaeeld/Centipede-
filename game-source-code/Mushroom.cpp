@@ -1,6 +1,4 @@
 #include "Mushroom.h"
-#include "SFML/Graphics.hpp"
-#include "ResourcePath.h"
 
 Mushroom::Mushroom()
 {
@@ -63,6 +61,17 @@ bool Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect)
         this->toDelete_ = true;
         break;
     }
+    case entityType::Spider:
+    {
+        if (spiderTime_ < 0)
+        {
+            spiderTime_ = 0.5f;
+            if (randomBool(0.2f))
+            {
+                this->toDelete_ = true;
+            }
+        }
+    }
     default:
     {
         return false;
@@ -76,4 +85,10 @@ bool Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect)
 GameEntity::entityType Mushroom::getType()
 {
     return GameEntity::entityType::Mushroom;
+}
+
+void Mushroom::tick(const sf::Time &time)
+{
+    spiderTime_ -= time.asSeconds();
+    shot_ = false;
 }

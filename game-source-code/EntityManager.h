@@ -10,6 +10,7 @@
 #include "DDT.h"
 #include "Explosion.h"
 #include "CentipedeSegment.h"
+#include "Spider.h"
 
 using namespace std;
 
@@ -26,9 +27,9 @@ public:
 
 	int addEntity(GameEntity::entityType type, sf::Vector2f location = sf::Vector2f{0.0f, 0.0f});
 	int addEntity(const GameEntity_ptr &entity);
-	set<GameEntity_ptr>::iterator removeEntity(const GameEntity_ptr &entity);
+	unordered_set<GameEntity_ptr>::iterator removeEntity(const GameEntity_ptr &entity);
 
-	const set<GameEntity_ptr> &getEntities() const
+	const unordered_set<GameEntity_ptr> &getEntities() const
 	{
 		return entities_;
 	}
@@ -36,7 +37,7 @@ public:
 	int getCount(GameEntity::entityType type);
 
 private:
-	set<GameEntity_ptr> entities_;
+	unordered_set<GameEntity_ptr> entities_;
 	map<GameEntity::entityType, int> entityCounts_;
 	void checkCollisions();
 	static GameEntity_ptr entityFactory(GameEntity::entityType type);

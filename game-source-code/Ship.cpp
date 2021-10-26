@@ -175,6 +175,7 @@ bool Ship::handleCollision(entityType type, sf::FloatRect collisionRect)
 		break;
 	}
 	case entityType::CentipedeSegment:
+	case entityType::Spider:
 	{
 		explode();
 		break;

@@ -7,8 +7,6 @@ PlayState::PlayState()
 	playerArea_->setFillColor(green);
 	playerArea_->setPosition(0.0f, 200.0f);
 
-	// entityManager_.addEntity(GameEntity::entityType::Ship, sf::Vector2f{120.0f, 200.0f});
-
 	for (float i = 8.0f; i <= 224.0f; i += 8.0f)
 	{
 		for (float j = 8.0f; j <= 232.f; j += 8.f)
@@ -21,7 +19,6 @@ PlayState::PlayState()
 			}
 		}
 	}
-
 	centipedeSpeed_ = Speed_ptr(new float(100.0f));
 	centipede_ = Centipede(entityManager_, centipedeSpeed_);
 
@@ -52,6 +49,7 @@ void PlayState::update(const sf::Time &time)
 			toDelete_ = true;
 		}
 		spawnDDT(time);
+		spawnSpider(time);
 	}
 	else
 	{
@@ -77,6 +75,21 @@ void PlayState::spawnDDT(const sf::Time &time)
 			float x = randomInt(0, 28) * 8 + 8;
 			float y = randomInt(0, 20) * 8 + 4;
 			entityManager_.addEntity(GameEntity::entityType::DDT, sf::Vector2f{x, y});
+		}
+	}
+}
+
+void PlayState::spawnSpider(const sf::Time &time)
+{
+	spiderSpawnTime_ -= time.asSeconds();
+	if (spiderSpawnTime_ < 0)
+	{
+		spiderSpawnTime_ = 3.0f;
+		if (randomBool())
+		{
+			float x = int(randomBool()) * 256 - 8;
+			float y = randomInt(20, 30) * 8 + 4;
+			entityManager_.addEntity(GameEntity::entityType::Spider, sf::Vector2f{x, y});
 		}
 	}
 }

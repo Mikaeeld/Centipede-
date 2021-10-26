@@ -2,6 +2,8 @@
 
 #include "SFML/Graphics.hpp"
 #include "GameEntity.h"
+#include "ResourcePath.h"
+#include "Random.h"
 
 using Texture_ptr = shared_ptr<sf::Texture>;
 
@@ -13,13 +15,10 @@ public:
 
     bool handleCollision(entityType type, sf::FloatRect collisionRect);
     entityType getType();
-    void tick(const sf::Time &time)
-    {
-        (void)time;
-        shot_ = false;
-    }
+    void tick(const sf::Time &time);
 
 private:
     float life_;
     bool shot_;
+    float spiderTime_ = 0.8f;
 };

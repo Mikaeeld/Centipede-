@@ -135,6 +135,7 @@ public:
 		Base,
 		Ship,
 		Mushroom,
+		Spider,
 		Bullet,
 		DDT,
 		Explosion,

@@ -80,6 +80,9 @@ GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 	{
 		return shared_ptr<Explosion>(new Explosion());
 	}
+	case GameEntity::entityType::Spider:{
+		return shared_ptr<Spider>(new Spider());
+	}
 	default:
 	{
 		throw runtime_error("Invalid Entity Type in Factory");
@@ -114,7 +117,7 @@ int EntityManager::addEntity(const GameEntity_ptr &entity)
 	return 1;
 }
 
-set<GameEntity_ptr>::iterator EntityManager::removeEntity(const GameEntity_ptr &entity)
+unordered_set<GameEntity_ptr>::iterator EntityManager::removeEntity(const GameEntity_ptr &entity)
 {
 	auto type = entity->getType();
 	auto it = entities_.find(entity);
@@ -203,7 +206,8 @@ int EntityManager::getCount(GameEntity::entityType type)
 	{
 		return entityCounts_.find(type)->second;
 	}
-	else{
+	else
+	{
 		return 0;
 	}
 }
