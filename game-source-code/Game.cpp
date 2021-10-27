@@ -44,10 +44,6 @@ Game::Game() : window_("Game", sf::Vector2u{900, 960}, 0), tickRate_(120.0f)
     paused_.scale(scalex, scaley);
 }
 
-Game::~Game()
-{
-}
-
 void Game::update()
 {
     if (elapsed_.asSeconds() >= frametime_)
