@@ -7,6 +7,13 @@
 
 using Texture_ptr = shared_ptr<sf::Texture>;
 
+/**
+ * @brief Mushroom class
+ * 
+ * Mushrooms are static objects that other entities can collide with
+ * They take 4 shots from the player ot destroy
+ * 
+ */
 class Mushroom : public GameEntity
 {
 public:

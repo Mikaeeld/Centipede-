@@ -9,6 +9,9 @@ using Texture_ptr = shared_ptr<sf::Texture>;
  * @brief Ship Class
  * 
  * Ship (Player) entity
+ * Moves on player input
+ * Can fire bullets
+ * Dies when hit by spider or centipede
  * 
  */
 class Ship : public GameEntity

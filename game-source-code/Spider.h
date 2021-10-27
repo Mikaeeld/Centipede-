@@ -10,6 +10,7 @@ using Texture_ptr = shared_ptr<sf::Texture>;
  * @brief Spider class
  * 
  * Moves randomly within the bottom 3rd of the screen
+ * Ocassionally eats mushrooms
  * 
  */
 class Spider : public GameEntity
