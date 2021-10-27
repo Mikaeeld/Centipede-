@@ -30,22 +30,22 @@ public:
 	Centipede(EntityManager &entityManager, const Speed_ptr speed)
 	{
 
-		centipedeHead_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody1_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody2_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody3_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody4_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody5_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody6_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody7_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody8_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody9_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody10_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody11_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody12_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody13_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody14_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
-		centipedeBody15_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(nullptr, nullptr, speed));
+		centipedeHead_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody1_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody2_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody3_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody4_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody5_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody6_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody7_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody8_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody9_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody10_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody11_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody12_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody13_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody14_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
+		centipedeBody15_ = shared_ptr<CentipedeSegment>(new CentipedeSegment(speed));
 
 		centipedeHead_->updateChain(nullptr, centipedeBody1_);
 		centipedeBody1_->updateChain(centipedeHead_, centipedeBody2_);
