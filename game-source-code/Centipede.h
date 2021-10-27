@@ -3,10 +3,30 @@
 #include "CentipedeSegment.h"
 #include "EntityManager.h"
 
+/**
+ * @brief This class acts as a wrapper to present 16 Centipede Sements as a single 'Centipede'
+ *
+ * This class will create and link the Centipede Segements and will then pass the Segments to an EntityManager.
+ * This wrapper allso ensures that all Centipede Segments will move at the same speed.
+ *
+ */
 class Centipede
 {
 public:
+	/**
+	 * @brief Construct a new Centipede object
+	 *
+	 */
 	Centipede() {}
+
+	/**
+	 * @brief Construct a new Centipede object
+	 *
+	 * Adds Centipede Segments to the Entity Manger
+	 *
+	 * @param entityManager The Entity Manager to which the segments should be added
+	 * @param speed The shared pointer that dictates the universal speed for all segments
+	 */
 	Centipede(EntityManager &entityManager, const Speed_ptr speed)
 	{
 
