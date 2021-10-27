@@ -4,6 +4,7 @@
 int main()
 {
     Game game;
+    //Terminate the process when the window is closed
     while (!game.getWindow()->isDone())
     {
         game.update();

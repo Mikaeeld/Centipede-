@@ -10,9 +10,15 @@ using Texture_ptr = shared_ptr<sf::Texture>;
 class Mushroom : public GameEntity
 {
 public:
+    /**
+     * @brief Construct a new Mushroom object
+     * 
+     */
     Mushroom();
-    ~Mushroom() {}
 
+    /**
+     * re-implemented functions
+     */
     bool handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other);
     entityType getType();
     void tick(const sf::Time &time);
