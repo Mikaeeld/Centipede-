@@ -8,7 +8,7 @@
 TEST_CASE("Testing Centipede Head initial movement")
 {
 	shared_ptr<float> speed(new float(10.0f));
-	shared_ptr<CentipedeSegment> head(new CentipedeSegment(nullptr, nullptr, speed));
+	shared_ptr<CentipedeSegment> head(new CentipedeSegment(speed));
 
 	auto initial_position = sf::Vector2f(200, 4);
 
@@ -87,9 +87,9 @@ static bool testMargin(float value, float test, float margin)
 TEST_CASE("Testing Centipede With Body movements")
 {
 	shared_ptr<float> speed(new float(10.0f));
-	shared_ptr<CentipedeSegment> head(new CentipedeSegment(nullptr, nullptr, speed));
-	shared_ptr<CentipedeSegment> body1(new CentipedeSegment(nullptr, nullptr, speed));
-	shared_ptr<CentipedeSegment> body2(new CentipedeSegment(nullptr, nullptr, speed));
+	shared_ptr<CentipedeSegment> head(new CentipedeSegment(speed));
+	shared_ptr<CentipedeSegment> body1(new CentipedeSegment(speed));
+	shared_ptr<CentipedeSegment> body2(new CentipedeSegment(speed));
 
 	head->updateChain(nullptr, body1);
 	body1->updateChain(head, body2);
@@ -167,9 +167,9 @@ TEST_CASE("Testing Centipede With Body movements")
 TEST_CASE("Testing Centipede With Body Movements at bottom Moves Back Up")
 {
 	shared_ptr<float> speed(new float(10.0f));
-	shared_ptr<CentipedeSegment> head(new CentipedeSegment(nullptr, nullptr, speed));
-	shared_ptr<CentipedeSegment> body1(new CentipedeSegment(nullptr, nullptr, speed));
-	shared_ptr<CentipedeSegment> body2(new CentipedeSegment(nullptr, nullptr, speed));
+	shared_ptr<CentipedeSegment> head(new CentipedeSegment(speed));
+	shared_ptr<CentipedeSegment> body1(new CentipedeSegment(speed));
+	shared_ptr<CentipedeSegment> body2(new CentipedeSegment(speed));
 
 	head->updateChain(nullptr, body1);
 	body1->updateChain(head, body2);
@@ -178,8 +178,8 @@ TEST_CASE("Testing Centipede With Body Movements at bottom Moves Back Up")
 	auto initial_position = sf::Vector2f(200, 236);
 
 	head->setPosition(initial_position);
-	body1->setPosition(initial_position.x + 8, initial_position.y);
-	body2->setPosition(initial_position.x + 16, initial_position.y);
+	body1->setPosition(initial_position.x - 8, initial_position.y);
+	body2->setPosition(initial_position.x - 16, initial_position.y);
 
 	SUBCASE("Check that segments are correct")
 	{

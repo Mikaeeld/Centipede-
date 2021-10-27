@@ -1,6 +1,7 @@
 #pragma once
 #include "GameEntity.h"
 
+//Constants to define gameplay area in 8*8 blocks
 namespace GameGrid
 {
 	using GameEntity_ptr = shared_ptr<GameEntity>;

@@ -1,7 +1,7 @@
 #include "CentipedeSegment.h"
 #include "ResourcePath.h"
 
-CentipedeSegment::CentipedeSegment(const shared_ptr<CentipedeSegment> front, const shared_ptr<CentipedeSegment> back, const Speed_ptr speed)
+CentipedeSegment::CentipedeSegment(const Speed_ptr speed)
 {
 	speed_ = speed;
 	originAtCenter_ = true;
@@ -39,9 +39,7 @@ CentipedeSegment::CentipedeSegment(const shared_ptr<CentipedeSegment> front, con
 
 	setPeriod(2.0f);
 	setAnimateMode(AnimateMode::loop);
-
-	updateChain(front, back);
-
+	updateChain(nullptr, nullptr);
 	targetYDir_ = CentipedeMove::YDirection::Down;
 	targetXDir_ = CentipedeMove::XDirection::Left;
 	currentDir_ = CentipedeMove::Direction::Left;
