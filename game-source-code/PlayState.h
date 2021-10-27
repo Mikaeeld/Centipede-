@@ -38,6 +38,7 @@ public:
 	 * 
 	 */
 	bool toDelete_ = false;
+	void handleInput();
 
 private:
 	void spawnDDT(const sf::Time &time);
@@ -48,4 +49,5 @@ private:
 	Centipede centipede_;
 	float ddtSpawnTime_ = 0.0f;
 	float spiderSpawnTime_ = 0.0f;
+	float pauseDelay_;
 };

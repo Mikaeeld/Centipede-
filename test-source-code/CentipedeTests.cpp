@@ -178,8 +178,8 @@ TEST_CASE("Testing Centipede With Body Movements at bottom Moves Back Up")
 	auto initial_position = sf::Vector2f(200, 236);
 
 	head->setPosition(initial_position);
-	body1->setPosition(initial_position.x + 8, initial_position.y);
-	body2->setPosition(initial_position.x + 16, initial_position.y);
+	body1->setPosition(initial_position.x - 8, initial_position.y);
+	body2->setPosition(initial_position.x - 16, initial_position.y);
 
 	SUBCASE("Check that segments are correct")
 	{
