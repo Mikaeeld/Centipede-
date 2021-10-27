@@ -91,7 +91,7 @@ GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 	}
 }
 
-int EntityManager::addEntity(GameEntity::entityType type, sf::Vector2f location)
+void EntityManager::addEntity(GameEntity::entityType type, sf::Vector2f location)
 {
 	auto entity = entityFactory(type);
 
@@ -102,10 +102,9 @@ int EntityManager::addEntity(GameEntity::entityType type, sf::Vector2f location)
 		entityCounts_.insert(std::pair<GameEntity::entityType, int>(type, 0));
 	}
 	entityCounts_.find(type)->second++;
-	return 1;
 }
 
-int EntityManager::addEntity(const GameEntity_ptr &entity)
+void EntityManager::addEntity(const GameEntity_ptr &entity)
 {
 
 	entities_.insert(entity);
@@ -115,7 +114,6 @@ int EntityManager::addEntity(const GameEntity_ptr &entity)
 		entityCounts_.insert(std::pair<GameEntity::entityType, int>(type, 0));
 	}
 	entityCounts_.find(type)->second++;
-	return 1;
 }
 
 unordered_set<GameEntity_ptr>::iterator EntityManager::removeEntity(const GameEntity_ptr &entity)
