@@ -11,6 +11,10 @@ using namespace std;
 
 using Texture_ptr = shared_ptr<sf::Texture>;
 
+/**
+ * @brief Represents a positive percentage. Is a value between 0 and 100.
+ * Values that exceed 100 wrap around.
+ */
 struct Percentage
 {
 public:
@@ -69,25 +73,37 @@ private:
 	float value;
 };
 
+/**
+ * @brief A container for allocating a Percentage to a Texture.
+ *
+ *  Multiple Key Frames are used to form an 'animation'.
+ */
 struct KeyFrame
 {
-	Percentage percent;
-	shared_ptr<sf::Texture> texture;
 
+	Percentage percent;				 /**< Key Frame's Percent */
+	shared_ptr<sf::Texture> texture; /**< Key Frame's Texture */
+
+	/**
+	 * @brief Construct a new Key Frame object
+	 *
+	 */
 	KeyFrame()
 	{
 		percent = 0.0f;
 	}
+
+	/**
+	 * @brief Construct a new Key Frame object
+	 *
+	 * @param p Percentage
+	 * @param t Texture
+	 */
 	KeyFrame(float p, shared_ptr<sf::Texture> t)
 	{
 		percent = p;
 		texture = t;
 	};
-
-	string toString()
-	{
-		return "{" + to_string(percent) + "}";
-	}
 
 	bool operator==(const KeyFrame &rhs) const { return this->percent == rhs.percent; };
 	bool operator>(const KeyFrame &rhs) const { return this->percent > rhs.percent; };
@@ -97,6 +113,10 @@ struct KeyFrame
 	bool operator!=(const KeyFrame &rhs) const { return this->percent != rhs.percent; };
 };
 
+/**
+ * @brief A list of all possible animation modes supported by the GameEntity class
+ *
+ */
 enum class AnimateMode
 {
 	loop,
@@ -105,6 +125,10 @@ enum class AnimateMode
 	once_restart
 };
 
+/**
+ * @brief This Exception is thrown when Start >= End
+ *
+ */
 class InvalidAnimationTimings : std::exception
 {
 	const char *what() const noexcept
@@ -113,6 +137,10 @@ class InvalidAnimationTimings : std::exception
 	}
 };
 
+/**
+ * @brief This Exception is thrown when a KeyFrame is requested from a GameEntity without any.
+ *
+ */
 class NoKeyFrames : std::exception
 {
 	const char *what() const noexcept
@@ -121,15 +149,31 @@ class NoKeyFrames : std::exception
 	}
 };
 
+/**
+ * @brief Base class for all game entities.
+ *
+ * This class Inherits from SFML's Sprite Class.
+ * It is designed to work with an Entity Manager or Stand-alone.
+ */
 class GameEntity : public sf::Sprite
 {
 public:
+	/**
+	 * @brief Construct a new Game Entity object
+	 *
+	 */
 	GameEntity();
-	GameEntity(float period, float phase);
+
+	/**
+	 * @brief Destroy the Game Entity object
+	 *
+	 */
 	~GameEntity() {}
 
-	static bool toDelete(shared_ptr<GameEntity> x) { return x->toDelete(); }
-
+	/**
+	 * @brief A list of all intended derived Enitites
+	 *
+	 */
 	enum class entityType
 	{
 		Base,
@@ -142,6 +186,11 @@ public:
 		CentipedeSegment
 	};
 
+	/**
+	 * @brief Get the Type of the Game Entity
+	 *
+	 * @return entityType
+	 */
 	virtual entityType getType()
 	{
 		return entityType::Base;
@@ -150,7 +199,7 @@ public:
 	/**
 	 * @brief This method is defined when inherited
 	 *
-	 * Purpose is to allow GameEntity to update variables, physics ect.
+	 * Purpose is to allow GameEntity to update variables, movement, physics ect.
 	 * @param time
 	 */
 	virtual void tick(const sf::Time &time)
@@ -184,7 +233,6 @@ public:
 	 * @brief Adds a Key Frame to the Key Frames object
 	 *
 	 *  Note this performs a sort on the Key Frames object, hence it should be called when creating the object.
-	 *
 	 * @param kf
 	 */
 	void addKeyFrame(const KeyFrame &kf) { keyFrames_.insert(kf); }
@@ -203,16 +251,31 @@ public:
 	 */
 	void setPeriod(const float &p);
 
+	/**
+	 * @brief Get the animation Period in seconds
+	 *
+	 * @return const float&
+	 */
 	const float &getPeriod() const
 	{
 		return period_;
 	}
 
+	/**
+	 * @brief Get the Percentage at which the animation starts
+	 *
+	 * @return const Percentage&
+	 */
 	const Percentage &getAnimateStart() const
 	{
 		return animateStart_;
 	}
 
+	/**
+	 * @brief  Get the Percentage at which the animation ends
+	 *
+	 * @return const Percentage&
+	 */
 	const Percentage &getAnimateEnd() const
 	{
 		return animateEnd_;
@@ -221,8 +284,8 @@ public:
 	/**
 	 * @brief Set the Animate Start in percentage
 	 *
+	 * Throws an exception if invalid.
 	 * Valid range 0.0 - 100.0
-	 *
 	 * @param start
 	 */
 	void setAnimateStart(const float &start);
@@ -230,12 +293,18 @@ public:
 	/**
 	 * @brief Set the Animate End in percentage
 	 *
+	 * Throws an exception if invalid.
 	 * Valid range 0.0 - 100.0
-	 *
 	 * @param end
 	 */
 	void setAnimateEnd(const float &end);
 
+	/**
+	 * @brief Set the animation Start and End Percentages
+	 *
+	 * @param start
+	 * @param end
+	 */
 	void setAnimateTimings(const float &start, const float &end);
 
 	/**
@@ -249,8 +318,28 @@ public:
 		return !animate_;
 	}
 
+	/**
+	 * @brief A check for collision (intersection) with another Game Entity.
+	 *
+	 * Writes the intersection geometry to the rect parameter
+	 * @param other The other entity.
+	 * @param rect  The rectangle to write the intersection geometry.
+	 * @return true
+	 * @return false
+	 */
 	bool collidesWith(const GameEntity &other, sf::FloatRect &rect) const;
 
+	/**
+	 * @brief This method is defined when inherited.
+	 *
+	 * This method should be called when it is observed that the Game Enity has collided with another.
+	 * Returns true if the Game Entity expects no further collisions for the current tick.
+	 * @param type The type of the other entity
+	 * @param collisionRect The resulting intersection geometry of the collision
+	 * @param other A shared pointer to the other entity
+	 * @return true
+	 * @return false
+	 */
 	virtual bool handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other)
 	{
 		(void)other;
@@ -267,46 +356,76 @@ public:
 	const KeyFrame *getCurrentKeyFrame();
 
 	/**
-	 * @brief Get the Types of the Game Entity
+	 * @brief Get the Animate Mode object
 	 *
-	 * @return unordered_set<string>
+	 * @return const AnimateMode&
 	 */
-	unordered_set<string> getTypes() const
-	{
-		return types_;
-	}
-
 	const AnimateMode &getAnimateMode() const { return animateMode_; }
 
+	/**
+	 * @brief Set the Animate Mode object
+	 *
+	 * @param mode
+	 */
 	void setAnimateMode(AnimateMode mode);
-	queue<pair<entityType, sf::Vector2f>> createQueue_;
 
+	/**
+	 * @brief Returns True if the Game Entity's origin should be at it's centroid
+	 *
+	 * @return true
+	 * @return false
+	 */
 	const bool &originAtCenter() const
 	{
 		return originAtCenter_;
 	}
 
-	const sf::Vector2f getCurrentSize() const
-	{
-		if (itr_ != keyFrames_.end())
-		{
-			auto size = itr_->texture->getSize();
-			return sf::Vector2f{float(size.x), float(size.y)};
-		}
-
-		return sf::Vector2f{8, 8};
-	}
-
+	/**
+	 * @brief Returns true if the Game Entity requests to be deleted.
+	 *
+	 * @return true
+	 * @return false
+	 */
 	const bool &toDelete() const { return toDelete_; }
+
+	/**
+	 * @brief Returns true if the Game Entity is Dynamic.
+	 *
+	 * A 'Dynamic' Game Entity is said to move on it's own accords.
+	 * @return true
+	 * @return false
+	 */
 	const bool &isDynamic() const { return dynamic_; }
 
+	/**
+	 * @brief Stores a queue of Game Entities that this entity requests be created.
+	 *
+	 */
+	queue<pair<entityType, sf::Vector2f>> createQueue_;
+
 protected:
+	/**
+	 * @brief Stores whether the Game Entity should be centered at its origin
+	 *
+	 * Set to true by default.
+	 */
 	bool originAtCenter_ = true;
+
+	/**
+	 * @brief  Stores whether the Game Entity should be deleted
+	 *
+	 * Set to false by default.
+	 */
 	bool toDelete_ = false;
+
+	/**
+	 * @brief Stores whether the Game Entity is Dynamic
+	 *
+	 * Set to false by default
+	 */
 	bool dynamic_ = false;
 
 private:
-	unordered_set<string> types_;
 	bool animate_;
 	set<KeyFrame> keyFrames_;
 	float period_;
