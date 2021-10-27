@@ -6,6 +6,9 @@ PlayState::PlayState()
 	const sf::Color green(33, 71, 33);
 	playerArea_->setFillColor(green);
 	playerArea_->setPosition(0.0f, 200.0f);
+	pauseDelay_ = 0.0f;
+
+	renderWithAbove_ = true;
 
 	for (float i = 8.0f; i <= 224.0f; i += 8.0f)
 	{
@@ -47,6 +50,7 @@ void PlayState::update(const sf::Time &time)
 		if (entityManager_.getCount(GameEntity::entityType::Ship) == 0 || entityManager_.getCount(GameEntity::entityType::CentipedeSegment) == 0)
 		{
 			toDelete_ = true;
+			nextState_ = true;
 		}
 		spawnDDT(time);
 		spawnSpider(time);
@@ -56,11 +60,17 @@ void PlayState::update(const sf::Time &time)
 		if (ship_->animateDone())
 		{
 			toDelete_ = true;
+			nextState_ = true;
 		}
 		else
 		{
 			ship_->animateTick(time);
 		}
+	}
+
+	if (pauseDelay_ > 0)
+	{
+		pauseDelay_ -= time.asSeconds();
 	}
 }
 
@@ -91,5 +101,14 @@ void PlayState::spawnSpider(const sf::Time &time)
 			float y = randomInt(20, 30) * 8 + 4;
 			entityManager_.addEntity(GameEntity::entityType::Spider, sf::Vector2f{x, y});
 		}
+	}
+}
+
+void PlayState::handleInput()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && pauseDelay_ <= 0)
+	{
+		nextState_ = true;
+		pauseDelay_ = 0.2;
 	}
 }

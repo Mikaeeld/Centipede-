@@ -39,8 +39,7 @@ CentipedeSegment::CentipedeSegment(const Speed_ptr speed)
 
 	setPeriod(2.0f);
 	setAnimateMode(AnimateMode::loop);
-	front_ = nullptr;
-	back_ = nullptr;
+	updateChain(nullptr, nullptr);
 	targetYDir_ = CentipedeMove::YDirection::Down;
 	targetXDir_ = CentipedeMove::XDirection::Left;
 	currentDir_ = CentipedeMove::Direction::Left;

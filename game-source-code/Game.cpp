@@ -1,110 +1,54 @@
 #include "Game.h"
+#include <iostream>
 
 Game::Game() : window_("Game", sf::Vector2u{900, 960}, 0), tickRate_(120.0f)
 {
     frametime_ = 1.0f / tickRate_;
-    state_ = GameScene::splash;
     window_.toggleBorderless();
 
-    splashImage_ = make_shared<sf::Texture>();
+    auto windowSize = window_.getView().getSize();
 
-    if (!splashImage_->loadFromFile(resourcePath() + "Images/splash.png"))
-    {
-        std::__throw_runtime_error("Couldn't load Splash image");
-    }
+    splashState_ = shared_ptr<SplashState>(new SplashState(windowSize));
+    playState_ = shared_ptr<PlayState>(new PlayState());
+    pauseState_ = shared_ptr<PauseState>(new PauseState(windowSize));
+    gameOverState_ = shared_ptr<GameOverState>(new GameOverState(windowSize));
 
-    splash_.setTexture(*splashImage_);
-    float scalex = (float)window_.getView().getSize().x / (float)splashImage_->getSize().x;
-    float scaley = (float)window_.getView().getSize().y / (float)splashImage_->getSize().y;
-
-    splash_.scale(scalex, scaley);
-
-    gameoverImage_ = make_shared<sf::Texture>();
-    if (!gameoverImage_->loadFromFile(resourcePath() + "Images/gameover.png"))
-    {
-        std::__throw_runtime_error("Couldn't load Splash image");
-    }
-
-    gameover_.setTexture(*gameoverImage_);
-    scalex = (float)window_.getView().getSize().x / (float)gameoverImage_->getSize().x;
-    scaley = (float)window_.getView().getSize().y / (float)gameoverImage_->getSize().y;
-
-    gameover_.scale(scalex, scaley);
-
-    pausedImage_ = make_shared<sf::Texture>();
-    if (!pausedImage_->loadFromFile(resourcePath() + "Images/paused.png"))
-    {
-        std::__throw_runtime_error("Couldn't load Splash image");
-    }
-
-    paused_.setTexture(*pausedImage_);
-    scalex = (float)window_.getView().getSize().x / (float)pausedImage_->getSize().x;
-    scaley = (float)window_.getView().getSize().y / (float)pausedImage_->getSize().y;
-
-    paused_.scale(scalex, scaley);
+    scene_ = GameScene::splash;
+    currentState_ = splashState_;
+    nextState_ = playState_;
 }
 
 void Game::update()
 {
-    if (elapsed_.asSeconds() >= frametime_)
+    if (elapsed_.asSeconds() >= 0.2) // reset clock when elapsed is too large
+    {
+        elapsed_ = sf::seconds(0.0);
+    }
+    else if (elapsed_.asSeconds() >= frametime_)
     {
         handleInput();
         window_.update();
-        if (state_ == GameScene::play)
-        {
-            playState_.update(elapsed_);
-            if (playState_.toDelete_)
-            {
-                state_ = GameScene::gameOver;
-            }
-        }
+        currentState_->update(elapsed_);
         elapsed_ = sf::seconds(0.0);
+        handleStateChange();
     }
 }
 
 void Game::render()
 {
     window_.beginDraw();
-    switch (state_)
+
+    if (currentState_->renderBelow() && nextState_->renderWithAbove())
     {
-    case GameScene::play:
-    {
-        for (auto &i : playState_.getDrawable())
+        for (auto &item : nextState_->getDrawable())
         {
-            window_.draw(*i);
+            window_.draw(*item);
         }
-        break;
     }
 
-    case GameScene::splash:
+    for (auto &item : currentState_->getDrawable())
     {
-        window_.draw(splash_);
-        break;
-    }
-
-    case GameScene::gameOver:
-    {
-        for (auto &i : playState_.getDrawable())
-        {
-            window_.draw(*i);
-        }
-        window_.draw(gameover_);
-        break;
-    }
-
-    case GameScene::pause:
-    {
-        for (auto &i : playState_.getDrawable())
-        {
-            window_.draw(*i);
-        }
-        window_.draw(paused_);
-        break;
-    }
-
-    default:
-        // none
-        break;
+        window_.draw(*item);
     }
 
     window_.endDraw();
@@ -117,68 +61,7 @@ GameWindow *Game::getWindow()
 
 void Game::handleInput()
 {
-
-    switch (state_)
-    {
-    case GameScene::play:
-    {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        {
-            state_ = GameScene::pause;
-            sf::sleep(sf::seconds(0.2f));
-        }
-        break;
-    }
-
-    case GameScene::splash:
-    {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-        {
-            state_ = GameScene::play;
-            window_.toggleBorderless();
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        {
-            window_.close();
-        }
-        break;
-    }
-
-    case GameScene::gameOver:
-    {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-        {
-            state_ = GameScene::play;
-            clock_.restart();
-            playState_ = PlayState();
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        {
-            window_.close();
-        }
-        break;
-    }
-
-    case GameScene::pause:
-    {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
-        {
-            window_.close();
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-        {
-            state_ = GameScene::play;
-            sf::sleep(sf::Time(sf::seconds(0.25)));
-            clock_.restart();
-        }
-
-        break;
-    }
-
-    default:
-        // none
-        break;
-    }
+    currentState_->handleInput();
 }
 
 sf::Time Game::getElapsed()
@@ -189,4 +72,60 @@ sf::Time Game::getElapsed()
 void Game::restartClock()
 {
     elapsed_ += clock_.restart();
+}
+
+void Game::handleStateChange()
+{
+    if (currentState_->exit())
+    {
+        window_.close();
+    }
+    if (currentState_->nextState())
+    {
+        switch (scene_)
+        {
+        case GameScene::splash:
+        {
+            currentState_ = playState_;
+            window_.toggleBorderless();
+            scene_ = GameScene::play;
+            break;
+        }
+        case GameScene::play:
+        {
+            nextState_ = playState_;
+            playState_->reset();
+            if (playState_->toDelete_)
+            {
+                currentState_ = gameOverState_;
+                scene_ = GameScene::gameOver;
+            }
+            else
+            {
+                currentState_ = pauseState_;
+                scene_ = GameScene::pause;
+            }
+            break;
+        }
+        case GameScene::pause:
+        {
+            currentState_ = playState_;
+            pauseState_->reset();
+            scene_ = GameScene::play;
+            restartClock();
+            break;
+        }
+        case GameScene::gameOver:
+        {
+            playState_ = shared_ptr<PlayState>(new PlayState());
+            gameOverState_->reset();
+            currentState_ = playState_;
+            scene_ = GameScene::play;
+            restartClock();
+            break;
+        }
+        default:
+            break;
+        }
+    }
 }
