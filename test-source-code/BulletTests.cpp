@@ -1,4 +1,4 @@
-#include "doctest.h"
+#include "doctest_proxy.h"
 #include "../game-source-code/Bullet.h"
 
 TEST_CASE("Bullet moves correctly")

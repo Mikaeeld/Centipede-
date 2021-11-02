@@ -119,6 +119,20 @@ public:
 	 */
 	bool handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other);
 
+	/**
+	 * @brief Set the Target Y Direction
+	 *
+	 * @param yDir
+	 */
+	void setTargetYDirection(const CentipedeMove::YDirection &yDir);
+
+	/**
+	 * @brief Set the Target X Direction
+	 *
+	 * @param xDir
+	 */
+	void setTargetXDirection(const CentipedeMove::XDirection &xDir);
+
 private:
 	shared_ptr<CentipedeSegment> front_;
 	shared_ptr<CentipedeSegment> back_;

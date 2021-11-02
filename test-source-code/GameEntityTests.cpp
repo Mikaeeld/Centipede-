@@ -1,4 +1,4 @@
-#include "doctest.h"
+#include "doctest_proxy.h"
 #include "../game-source-code/GameEntity.h"
 #include <memory>
 #include <iostream>
@@ -129,10 +129,6 @@ TEST_CASE("Testing Default Game Entity")
 	SUBCASE("Animate Start") { CHECK(ge.getAnimateStart() == 0.0f); }
 }
 
-// TEST_CASE("Testing Mutators and Accessors")
-// {
-// }
-
 TEST_CASE("Testing KeyFrame Progression Default/Pause Animate Mode")
 {
 	shared_ptr<sf::Texture> texture(new sf::Texture);
@@ -145,7 +141,7 @@ TEST_CASE("Testing KeyFrame Progression Default/Pause Animate Mode")
 
 	SUBCASE("Exception if Key Frame is requested when none are loaded")
 	{
-		CHECK_THROWS_AS((*ge.getCurrentKeyFrame()).percent, NoKeyFrames);
+		CHECK_THROWS_AS(ge.getCurrentKeyFrame()->percent, NoKeyFrames);
 	}
 
 	ge.addKeyFrame(k1);
@@ -216,7 +212,7 @@ TEST_CASE("Testing KeyFrame Progression Loop Animate Mode")
 
 	SUBCASE("Exception if Key Frame is requested when none are loaded")
 	{
-		CHECK_THROWS_AS((*ge.getCurrentKeyFrame()).percent, NoKeyFrames);
+		CHECK_THROWS_AS(ge.getCurrentKeyFrame()->percent, NoKeyFrames);
 	}
 
 	ge.addKeyFrame(k1);
@@ -225,7 +221,7 @@ TEST_CASE("Testing KeyFrame Progression Loop Animate Mode")
 
 	SUBCASE("Only Key Frame is returned")
 	{
-		CHECK((*ge.getCurrentKeyFrame()) == k1);
+		CHECK(*ge.getCurrentKeyFrame() == k1);
 	}
 
 	ge.addKeyFrame(k2);
@@ -233,7 +229,7 @@ TEST_CASE("Testing KeyFrame Progression Loop Animate Mode")
 
 	SUBCASE("Inital Key Frame")
 	{
-		CHECK((*ge.getCurrentKeyFrame()) == k1);
+		CHECK(*ge.getCurrentKeyFrame() == k1);
 		CHECK(ge.animate());
 		CHECK(ge.getAnimateMode() == AnimateMode::loop);
 	}
@@ -299,7 +295,7 @@ TEST_CASE("Testing KeyFrame Progression Once Animate Mode")
 
 	SUBCASE("Exception if Key Frame is requested when none are loaded")
 	{
-		CHECK_THROWS_AS((*ge.getCurrentKeyFrame()).percent, NoKeyFrames);
+		CHECK_THROWS_AS(ge.getCurrentKeyFrame()->percent, NoKeyFrames);
 	}
 
 	ge.addKeyFrame(k1);
@@ -315,7 +311,7 @@ TEST_CASE("Testing KeyFrame Progression Once Animate Mode")
 
 	SUBCASE("Inital Key Frame")
 	{
-		CHECK((*ge.getCurrentKeyFrame()) == k1);
+		CHECK(*ge.getCurrentKeyFrame() == k1);
 		CHECK(ge.animate());
 		CHECK(ge.getAnimateMode() == AnimateMode::once);
 	}
@@ -389,7 +385,7 @@ TEST_CASE("Testing KeyFrame Progression Once-restart Animate Mode")
 
 	SUBCASE("Exception if Key Frame is requested when none are loaded")
 	{
-		CHECK_THROWS_AS((*ge.getCurrentKeyFrame()).percent, NoKeyFrames);
+		CHECK_THROWS_AS(ge.getCurrentKeyFrame()->percent, NoKeyFrames);
 	}
 
 	ge.addKeyFrame(k1);
@@ -564,7 +560,6 @@ TEST_CASE("Testing KeyFrame Progression With Non-standard Start and Stop Points"
 	// Progress Animation
 	ge.animateTick(dt);
 
-	// std::cout << "Check Here" << std::endl;
 	SUBCASE("CHECK Loop Back to start")
 	{
 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k1);

@@ -1,4 +1,4 @@
-#include "doctest.h"
+#include "doctest_proxy.h"
 #include "../game-source-code/Ship.h"
 
 TEST_CASE("Ship moves with input")

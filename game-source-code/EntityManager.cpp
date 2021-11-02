@@ -4,22 +4,6 @@
 
 void EntityManager::tick(const sf::Time &time)
 {
-	// auto it = entities_.begin();
-	// while (it != entities_.end())
-	// {
-	// 	auto entity = *it;
-	// 	if (entity->toDelete())
-	// 	{
-	// 		auto itTemp = it;
-	// 		it = removeEntity(*itTemp);
-	// 		continue;
-	// 	}
-	// 	else
-	// 	{
-	// 		++it++;
-	// 	}
-	// }
-
 	set<GameEntity_ptr> toRemove;
 
 	for (auto &entity : entities_)
@@ -128,25 +112,9 @@ unordered_set<GameEntity_ptr>::iterator EntityManager::removeEntity(const GameEn
 	return it;
 }
 
-// This can be smartened up by getting all collisions, sorting them byrectanlge area in a queue and handling them
+// This can be smartened up by getting all collisions, sorting them by rectangle area in a queue and handling them
 void EntityManager::checkCollisions()
 {
-
-	// for (auto entity : entities_)
-	// {
-	// 	if (entity->isDynamic())
-	// 	{
-	// 		for (auto entity2 : entities_)
-	// 		{
-	// 			sf::FloatRect rectangle;
-	// 			if (entity != entity2 && entity->getGlobalBounds().intersects(entity2->getGlobalBounds(), rectangle))
-	// 			{
-	// 				entity->handleCollision(entity2->getType(), rectangle);
-	// 				entity2->handleCollision(entity->getType(), rectangle);
-	// 			}
-	// 		}
-	// 	}
-	// }
 
 	set<GameEntity_ptr> dynamicEntities;
 
@@ -160,7 +128,7 @@ void EntityManager::checkCollisions()
 				if (!entity2->isDynamic())
 				{
 					sf::FloatRect rectangle;
-					if (entity != entity2 && entity->getGlobalBounds().intersects(entity2->getGlobalBounds(), rectangle))
+					if (entity != entity2 && entity->collidesWith(*entity2, rectangle))
 					{
 						auto c1 = entity->handleCollision(entity2->getType(), rectangle, entity2);
 						auto c2 = entity2->handleCollision(entity->getType(), rectangle, entity);
@@ -187,7 +155,7 @@ void EntityManager::checkCollisions()
 		{
 			auto entity2 = *j;
 			sf::FloatRect rectangle;
-			if (entity->getGlobalBounds().intersects(entity2->getGlobalBounds(), rectangle))
+			if (entity->collidesWith(*entity2, rectangle))
 			{
 				auto c1 = entity->handleCollision(entity2->getType(), rectangle, entity2);
 				auto c2 = entity2->handleCollision(entity->getType(), rectangle, entity);
