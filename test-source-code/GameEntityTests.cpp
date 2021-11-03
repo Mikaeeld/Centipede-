@@ -112,7 +112,6 @@ TEST_CASE("Testing KeyFrame Structure")
 	}
 	SUBCASE("Addition and Subtraction")
 	{
-		// std::cout << "Testing fmod " << a.percent << " - " << b.percent << " = " << (Percentage)(a.percent - b.percent) << std::endl;
 		CHECK((a.percent + b.percent) == 50.0f);
 		CHECK((Percentage)(a.percent - b.percent) == -50.0f);
 		CHECK((d.percent - c.percent) == 20.0f);
@@ -572,6 +571,55 @@ TEST_CASE("Testing KeyFrame Progression With Non-standard Start and Stop Points"
 		CHECK(ge.animate());
 		CHECK(ge.getAnimateMode() == AnimateMode::loop);
 	}
+}
+
+TEST_CASE("Testing Collides with function")
+{
+	auto a = GameEntity();
+	auto b = GameEntity();
+
+	auto texture = sf::Texture();
+	texture.create(8, 8);
+	a.setTexture(texture);
+	b.setTexture(texture);
+	bool should_collide;
+
+	float width = 0;
+	float height = 0;
+
+	SUBCASE("Not colliding")
+	{
+		a.setPosition(0, 0);
+		b.setPosition(9, 0);
+		should_collide = false;
+	}
+	SUBCASE("Definitely Colliding")
+	{
+		a.setPosition(0, 0);
+		b.setPosition(5, 0);
+		should_collide = true;
+		width = 3;
+		height = 8;
+	}
+	SUBCASE("1 Pixel Collission")
+	{
+		a.setPosition(0, 0);
+		b.setPosition(7, 7);
+		should_collide = true;
+		width = 1;
+		height = 1;
+	}
+	SUBCASE("Next to but not colliding")
+	{
+		a.setPosition(0, 0);
+		b.setPosition(8, 0);
+		should_collide = false;
+	}
+
+	auto rect = sf::FloatRect();
+	CHECK(a.collidesWith(b, rect) == should_collide);
+	CHECK(rect.width == width);
+	CHECK(rect.height == height);
 }
 
 TEST_SUITE_END();
