@@ -52,7 +52,7 @@ void Spider::randomizeDirection(const sf::Time &time)
         // 50% chance to change x direction
         if (true)
         {
-            if (randomBool())
+            if (GameRandom::randomBool())
             {
                 xDirection_ = Spider::Direction::Left;
             }
@@ -64,7 +64,7 @@ void Spider::randomizeDirection(const sf::Time &time)
         // ditto for y
         if (true)
         {
-            if (randomBool(0.3f))
+            if (GameRandom::randomBool(0.3f))
             {
                 yDirection_ = Spider::Direction::Up;
             }
@@ -74,14 +74,14 @@ void Spider::randomizeDirection(const sf::Time &time)
             }
         }
         // 30% chance for stopping movement in x or y;
-        if (randomBool(0.3f))
+        if (GameRandom::randomBool(0.3f))
         {
             if (yDirection_ != Spider::Direction::None)
             {
                 xDirection_ = Spider::Direction::None;
             }
         }
-        if (randomBool(0.3f))
+        if (GameRandom::randomBool(0.3f))
         {
             if (xDirection_ != Spider::Direction::None)
             {

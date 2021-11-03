@@ -16,7 +16,7 @@ PlayState::PlayState()
 		{
 			auto trial = (j >= GameGrid::PLAYER_AREA_Y_MIN) ? 0.04 : 0.1;
 
-			if (randomBool(trial))
+			if (GameRandom::randomBool(trial))
 			{
 				entityManager_.addEntity(GameEntity::entityType::Mushroom, sf::Vector2f{i, j});
 			}
@@ -80,10 +80,10 @@ void PlayState::spawnDDT(const sf::Time &time)
 	if (ddtSpawnTime_ < 0)
 	{
 		ddtSpawnTime_ = 3.0f;
-		if (entityManager_.getCount(GameEntity::entityType::DDT) < 4 && randomBool())
+		if (entityManager_.getCount(GameEntity::entityType::DDT) < 4 && GameRandom::randomBool())
 		{
-			float x = randomInt(0, 28) * 8 + 8;
-			float y = randomInt(0, 20) * 8 + 4;
+			float x = GameRandom::randomInt(0, 28) * 8 + 8;
+			float y = GameRandom::randomInt(0, 20) * 8 + 4;
 			entityManager_.addEntity(GameEntity::entityType::DDT, sf::Vector2f{x, y});
 		}
 	}
@@ -95,10 +95,10 @@ void PlayState::spawnSpider(const sf::Time &time)
 	if (spiderSpawnTime_ < 0)
 	{
 		spiderSpawnTime_ = 3.0f;
-		if (randomBool())
+		if (GameRandom::randomBool())
 		{
-			float x = int(randomBool()) * 256 - 8;
-			float y = randomInt(20, 30) * 8 + 4;
+			float x = int(GameRandom::randomBool()) * 256 - 8;
+			float y = GameRandom::randomInt(20, 30) * 8 + 4;
 			entityManager_.addEntity(GameEntity::entityType::Spider, sf::Vector2f{x, y});
 		}
 	}

@@ -68,7 +68,7 @@ bool Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect, con
         if (spiderTime_ < 0)
         {
             spiderTime_ = 0.5f;
-            if (randomBool(0.2f))
+            if (GameRandom::randomBool(0.2f))
             {
                 this->toDelete_ = true;
             }
