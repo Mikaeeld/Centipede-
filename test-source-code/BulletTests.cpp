@@ -1,6 +1,8 @@
 #include "doctest_proxy.h"
 #include "../game-source-code/Bullet.h"
 
+TEST_SUITE_BEGIN("Bullet");
+
 TEST_CASE("Bullet moves correctly")
 {
     auto bullet = Bullet();
@@ -57,3 +59,5 @@ TEST_CASE("Bullet requests removal on relevant collisions")
         CHECK(!bullet.toDelete());
     }
 }
+
+TEST_SUITE_END();

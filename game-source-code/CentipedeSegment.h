@@ -50,7 +50,7 @@ namespace CentipedeMove
 }
 
 /**
- * @brief Centipede Segment Game Entity
+ * @brief Centipede Segment GameEntity
  *
  * This class implements the functionality of Centipede Segments which together make up a centipede
  * A segment could either be a Head or a Body, however a body Segment could become a head.
@@ -65,7 +65,7 @@ class CentipedeSegment : public GameEntity
 {
 public:
 	/**
-	 * @brief Construct a new Centipede Segment Game Entity
+	 * @brief Construct a new Centipede Segment GameEntity
 	 *
 	 * @param speed The shared pointer to the speed of the Centipede Segment
 	 */

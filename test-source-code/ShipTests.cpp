@@ -1,6 +1,8 @@
 #include "doctest_proxy.h"
 #include "../game-source-code/Ship.h"
 
+TEST_SUITE_BEGIN("Ship");
+
 TEST_CASE("Ship moves with input")
 {
     auto ship = Ship();
@@ -116,3 +118,5 @@ TEST_CASE("Ship dies correctly")
         CHECK(ship.toDelete());
     }
 }
+
+TEST_SUITE_END();

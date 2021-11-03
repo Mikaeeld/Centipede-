@@ -6,7 +6,7 @@
 using Texture_ptr = shared_ptr<sf::Texture>;
 
 /**
- * @brief DDT Game Entity
+ * @brief DDT GameEntity
  *
  * A DDT bomb is a package for an explosion. When it is shot by a bullet it will turn into an explosion
  * (or DDT cloud) which will then kill all enemies that it touches as well as mushrooms.

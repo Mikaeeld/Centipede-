@@ -159,13 +159,13 @@ class GameEntity : public sf::Sprite
 {
 public:
 	/**
-	 * @brief Construct a new Game Entity object
+	 * @brief Construct a new GameEntity object
 	 *
 	 */
 	GameEntity();
 
 	/**
-	 * @brief Destroy the Game Entity object
+	 * @brief Destroy the GameEntity object
 	 *
 	 */
 	~GameEntity() {}
@@ -187,7 +187,7 @@ public:
 	};
 
 	/**
-	 * @brief Get the Type of the Game Entity
+	 * @brief Get the Type of the GameEntity
 	 *
 	 * @return entityType
 	 */
@@ -319,7 +319,7 @@ public:
 	}
 
 	/**
-	 * @brief A check for collision (intersection) with another Game Entity.
+	 * @brief A check for collision (intersection) with another GameEntity.
 	 *
 	 * Writes the intersection geometry to the rect parameter
 	 * @param other The other entity.
@@ -332,8 +332,8 @@ public:
 	/**
 	 * @brief This method is defined when inherited.
 	 *
-	 * This method should be called when it is observed that the Game Enity has collided with another.
-	 * Returns true if the Game Entity expects no further collisions for the current tick.
+	 * This method should be called when it is observed that the GameEntity has collided with another.
+	 * Returns true if the GameEntity expects no further collisions for the current tick.
 	 * @param type The type of the other entity
 	 * @param collisionRect The resulting intersection geometry of the collision
 	 * @param other A shared pointer to the other entity
@@ -370,7 +370,7 @@ public:
 	void setAnimateMode(AnimateMode mode);
 
 	/**
-	 * @brief Returns True if the Game Entity's origin should be at it's centroid
+	 * @brief Returns True if the GameEntity's origin should be at it's centroid
 	 *
 	 * @return true
 	 * @return false
@@ -381,7 +381,7 @@ public:
 	}
 
 	/**
-	 * @brief Returns true if the Game Entity requests to be deleted.
+	 * @brief Returns true if the GameEntity requests to be deleted.
 	 *
 	 * @return true
 	 * @return false
@@ -389,9 +389,9 @@ public:
 	const bool &toDelete() const { return toDelete_; }
 
 	/**
-	 * @brief Returns true if the Game Entity is Dynamic.
+	 * @brief Returns true if the GameEntity is Dynamic.
 	 *
-	 * A 'Dynamic' Game Entity is said to move on it's own accords.
+	 * A 'Dynamic' GameEntity is said to move on it's own accords.
 	 * @return true
 	 * @return false
 	 */
@@ -405,21 +405,21 @@ public:
 
 protected:
 	/**
-	 * @brief Stores whether the Game Entity should be centered at its origin
+	 * @brief Stores whether the GameEntity should be centered at its origin
 	 *
 	 * Set to true by default.
 	 */
 	bool originAtCenter_ = true;
 
 	/**
-	 * @brief  Stores whether the Game Entity should be deleted
+	 * @brief  Stores whether the GameEntity should be deleted
 	 *
 	 * Set to false by default.
 	 */
 	bool toDelete_ = false;
 
 	/**
-	 * @brief Stores whether the Game Entity is Dynamic
+	 * @brief Stores whether the GameEntity is Dynamic
 	 *
 	 * Set to false by default
 	 */

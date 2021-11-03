@@ -4,7 +4,8 @@
 #include <iostream>
 #include <math.h>
 
-// Test code for Game Entity
+TEST_SUITE_BEGIN("GameEntity");
+// Test code for GameEntity
 
 // Test the KeyFrame Struct and Percentage Struct
 TEST_CASE("Testing Percentage Structure")
@@ -118,7 +119,7 @@ TEST_CASE("Testing KeyFrame Structure")
 	}
 }
 
-TEST_CASE("Testing Default Game Entity")
+TEST_CASE("Testing Default GameEntity")
 {
 	// Default entity is paused and is done
 	auto ge = GameEntity();
@@ -572,3 +573,5 @@ TEST_CASE("Testing KeyFrame Progression With Non-standard Start and Stop Points"
 		CHECK(ge.getAnimateMode() == AnimateMode::loop);
 	}
 }
+
+TEST_SUITE_END();

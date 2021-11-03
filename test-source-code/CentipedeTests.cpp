@@ -6,6 +6,8 @@
 #include <deque>
 #include <sstream>
 
+TEST_SUITE_BEGIN("Centipede");
+
 // Define How Doctest should print sf::Vector2f when errors occur.
 namespace doctest
 {
@@ -424,3 +426,5 @@ TEST_CASE("Centipede Collides With an Explosion")
 		CHECK_FALSE(body1->isHead());
 	}
 }
+
+TEST_SUITE_END();

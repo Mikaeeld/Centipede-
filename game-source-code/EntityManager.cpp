@@ -42,6 +42,10 @@ GameEntity_ptr EntityManager::entityFactory(GameEntity::entityType type)
 {
 	switch (type)
 	{
+	case GameEntity::entityType::Base:
+	{
+		return shared_ptr<GameEntity>(new GameEntity());
+	}
 	case GameEntity::entityType::Ship:
 	{
 		return shared_ptr<Ship>(new Ship());

@@ -6,7 +6,7 @@
 using Texture_ptr = shared_ptr<sf::Texture>;
 
 /**
- * @brief Bullet Game Entity
+ * @brief Bullet GameEntity
  *
  * Bullets are fired from the Ship and could potentially collide with enemies.
  * Also known as 'Lasers'

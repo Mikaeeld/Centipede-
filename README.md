@@ -4,7 +4,7 @@
 | Name | Student Number |
 |-|-|
 | Shivun Chinniah  |2090476|
-| Mikaeel Dindar | 212803 |
+| Mikaeel Dindar | 2128031 |
 
 ## Overview
 Centipede++ is based on the arcade games 'Centipede', 'Millipede' or also known as 'Multipede'.
