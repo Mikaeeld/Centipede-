@@ -10,6 +10,8 @@
 #include "GameEntityTests.cpp"
 #include "CentipedeTests.cpp"
 #include "EntityManagerTests.cpp"
+#include "MushroomTests.cpp"
+#include "SpiderTests.cpp"
 
 TEST_CASE("Testing Window Default Dimensions")
 {
