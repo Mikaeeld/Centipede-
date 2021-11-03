@@ -32,6 +32,7 @@ Mushroom::Mushroom()
     this->addKeyFrame(KeyFrame(75.0, break3));
     this->setAnimateMode(AnimateMode::pause);
     life_ = 0;
+    spiderTime_ = 0.5;
 }
 
 bool Mushroom::handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other)

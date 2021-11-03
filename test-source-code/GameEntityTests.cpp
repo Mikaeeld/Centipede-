@@ -1,10 +1,11 @@
-#include "doctest.h"
+#include "doctest_proxy.h"
 #include "../game-source-code/GameEntity.h"
 #include <memory>
 #include <iostream>
 #include <math.h>
 
-// Test code for Game Entity
+TEST_SUITE_BEGIN("GameEntity");
+// Test code for GameEntity
 
 // Test the KeyFrame Struct and Percentage Struct
 TEST_CASE("Testing Percentage Structure")
@@ -111,14 +112,13 @@ TEST_CASE("Testing KeyFrame Structure")
 	}
 	SUBCASE("Addition and Subtraction")
 	{
-		// std::cout << "Testing fmod " << a.percent << " - " << b.percent << " = " << (Percentage)(a.percent - b.percent) << std::endl;
 		CHECK((a.percent + b.percent) == 50.0f);
 		CHECK((Percentage)(a.percent - b.percent) == -50.0f);
 		CHECK((d.percent - c.percent) == 20.0f);
 	}
 }
 
-TEST_CASE("Testing Default Game Entity")
+TEST_CASE("Testing Default GameEntity")
 {
 	// Default entity is paused and is done
 	auto ge = GameEntity();
@@ -128,10 +128,6 @@ TEST_CASE("Testing Default Game Entity")
 	SUBCASE("Animate End") { CHECK(ge.getAnimateEnd() == 100.0f); }
 	SUBCASE("Animate Start") { CHECK(ge.getAnimateStart() == 0.0f); }
 }
-
-// TEST_CASE("Testing Mutators and Accessors")
-// {
-// }
 
 TEST_CASE("Testing KeyFrame Progression Default/Pause Animate Mode")
 {
@@ -145,7 +141,7 @@ TEST_CASE("Testing KeyFrame Progression Default/Pause Animate Mode")
 
 	SUBCASE("Exception if Key Frame is requested when none are loaded")
 	{
-		CHECK_THROWS_AS((*ge.getCurrentKeyFrame()).percent, NoKeyFrames);
+		CHECK_THROWS_AS(ge.getCurrentKeyFrame()->percent, NoKeyFrames);
 	}
 
 	ge.addKeyFrame(k1);
@@ -216,7 +212,7 @@ TEST_CASE("Testing KeyFrame Progression Loop Animate Mode")
 
 	SUBCASE("Exception if Key Frame is requested when none are loaded")
 	{
-		CHECK_THROWS_AS((*ge.getCurrentKeyFrame()).percent, NoKeyFrames);
+		CHECK_THROWS_AS(ge.getCurrentKeyFrame()->percent, NoKeyFrames);
 	}
 
 	ge.addKeyFrame(k1);
@@ -225,7 +221,7 @@ TEST_CASE("Testing KeyFrame Progression Loop Animate Mode")
 
 	SUBCASE("Only Key Frame is returned")
 	{
-		CHECK((*ge.getCurrentKeyFrame()) == k1);
+		CHECK(*ge.getCurrentKeyFrame() == k1);
 	}
 
 	ge.addKeyFrame(k2);
@@ -233,7 +229,7 @@ TEST_CASE("Testing KeyFrame Progression Loop Animate Mode")
 
 	SUBCASE("Inital Key Frame")
 	{
-		CHECK((*ge.getCurrentKeyFrame()) == k1);
+		CHECK(*ge.getCurrentKeyFrame() == k1);
 		CHECK(ge.animate());
 		CHECK(ge.getAnimateMode() == AnimateMode::loop);
 	}
@@ -299,7 +295,7 @@ TEST_CASE("Testing KeyFrame Progression Once Animate Mode")
 
 	SUBCASE("Exception if Key Frame is requested when none are loaded")
 	{
-		CHECK_THROWS_AS((*ge.getCurrentKeyFrame()).percent, NoKeyFrames);
+		CHECK_THROWS_AS(ge.getCurrentKeyFrame()->percent, NoKeyFrames);
 	}
 
 	ge.addKeyFrame(k1);
@@ -315,7 +311,7 @@ TEST_CASE("Testing KeyFrame Progression Once Animate Mode")
 
 	SUBCASE("Inital Key Frame")
 	{
-		CHECK((*ge.getCurrentKeyFrame()) == k1);
+		CHECK(*ge.getCurrentKeyFrame() == k1);
 		CHECK(ge.animate());
 		CHECK(ge.getAnimateMode() == AnimateMode::once);
 	}
@@ -389,7 +385,7 @@ TEST_CASE("Testing KeyFrame Progression Once-restart Animate Mode")
 
 	SUBCASE("Exception if Key Frame is requested when none are loaded")
 	{
-		CHECK_THROWS_AS((*ge.getCurrentKeyFrame()).percent, NoKeyFrames);
+		CHECK_THROWS_AS(ge.getCurrentKeyFrame()->percent, NoKeyFrames);
 	}
 
 	ge.addKeyFrame(k1);
@@ -564,7 +560,6 @@ TEST_CASE("Testing KeyFrame Progression With Non-standard Start and Stop Points"
 	// Progress Animation
 	ge.animateTick(dt);
 
-	// std::cout << "Check Here" << std::endl;
 	SUBCASE("CHECK Loop Back to start")
 	{
 		CHECK_FALSE(*ge.getCurrentKeyFrame() == k1);
@@ -577,3 +572,54 @@ TEST_CASE("Testing KeyFrame Progression With Non-standard Start and Stop Points"
 		CHECK(ge.getAnimateMode() == AnimateMode::loop);
 	}
 }
+
+TEST_CASE("Testing Collides with function")
+{
+	auto a = GameEntity();
+	auto b = GameEntity();
+
+	auto texture = sf::Texture();
+	texture.create(8, 8);
+	a.setTexture(texture);
+	b.setTexture(texture);
+	bool should_collide;
+
+	float width = 0;
+	float height = 0;
+
+	SUBCASE("Not colliding")
+	{
+		a.setPosition(0, 0);
+		b.setPosition(9, 0);
+		should_collide = false;
+	}
+	SUBCASE("Definitely Colliding")
+	{
+		a.setPosition(0, 0);
+		b.setPosition(5, 0);
+		should_collide = true;
+		width = 3;
+		height = 8;
+	}
+	SUBCASE("1 Pixel Collission")
+	{
+		a.setPosition(0, 0);
+		b.setPosition(7, 7);
+		should_collide = true;
+		width = 1;
+		height = 1;
+	}
+	SUBCASE("Next to but not colliding")
+	{
+		a.setPosition(0, 0);
+		b.setPosition(8, 0);
+		should_collide = false;
+	}
+
+	auto rect = sf::FloatRect();
+	CHECK(a.collidesWith(b, rect) == should_collide);
+	CHECK(rect.width == width);
+	CHECK(rect.height == height);
+}
+
+TEST_SUITE_END();

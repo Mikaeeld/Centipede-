@@ -1,5 +1,7 @@
-#include "doctest.h"
+#include "doctest_proxy.h"
 #include "../game-source-code/Ship.h"
+
+TEST_SUITE_BEGIN("Ship");
 
 TEST_CASE("Ship moves with input")
 {
@@ -98,21 +100,29 @@ TEST_CASE("Ship dies correctly")
 {
     auto ship = Ship();
     CHECK(ship.getCondition() == Ship::Condition::Alive);
-    ship.handleCollision(GameEntity::entityType::CentipedeSegment, sf::FloatRect{0.f, 0.f, 10.f, 10.f}, shared_ptr<GameEntity>());
-    SUBCASE("State changes to dying on collision with centipede")
+    SUBCASE("Centipede Hits Ship")
     {
-        CHECK(ship.getCondition() == Ship::Condition::Dying);
+        ship.handleCollision(GameEntity::entityType::CentipedeSegment, sf::FloatRect{0.f, 0.f, 10.f, 10.f}, shared_ptr<GameEntity>());
     }
-    SUBCASE("Ship requests removal after dying animation")
+    SUBCASE("Spider Hists Ship")
     {
-        CHECK(!ship.toDelete());
-        auto dt = sf::Time{sf::seconds(0.016)};
-        while (!ship.animateDone())
-        {
-            ship.animateTick(dt);
-            ship.tick(dt);
-        }
+        ship.handleCollision(GameEntity::entityType::Spider, sf::FloatRect{0.f, 0.f, 10.f, 10.f}, shared_ptr<GameEntity>());
+    }
+
+    // State changes to dying on collision with centipede
+
+    CHECK(ship.getCondition() == Ship::Condition::Dying);
+
+    // Ship requests removal after dying animation
+    CHECK(!ship.toDelete());
+    auto dt = sf::Time{sf::seconds(0.016)};
+    while (!ship.animateDone())
+    {
+        ship.animateTick(dt);
         ship.tick(dt);
-        CHECK(ship.toDelete());
     }
+    ship.tick(dt);
+    CHECK(ship.toDelete());
 }
+
+TEST_SUITE_END();

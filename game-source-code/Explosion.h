@@ -6,7 +6,7 @@
 using Texture_ptr = shared_ptr<sf::Texture>;
 
 /**
- * @brief Explosion (DDT Cloud) Game Entity
+ * @brief Explosion (DDT Cloud) GameEntity
  *
  * Spawned when a DDT bomb is shot this Explosion entity will kill all enemies that it touches, including mushrooms.
  *

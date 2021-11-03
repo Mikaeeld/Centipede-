@@ -50,7 +50,7 @@ namespace CentipedeMove
 }
 
 /**
- * @brief Centipede Segment Game Entity
+ * @brief Centipede Segment GameEntity
  *
  * This class implements the functionality of Centipede Segments which together make up a centipede
  * A segment could either be a Head or a Body, however a body Segment could become a head.
@@ -65,7 +65,7 @@ class CentipedeSegment : public GameEntity
 {
 public:
 	/**
-	 * @brief Construct a new Centipede Segment Game Entity
+	 * @brief Construct a new Centipede Segment GameEntity
 	 *
 	 * @param speed The shared pointer to the speed of the Centipede Segment
 	 */
@@ -118,6 +118,20 @@ public:
 	 *
 	 */
 	bool handleCollision(entityType type, sf::FloatRect collisionRect, const shared_ptr<GameEntity> other);
+
+	/**
+	 * @brief Set the Target Y Direction
+	 *
+	 * @param yDir
+	 */
+	void setTargetYDirection(const CentipedeMove::YDirection &yDir);
+
+	/**
+	 * @brief Set the Target X Direction
+	 *
+	 * @param xDir
+	 */
+	void setTargetXDirection(const CentipedeMove::XDirection &xDir);
 
 private:
 	shared_ptr<CentipedeSegment> front_;

@@ -1,5 +1,5 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "doctest.h"
+#include "doctest_proxy.h"
 #include "../game-source-code/GameWindow.h"
 #include "../game-source-code/GameEntity.h"
 #include <memory>
@@ -7,9 +7,11 @@
 #include <math.h>
 #include "ShipTests.cpp"
 #include "BulletTests.cpp"
-
 #include "GameEntityTests.cpp"
 #include "CentipedeTests.cpp"
+#include "EntityManagerTests.cpp"
+#include "MushroomTests.cpp"
+#include "SpiderTests.cpp"
 
 TEST_CASE("Testing Window Default Dimensions")
 {

@@ -9,6 +9,8 @@ GameEntity::GameEntity()
 	animateEnd_ = 100.0f;
 	currentTime_ = 0;
 	animateMode_ = AnimateMode::pause;
+	dynamic_ = false;
+	toDelete_ = false;
 }
 
 set<KeyFrame>::iterator GameEntity::getKeyFrameAtPercent(const float &percent)

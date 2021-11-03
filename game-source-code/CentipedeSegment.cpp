@@ -37,12 +37,25 @@ CentipedeSegment::CentipedeSegment(const Speed_ptr speed)
 		}
 	}
 
+	targetTurnCell_ = make_pair(0, 0);
+	isTurning_ = false;
+
 	setPeriod(2.0f);
 	setAnimateMode(AnimateMode::loop);
 	updateChain(nullptr, nullptr);
 	targetYDir_ = CentipedeMove::YDirection::Down;
 	targetXDir_ = CentipedeMove::XDirection::Left;
 	currentDir_ = CentipedeMove::Direction::Left;
+}
+
+void CentipedeSegment::setTargetXDirection(const CentipedeMove::XDirection &xDir)
+{
+	targetXDir_ = xDir;
+}
+
+void CentipedeSegment::setTargetYDirection(const CentipedeMove::YDirection &yDir)
+{
+	targetYDir_ = yDir;
 }
 
 float CentipedeSegment::manhattanDistance(const shared_ptr<CentipedeSegment> other) const
@@ -251,7 +264,7 @@ void CentipedeSegment::checkGridBound()
 
 void CentipedeSegment::updatePosition(const sf::Time &time)
 {
-	float distance;
+	float distance = 0.0f;
 	if (isTurning_)
 	{
 		distance = (targetYDir_ == CentipedeMove::YDirection::Down) ? 1.0f : -1.0f;
